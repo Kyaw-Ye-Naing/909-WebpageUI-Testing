@@ -351,6 +351,17 @@ const getUserCount = (setResponse) => {
   });
 };
 
+const removeVoucherNo = (gamblingId,status,setResponse) => {
+  postApi(`${apiList.removeVoucher}`,
+  {
+    gamblingId : gamblingId,
+    status : status
+  },
+  (data) => {
+    setResponse(data);
+  });
+}
+
 export const userController = {
   getAllUser,
   getUserInfoAndCommission,
@@ -391,4 +402,5 @@ export const userController = {
   updateRegulationText,
   getGroupGambling,
   getUserCount,
+  removeVoucherNo
 };

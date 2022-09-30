@@ -173,6 +173,7 @@ export const MyEventModal = (props) => {
   const [winAmount, setwinAmount] = React.useState([]);
   const [betAmount, setbetAmount] = React.useState([]);
   const [voucher, setvoucher] = React.useState([]);
+  const [status,setStatus] = React.useState([]);
   const [eventDataDetail, setEventDataDetail] = React.useState([]);
   const isPhone = useMediaPredicate("(max-width: 800px)");
   const [modalStyle] = React.useState(getModalStyle(isPhone));
@@ -187,6 +188,7 @@ export const MyEventModal = (props) => {
         setloseAmount(data.loseAmount);
         setvoucher(data.voucherNo);
         setbetAmount(data.betAmount);
+        setStatus(data.voucherStatus);
         setLoading(false);
       });
     } else {
@@ -255,7 +257,8 @@ export const MyEventModal = (props) => {
                       ? `Lose Amount - ${loseAmount}`
                       : `Win Amount - ${winAmount}`}
                   </p>
-                  <p>Status - {winAmount == 0 ? "Lose" : "Win"}</p>
+                  {/* <p>Status - {winAmount == 0 ? "Lose" : "Win"}</p> */}
+                  <p>Status - <span style={{color:status == 'Win'?'green':'red'}}>{status}</span></p>
                 </div>
               </div>
               {/* eventData.length > 0 && eventData.map((data, index) => (

@@ -62,5 +62,6 @@ export const apiList = {
   getBufferData:"TblLeagues/get-buffer-list",
   saveBufferTable:"TblLeagues/buffer-temp",
   saveEventManual:"TblLeagues/event-manual",
-  updateEvent365:"TblLeagues/update-odds-365"
+  updateEvent365:"TblLeagues/update-odds-365",
+  removeVoucher:"GoalsResult/cancel-voucher"
 };

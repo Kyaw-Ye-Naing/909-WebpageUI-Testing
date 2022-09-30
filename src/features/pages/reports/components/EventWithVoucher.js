@@ -8,12 +8,14 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  Badge
+  Badge,
 } from "@material-ui/core";
+import { toast } from "react-toastify";
 import React, { useEffect, useState } from "react";
 import MyColor from "../../../../config/color";
 import { useParams, withRouter } from "react-router-dom";
 import { reportController } from "../../../../controllers/reportController";
+import {userController} from "../../../../controllers/userController"
 import moment from "moment";
 import { MyEventModal } from "../../../common/components/MyEventModal";
 import SearchBar from "material-ui-search-bar";
@@ -44,11 +46,11 @@ const EventWithVoucher = withRouter((props) => {
   const isPhone = useMediaPredicate("(max-width: 800px)");
 
   useEffect(() => {
+    props.setLoading(true);
     getEventWithVoucher();
   }, []);
 
   const getEventWithVoucher = () => {
-    props.setLoading(true);
     reportController.getEventWithVoucher(rapidEventId, (data) => {
       setEventWithVoucher(data.voucherData);
       setSearchVoucher(data.voucherData);
@@ -61,11 +63,29 @@ const EventWithVoucher = withRouter((props) => {
     setGamId(gamblingWinId);
   };
 
+const onRejectHandle = (gamblingId,status) => {
+  props.setLoading(true);
+  let tempStatus = "";
+  if(status == 1){
+    tempStatus = "active";
+  }else{
+    tempStatus = "finished";
+  }
+  userController.removeVoucherNo(gamblingId,tempStatus,(data) => {
+    toast.success(data.message, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+    props.setLoading(false);
+  });
+}
+
   const requestSearch = (value) => {
     setSearchText(value);
     const voucherFilter = searchVoucher.filter((v) => {
-      return v.voucherNo.toLowerCase().includes(value.toLowerCase()) ||
-            v.gamblingType.toLowerCase().includes(value.toLowerCase());
+      return (
+        v.voucherNo.toLowerCase().includes(value.toLowerCase()) ||
+        v.gamblingType.toLowerCase().includes(value.toLowerCase())
+      );
     });
     setEventWithVoucher(voucherFilter);
   };
@@ -136,11 +156,33 @@ const EventWithVoucher = withRouter((props) => {
                         </TableCell>
                         <TableCell align="left">{v.userName}</TableCell>
                         <TableCell align="left">{v.name}</TableCell>
-                        <TableCell align="left">
-                          {/* <button
-                            className="btn btn-primary"
+                        <TableCell align="left">{v.amount}</TableCell>
+                        <TableCell>{v.gamblingType}</TableCell>
+                        <TableCell>
+                          {v.active == 1 ? (
+                            <span
+                              class="badge badge-warning"
+                              style={{ padding: 8, fontWeight: "bolder" }}
+                            >
+                              Pending
+                            </span>
+                          ) : (
+                            <span
+                              class="badge badge-success"
+                              style={{ padding: 8, fontWeight: "bolder" }}
+                            >
+                              Finished
+                            </span>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                        {v.active == 1 ? (
+                            null
+                          ) : (
+                            <button
+                            className="btn"
                             onClick={() => {
-                              onClickDetail(v.gamblingId);
+                              onClickDetail(v.gamblingWinId);
                             }}
                             style={{
                               backgroundColor: MyColor.secondaryBackground,
@@ -148,19 +190,23 @@ const EventWithVoucher = withRouter((props) => {
                             data-toggle="modal"
                             data-target="#exampleModalLong"
                           >
-                            Details
-                          </button> */}
-                          {v.amount}
-                        </TableCell>
-                        <TableCell>
-                          {v.gamblingType}
-                        </TableCell>
-                        <TableCell>
-                          {v.active == 1 ?
-                         <span class="badge badge-warning" style={{padding:8,fontWeight:'bolder'}}>Pending</span> 
-                         :
-                         <span class="badge badge-success" style={{padding:8,fontWeight:'bolder'}}>Finished</span>   
-                          }
+                            View                            
+                          </button>
+                          )}
+                          
+
+                          <button
+                            className="btn"
+                            onClick={() => {
+                              onRejectHandle(v.gamblingId,v.active);
+                            }}
+                            style={{
+                              backgroundColor: MyColor.secondaryBackground,
+                              marginLeft:5
+                            }}
+                          >
+                            Reject  
+                          </button>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -230,5 +276,11 @@ const columns = [
     label: "Status",
     align: "left",
     minWidth: 50,
+  },
+  {
+    id: "action",
+    label: "Action",
+    align: "left",
+    minWidth: 20,
   },
 ];

@@ -78,7 +78,8 @@ export default function CreateUser(props) {
     com12: 0,
   });
 
-  const [userRole, setUserRole] = useState(null);
+  const [userRole, setUserRole] = useState([]);
+  //const [userRole, setUserRole] = useState(null);
 
   const [betAmount, setBetAmount] = useState([]); //add by kyn 21-4-2021--limit bet amount min max
 
@@ -312,14 +313,19 @@ export default function CreateUser(props) {
     loginUserInfo &&
       roleController.getUserRole((data) => {
         if (!data) return null;
-        let filterList = data.filter((v) => v.roleId > loginUserInfo.roleId);
+        console.log("all role",data);
+        console.log("current role",loginUserInfo.roleId)
+      //  let filterList = data.filter((v) => v.roleId > loginUserInfo.roleId);
+      let filterList = data.filter((v) => v.roleId > loginUserInfo.roleId);
+      console.log("filter role",filterList)
         let list = filterList.map((v) => {
           return {
             roleId: v.roleId,
             role: v.role,
           };
         });
-        setUserRole(list[0]);
+        console.log("filter role 11",list[0])
+        setUserRole(list);
       });
 
     //add by kyn 21-4-2021--limit bet amount min max
@@ -815,10 +821,10 @@ export function SelectingBox(props) {
           </option>
           {
             data && (
-              // data.map((r, i) => (
-              <option value={data.roleId}>{data.role}</option>
+              data.map((r, i) => (
+              <option value={r.roleId}>{r.role}</option>
             )
-            // ))
+             ))
           }
         </select>
       </div>
