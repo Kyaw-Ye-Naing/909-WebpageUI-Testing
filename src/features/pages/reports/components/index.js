@@ -6,3 +6,4 @@ export * from "./CollectionsUser";
 export * from "./expandedRow";
 export * from "./expandGamblingRow";
 export * from "./EventWithVoucher";
+export * from "./OddSummaryModel";

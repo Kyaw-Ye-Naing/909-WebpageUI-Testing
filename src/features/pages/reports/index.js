@@ -18,6 +18,7 @@ import {
   EventWithVoucher,
 } from "./components";
 import SelectedEvents from "./SelectedEvents";
+import OddSummary from "./OddSummary";
 
 class Report extends React.Component {
   constructor(props) {
@@ -52,7 +53,9 @@ class Report extends React.Component {
         ? 12
         : this.props.location.pathname.includes("selected-events")
         ? 13
-        : 14;
+        :this.props.location.pathname.includes("odd-summary")
+        ? 14
+        : 15;
 
     return (
       <div className="w-100">
@@ -82,7 +85,9 @@ class Report extends React.Component {
           <ExpandedCollections />
         ) : loc == 13 ? (
           <SelectedEvents />
-        ) : (
+        ) : loc == 14 ? (
+          <OddSummary/>
+        ):(
           <CollectionsUser />
         )}
       </div>
