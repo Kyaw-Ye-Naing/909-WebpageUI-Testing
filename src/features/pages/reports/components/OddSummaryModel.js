@@ -1,67 +1,68 @@
 import React from "react";
 
-function OddSummaryModel() {
+function OddSummaryModel({oddSummaryDetails}) {
   return (
     <div>
-     <div class="modal fade" id="oddSummaryModal" tabindex="-1" aria-labelledby="oddSummaryModalLabel" aria-hidden="true">
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Modal title</h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="modal-body">
+      <div class="modal fade bd-example-modal-lg" id="oddSummaryModal" tabindex="-1" role="dialog" aria-labelledby="oddSummaryModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Event Odd Summary</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <div className="modal-body">
               <table class="table">
-                <thead>
+                <thead class="thead-dark">
                   <tr>
                     <th scope="col">No</th>
-                    <th scope="col">Home Odds</th>
-                    <th scope="col">Home Handicap</th>
-                    <th scope="col">Away Odds</th>
-                    <th scope="col">Away Handicap</th>
-                    <th scope="col">Over Odds</th>
-                    <th scope="col">Under Odds</th>
+                    <th scope="col">Body Odds</th>
+                    <th scope="col">Body Handicap</th>
+                    <th scope="col">Goal Odds</th>
                     <th scope="col">Goal Handicap</th>
-                    <th scope="col">Body</th>
-                    <th scope="col">Goal</th>
+                    <th scope="col">Myan</th>
+                    <th scope="col">Time</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                  </tr>
+                  {
+                    oddSummaryDetails && 
+                    oddSummaryDetails.map((v,k) => {
+                      return (
+                        <tr>
+                        <th scope="row">{k+1}</th>
+                        <td><span style={{color:v.homeHandicap.length > 7 ? "red":"black"}}>{v.homeOdds}</span>
+                        <br/>
+                        <span style={{color:v.awayHandicap.length > 7 ? "red":"black"}}>{v.awayOdds}</span>
+                        </td>
+                        <td>{v.homeHandicap}</td>
+                        <td>{v.overOdds}
+                        <br/>
+                        {v.underOdds}
+                        </td>
+                        <td>{v.goalHandicap}</td>
+                        <td>{v.body}
+                        <br/>
+                        {v.goal}
+                        </td>
+                        <td>{v.createdTime}</td>
+                      </tr>
+                      )
+                    })
+                  }
                 </tbody>
               </table>
             </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="button" className="btn btn-primary">
-                Save changes
-              </button>
-            </div>
-          </div>
-        </div>
       </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
     </div>
   );
 }

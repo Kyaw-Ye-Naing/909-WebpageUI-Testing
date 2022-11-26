@@ -77,7 +77,7 @@ const columns = [
   {
     id: "action",
     label: "Action",
-   // minWidth: 50,
+    // minWidth: 50,
     //maxWidth: 50,
     align: "left",
   },
@@ -149,12 +149,235 @@ const temp = [
   },
 ];
 
+const tempodd =[
+{
+  "oddSummaryId":1,
+  "homeOdds":"0.199",
+  "awayOdds":"1.987",
+  "homeHandicap":"1.0,1.5",
+  "awayHandicap":"-2.0,-2.5",
+  "overOdds":"3.222",
+  "underOdds":"4.333",
+  "goalHandicap":"1.0,5.0",
+  "createdTime":"2022-11-25 05:00 pm",
+  "body":"1+90",
+  "goal":"3+80"
+},
+{
+  "oddSummaryId":2,
+  "homeOdds":"0.199",
+  "awayOdds":"1.987",
+  "homeHandicap":"1.0,1.5",
+  "awayHandicap":"-2.0,-2.5",
+  "overOdds":"3.222",
+  "underOdds":"4.333",
+  "goalHandicap":"1.0,5.0",
+  "createdTime":"2022-11-25 05:00 pm",
+  "body":"1+90",
+  "goal":"3+80"
+},
+{
+  "oddSummaryId":3,
+  "homeOdds":"0.199",
+  "awayOdds":"1.987",
+  "homeHandicap":"1.0,1.5",
+  "awayHandicap":"-2.0,-2.5",
+  "overOdds":"3.222",
+  "underOdds":"4.333",
+  "goalHandicap":"1.0,5.0",
+  "createdTime":"2022-11-25 05:00 pm",
+  "body":"1+90",
+  "goal":"3+80"
+},{
+  "oddSummaryId":4,
+  "homeOdds":"0.199",
+  "awayOdds":"1.987",
+  "homeHandicap":"1.0,1.5",
+  "awayHandicap":"-2.0,-2.5",
+  "overOdds":"3.222",
+  "underOdds":"4.333",
+  "goalHandicap":"1.0,5.0",
+  "createdTime":"2022-11-25 05:00 pm",
+  "body":"1+90",
+  "goal":"3+80"
+},
+{
+  "oddSummaryId":5,
+  "homeOdds":"0.199",
+  "awayOdds":"1.987",
+  "homeHandicap":"1.0,1.5",
+  "awayHandicap":"-2.0,-2.5",
+  "overOdds":"3.222",
+  "underOdds":"4.333",
+  "goalHandicap":"1.0,5.0",
+  "createdTime":"2022-11-25 05:00 pm",
+  "body":"1+90",
+  "goal":"3+80"
+},
+{
+  "oddSummaryId":6,
+  "homeOdds":"0.199",
+  "awayOdds":"1.987",
+  "homeHandicap":"1.0,1.5",
+  "awayHandicap":"-2.0,-2.5",
+  "overOdds":"3.222",
+  "underOdds":"4.333",
+  "goalHandicap":"1.0,5.0",
+  "createdTime":"2022-11-25 05:00 pm",
+  "body":"1+90",
+  "goal":"3+80"
+},{
+  "oddSummaryId":7,
+  "homeOdds":"0.199",
+  "awayOdds":"1.987",
+  "homeHandicap":"1.0,1.5",
+  "awayHandicap":"-2.0,-2.5",
+  "overOdds":"3.222",
+  "underOdds":"4.333",
+  "goalHandicap":"1.0,5.0",
+  "createdTime":"2022-11-25 05:00 pm",
+  "body":"1+90",
+  "goal":"3+80"
+}
+,{
+  "oddSummaryId":8,
+  "homeOdds":"0.199",
+  "awayOdds":"1.987",
+  "homeHandicap":"1.0,1.5",
+  "awayHandicap":"-2.0,-2.5",
+  "overOdds":"3.222",
+  "underOdds":"4.333",
+  "goalHandicap":"1.0,5.0",
+  "createdTime":"2022-11-25 05:00 pm",
+  "body":"1+90",
+  "goal":"3+80"
+}
+,{
+  "oddSummaryId":9,
+  "homeOdds":"0.199",
+  "awayOdds":"1.987",
+  "homeHandicap":"1.0,1.5",
+  "awayHandicap":"-2.0,-2.5",
+  "overOdds":"3.222",
+  "underOdds":"4.333",
+  "goalHandicap":"1.0,5.0",
+  "createdTime":"2022-11-25 05:00 pm",
+  "body":"1+90",
+  "goal":"3+80"
+}
+,
+{
+  "oddSummaryId":10,
+  "homeOdds":"0.199",
+  "awayOdds":"1.987",
+  "homeHandicap":"1.0,1.5",
+  "awayHandicap":"-2.0,-2.5",
+  "overOdds":"3.222",
+  "underOdds":"4.333",
+  "goalHandicap":"1.0,5.0",
+  "createdTime":"2022-11-25 05:00 pm",
+  "body":"1+90",
+  "goal":"3+80"
+},{
+  "oddSummaryId":11,
+  "homeOdds":"0.199",
+  "awayOdds":"1.987",
+  "homeHandicap":"1.0,1.5",
+  "awayHandicap":"-2.0,-2.5",
+  "overOdds":"3.222",
+  "underOdds":"4.333",
+  "goalHandicap":"1.0,5.0",
+  "createdTime":"2022-11-25 05:00 pm",
+  "body":"1+90",
+  "goal":"3+80"
+}
+,{
+  "oddSummaryId":12,
+  "homeOdds":"0.199",
+  "awayOdds":"1.987",
+  "homeHandicap":"1.0,1.5",
+  "awayHandicap":"-2.0,-2.5",
+  "overOdds":"3.222",
+  "underOdds":"4.333",
+  "goalHandicap":"1.0,5.0",
+  "createdTime":"2022-11-25 05:00 pm",
+  "body":"1+90",
+  "goal":"3+80"
+},
+{
+  "oddSummaryId":13,
+  "homeOdds":"0.199",
+  "awayOdds":"1.987",
+  "homeHandicap":"1.0,1.5",
+  "awayHandicap":"-2.0,-2.5",
+  "overOdds":"3.222",
+  "underOdds":"4.333",
+  "goalHandicap":"1.0,5.0",
+  "createdTime":"2022-11-25 05:00 pm",
+  "body":"1+90",
+  "goal":"3+80"
+},
+{
+  "oddSummaryId":14,
+  "homeOdds":"0.199",
+  "awayOdds":"1.987",
+  "homeHandicap":"1.0,1.5",
+  "awayHandicap":"-2.0,-2.5",
+  "overOdds":"3.222",
+  "underOdds":"4.333",
+  "goalHandicap":"1.0,5.0",
+  "createdTime":"2022-11-25 05:00 pm",
+  "body":"1+90",
+  "goal":"3+80"
+},
+{
+  "oddSummaryId":15,
+  "homeOdds":"0.199",
+  "awayOdds":"1.987",
+  "homeHandicap":"1.0,1.5",
+  "awayHandicap":"-2.0,-2.5",
+  "overOdds":"3.222",
+  "underOdds":"4.333",
+  "goalHandicap":"1.0,5.0",
+  "createdTime":"2022-11-25 05:00 pm",
+  "body":"1+90",
+  "goal":"3+80"
+},
+{
+  "oddSummaryId":16,
+  "homeOdds":"0.199",
+  "awayOdds":"1.987",
+  "homeHandicap":"1.0,1.5",
+  "awayHandicap":"-2.0,-2.5",
+  "overOdds":"3.222",
+  "underOdds":"4.333",
+  "goalHandicap":"1.0,5.0",
+  "createdTime":"2022-11-25 05:00 pm",
+  "body":"1+90",
+  "goal":"3+80"
+},
+{
+  "oddSummaryId":17,
+  "homeOdds":"0.199",
+  "awayOdds":"1.987",
+  "homeHandicap":"1.0,1.5",
+  "awayHandicap":"-2.0,-2.5",
+  "overOdds":"3.222",
+  "underOdds":"4.333",
+  "goalHandicap":"1.0,5.0",
+  "createdTime":"2022-11-25 05:00 pm",
+  "body":"1+90",
+  "goal":"3+80"
+},
+]
+
 const OddSummary = (props) => {
   const defaultDate = moment(new Date()).format("YYYY-MM-DD");
   const classes = useStyles();
   const isPhone = useMediaPredicate("(max-width: 800px)");
   const [selectedDate, setSelectedDate] = useState(defaultDate);
   const [searchText, setSearchText] = useState("");
+  const [oddSummaryDetails,setOddSummaryDetails]=useState(tempodd);
   const [selectedEventData, setSelectedEventData] = useState(temp);
   const [searchedLeague, setSearchedLeague] = useState(temp);
   const [page, setPage] = useState(0);
@@ -206,39 +429,41 @@ const OddSummary = (props) => {
 
   return (
     <div>
-        <OddSummaryModel/>
+    <OddSummaryModel oddSummaryDetails={oddSummaryDetails}/>
       <h1>Odd Summary Report</h1>
       <Paper>
         <div className="d-flex p-2 justify-content-between">
-         <div className="d-flex">
-         <TextField
-            id="date"
-            label="Date :"
-            type="date"
-            value={selectedDate}
-            onChange={(e) => setSelectedDate(e.target.value)}
-            className={classes.textField}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-          <div className="p-2">
-            <button
-              type="button"
-              className="btn btn-secondary"
-              style={{
-                backgroundColor: MyColor.secondaryBackground,
-                color: "#fff",
-                marginTop:10,
-                minWidth: 100,
-                maxHeight: 40,
-                fontSize: isPhone ? 12 : null,
+          <div className="d-flex">
+            <TextField
+              id="date"
+              label="Date :"
+              type="date"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+              className={classes.textField}
+              InputLabelProps={{
+                shrink: true,
               }}
-              //onClick={() => searchSelectedEvent()}
-            ><i className="fas fa-search px-2"></i>Search</button>
+            />
+            <div className="p-2">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                style={{
+                  backgroundColor: MyColor.secondaryBackground,
+                  color: "#fff",
+                  marginTop: 10,
+                  minWidth: 100,
+                  maxHeight: 40,
+                  fontSize: isPhone ? 12 : null,
+                }}
+                //onClick={() => searchSelectedEvent()}
+              >
+                <i className="fas fa-search px-2"></i>Search
+              </button>
+            </div>
           </div>
-         </div>
-         
+
           <SearchBar
             placeholder={"Search "}
             style={{ marginLeft: 15, width: isPhone ? 200 : null }}
@@ -291,26 +516,26 @@ const OddSummary = (props) => {
                         <TableCell align={"left"} padding="default">
                           {v.awayTeam}
                         </TableCell>
-                        
+
                         <TableCell>
                           <div className="d-flex align-items-center">
-                              <button
-                                type="button"
-                                data-toggle="modal" 
-                                data-target="#oddSummaryModal"
-                                className="btn btn-secondary"
-                                style={{
-                                  backgroundColor: MyColor.secondaryBackground,
-                                  color: "#fff",
-                                  marginRight: 8,
-                                  minWidth: 50,
-                                  maxHeight: 40,
-                                  fontSize: isPhone ? 12 : null,
-                                }}
-                                //onClick={() => handleRemove(v.eventId, "All")}
-                              >
-                                View
-                              </button>
+                            <button
+                              type="button"
+                              data-toggle="modal"
+                              data-target="#oddSummaryModal"
+                              className="btn btn-secondary"
+                              style={{
+                                backgroundColor: MyColor.secondaryBackground,
+                                color: "#fff",
+                                marginRight: 8,
+                                minWidth: 50,
+                                maxHeight: 40,
+                                fontSize: isPhone ? 12 : null,
+                              }}
+                              //onClick={() => handleRemove(v.eventId, "All")}
+                            >
+                              View
+                            </button>
                           </div>
                         </TableCell>
                       </TableRow>
@@ -334,4 +559,3 @@ const OddSummary = (props) => {
 };
 
 export default OddSummary;
- 

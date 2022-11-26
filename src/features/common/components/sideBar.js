@@ -166,6 +166,13 @@ const SideBar = (props) => {
                   loc={loc}
                 />
               ) : null}
+              {userInfo && userInfo.roleId == 1 ? (
+                <Item
+                  text="Odd Summary Report"
+                  route="reports/odd-summary"
+                  loc={loc}
+                />
+              ) : null}
             </Fragment>
           )}
         </div>
