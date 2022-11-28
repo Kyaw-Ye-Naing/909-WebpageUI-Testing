@@ -141,6 +141,7 @@ const SelectedEvents = (props) => {
     //getGoalResultData();
   }, []);
 
+  
 const handleRemove = (rapidId,status) => {
    props.setLoading(true);
   reportController.removeEventsFromPre(rapidId,status,(data) => {

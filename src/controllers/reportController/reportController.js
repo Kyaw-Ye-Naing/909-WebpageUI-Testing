@@ -131,6 +131,18 @@ const getEventWithVoucher = (id, setResponse) => {
   });
 };
 
+const getPreupcommingEvent = (selectedDate,setResponse) => {
+  postApi(`${apiList.getPreupcommingEvent}`, { selectDate: selectedDate },(data) => {
+    setResponse(data);
+  });
+}
+
+const getEventOddSummary = (rapidEventId,setResponse) => {
+  postApi(`${apiList.getEventOddSummary}`, { rapidEventId: rapidEventId },(data) => {
+    setResponse(data);
+  });
+}
+
 export const reportController = {
   getLiveDataReport,
   getBetAmountTotal,
@@ -147,5 +159,7 @@ export const reportController = {
   saveBufferData,
   saveManualEvent,
   saveEventsPreupcomming,
-  removeEventsFromPre
+  removeEventsFromPre,
+  getPreupcommingEvent,
+  getEventOddSummary
 };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Paper from "@material-ui/core/Paper";
+import { withTheme } from "../../common/hoc/withTheme";
 import MyColor from "../../../config/color";
 import moment from "moment";
 import { TextField } from "@material-ui/core";
@@ -8,6 +9,7 @@ import { useMediaPredicate } from "react-media-hook";
 import SearchBar from "material-ui-search-bar";
 import TablePagination from "@material-ui/core/TablePagination";
 import OddSummaryModel from "./components/OddSummaryModel";
+import { reportController } from "../../../controllers/reportController/reportController";
 import {
   Table,
   TableContainer,
@@ -377,17 +379,26 @@ const OddSummary = (props) => {
   const isPhone = useMediaPredicate("(max-width: 800px)");
   const [selectedDate, setSelectedDate] = useState(defaultDate);
   const [searchText, setSearchText] = useState("");
-  const [oddSummaryDetails,setOddSummaryDetails]=useState(tempodd);
-  const [selectedEventData, setSelectedEventData] = useState(temp);
-  const [searchedLeague, setSearchedLeague] = useState(temp);
+  const [oddSummaryDetails,setOddSummaryDetails]=useState([]);
+  const [selectedEventData, setSelectedEventData] = useState([]);
+  const [searchedLeague, setSearchedLeague] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
     //props.setLoading(true);
-    // searchSelectedEvent();
+    searchSelectedEvent();
     //getGoalResultData();
   }, []);
+
+  const searchSelectedEvent = () => {
+    props.setLoading(true);
+    reportController.getPreupcommingEvent(selectedDate, (data) => {
+      setSelectedEventData(data.mainOdds);
+      setSearchedLeague(data.mainOdds);
+      props.setLoading(false);
+    });
+  };
 
   const requestSearch = (searchedVal) => {
     setSearchText(searchedVal);
@@ -395,23 +406,21 @@ const OddSummary = (props) => {
       return (
         row.homeTeam.toLowerCase().includes(searchedVal.toLowerCase()) ||
         row.awayTeam.toLowerCase().includes(searchedVal.toLowerCase()) ||
-        row.league.toLowerCase().includes(searchedVal.toLowerCase()) ||
-        row.betType.toLowerCase().includes(searchedVal.toLowerCase())
+        row.leagueName.toLowerCase().includes(searchedVal.toLowerCase())  
       );
     });
     setSearchedLeague(filteredRows);
   };
 
-  const handleRemove = (rapidId, status) => {
-    //     props.setLoading(true);
-    //    reportController.removeEventsFromPre(rapidId,status,(data) => {
-    //      toast.success(data.message, {
-    //        position: toast.POSITION.BOTTOM_RIGHT,
-    //      });
-    //      searchSelectedEvent();
-    //      props.setLoading(false);
-    //    })
-  };
+const handleOddDetails = (rapidEventId) => {
+  //props.setLoading(true);
+  props.setLoading(true);
+  reportController.getEventOddSummary(rapidEventId, (data) => {
+    setOddSummaryDetails(data.eventdetails);
+    props.setLoading(false);
+  });
+  
+}
 
   const cancelSearch = () => {
     setSearchText("");
@@ -457,7 +466,7 @@ const OddSummary = (props) => {
                   maxHeight: 40,
                   fontSize: isPhone ? 12 : null,
                 }}
-                //onClick={() => searchSelectedEvent()}
+                onClick={() => searchSelectedEvent()}
               >
                 <i className="fas fa-search px-2"></i>Search
               </button>
@@ -503,7 +512,7 @@ const OddSummary = (props) => {
                           {page > 0 ? k + 1 + rowsPerPage * page : k + 1}
                         </TableCell>
                         <TableCell align={"left"} padding="default">
-                          {`${moment(v.event).format("hh:mm:ss a")}/ ${moment(
+                          {`${moment(v.eventTime).format("hh:mm:ss a")}/ ${moment(
                             v.eventTime
                           ).format("YYYY-MM-DD")}`}
                         </TableCell>
@@ -524,6 +533,7 @@ const OddSummary = (props) => {
                               data-toggle="modal"
                               data-target="#oddSummaryModal"
                               className="btn btn-secondary"
+                              onClick={()=>handleOddDetails(v.rapidEventId)}
                               style={{
                                 backgroundColor: MyColor.secondaryBackground,
                                 color: "#fff",
@@ -558,4 +568,4 @@ const OddSummary = (props) => {
   );
 };
 
-export default OddSummary;
+export default withTheme(OddSummary);
