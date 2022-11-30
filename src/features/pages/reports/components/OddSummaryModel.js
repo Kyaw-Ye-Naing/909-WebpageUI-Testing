@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment";
 
 function OddSummaryModel({oddSummaryDetails}) {
   return (
@@ -33,9 +34,9 @@ function OddSummaryModel({oddSummaryDetails}) {
                       return (
                         <tr>
                         <th scope="row">{k+1}</th>
-                        <td><span style={{color:v.homeHandicap.length > 7 ? "red":"black"}}>{v.homeOdd}</span>
+                        <td><span style={{color:v.hColor}}>{v.homeOdd}</span>
                         <br/>
-                        <span style={{color:v.awayHandicap.length > 7 ? "red":"black"}}>{v.awayOdd}</span>
+                        <span style={{color:v.aColor}}>{v.awayOdd}</span>
                         </td>
                         <td>{v.homeHandicap}</td>
                         <td>{v.overOdd}
@@ -47,7 +48,11 @@ function OddSummaryModel({oddSummaryDetails}) {
                         <br/>
                         {v.goal}
                         </td>
-                        <td>{v.createdTime}</td>
+                        <td>
+                        {`${moment(v.createdTime).format("hh:mm:ss a")}/ ${moment(
+                            v.createdTime
+                          ).format("YYYY-MM-DD")}`}
+                        </td>
                       </tr>
                       )
                     })
