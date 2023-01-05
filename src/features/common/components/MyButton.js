@@ -28,7 +28,7 @@ const MyButton = (props) => {
       className={classes.submit}
       startIcon={icon?icon:null}
       onClick={onClick}
-      disabled={disabled === undefined? false : disabled}
+      disabled={disabled === undefined? false : disabled== false ? false:disabled}
     >
       {text}
     </Button>

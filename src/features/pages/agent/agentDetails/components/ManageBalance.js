@@ -52,12 +52,15 @@ export const ManageBalance = ({ userInfo, updateAgentData }) => {
   const { userData, updateUserData } = useContext(AppContext);
   let contextData = JSON.parse(userData);
   const isPhone = useMediaPredicate("(max-width: 850px)");
+  const [isLoading,setIsLoading] = useState(false);
 
   const handleChange = (event) => {
     setValue(event.target.value);
   };
 
   const OnClickBalance = () => {
+    setIsLoading(true);
+    console.log("dfdfdf",isLoading);
     let amountList = {
       userId: userInfo.Id,
       amount: amount,
@@ -118,7 +121,7 @@ export const ManageBalance = ({ userInfo, updateAgentData }) => {
                 position: toast.POSITION.BOTTOM_RIGHT,
               });
             } else {
-              setShowLoading(true);
+             setShowLoading(true);
               userController.userBalanceAdd(
                 userInfo.Id,
                 parseFloat(amount),
@@ -130,6 +133,7 @@ export const ManageBalance = ({ userInfo, updateAgentData }) => {
                     position: toast.POSITION.BOTTOM_RIGHT,
                   });
                   setShowLoading(false);
+                  setIsLoading(false);
                   MyActivity(activityList);
                   setAmount("");
                 }
@@ -148,6 +152,7 @@ export const ManageBalance = ({ userInfo, updateAgentData }) => {
                   position: toast.POSITION.BOTTOM_RIGHT,
                 });
                 setShowLoading(false);
+                setIsLoading(false);
                 MyActivity(activityList);
                 setAmount("");
               }
@@ -189,7 +194,7 @@ export const ManageBalance = ({ userInfo, updateAgentData }) => {
   };
 
   return (
-    <div className="bg-dark" className={classes.cartroot}>
+    <div className={classes.cartroot}>
       {/* <Card >
         <CardContent> */}
       <h4>Manage Balance</h4>
@@ -239,9 +244,10 @@ export const ManageBalance = ({ userInfo, updateAgentData }) => {
           />---26-1-2021--kyn--*/}
 
       <MyButton
-        icon={<Icon className="fa fa-save" color="default" />}
-        onClick={OnClickBalance}
-        text={credit ? "Add Credit" : value === "add" ? "Add" : "Remove"}
+        icon={isLoading ?<Icon className="fas fa-spinner" color="default" />:<Icon className="fa fa-save" color="default" />}
+        onClick={()=>OnClickBalance()}
+        disabled={isLoading}
+        text={isLoading ?"Loading......":credit ? "Add Credit" : value === "add" ? "Add" : "Remove"}
         fullWidth={true}
       />
       <h2 style={{ color: color.secondaryBackground, fontSize: isPhone ? 20 : null }}>

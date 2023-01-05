@@ -98,12 +98,12 @@ const columns = [
     align: "left",
   },
   {
-    id:"action",
-    label:"Remove Action",
-    minWidth:50,
-    maxWidth:50,
-    align:"left"
-  }
+    id: "action",
+    label: "Remove Action",
+    minWidth: 50,
+    maxWidth: 50,
+    align: "left",
+  },
 ];
 
 const SelectedEvents = (props) => {
@@ -118,8 +118,12 @@ const SelectedEvents = (props) => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [leagueTotal, setLeagueTotal] = useState(null);
   const [eventTotal, setEventTotal] = useState(null);
-  const [singleTotal,setSingleTotal] = useState(0);
-  const [mixTotal,setMixTotal] = useState(0);
+  const [singleTotal, setSingleTotal] = useState(0);
+  const [mixTotal, setMixTotal] = useState(0);
+  const [tempRemoveData, setTempRemoveData] = useState({
+    rapidEventId: 0,
+    type: "",
+  });
   // console.log("searchedLeague>>", searchedLeague);
 
   const searchSelectedEvent = () => {
@@ -141,18 +145,17 @@ const SelectedEvents = (props) => {
     //getGoalResultData();
   }, []);
 
-  
-const handleRemove = (rapidId,status) => {
-   props.setLoading(true);
-  reportController.removeEventsFromPre(rapidId,status,(data) => {
-    toast.success(data.message, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-    });
-    
+  const handleRemove = (tempRemoveData) => {
+    props.setLoading(true);
+    reportController.removeEventsFromPre(tempRemoveData.rapidEventId,tempRemoveData.type,(data) => {
+     toast.success(data.message, {
+       position: toast.POSITION.BOTTOM_RIGHT,
+     });
+
     searchSelectedEvent();
     props.setLoading(false);
-  })
-};
+    })
+  };
 
   const requestSearch = (searchedVal) => {
     setSearchText(searchedVal);
@@ -183,6 +186,11 @@ const handleRemove = (rapidId,status) => {
 
   return (
     <div>
+      <ConfirmBoxModal
+        tempRemoveData={tempRemoveData}
+        setTempRemoveData={setTempRemoveData}
+        handleRemove={handleRemove}
+      />
       {isPhone ? (
         <h3>Selected Event Report</h3>
       ) : (
@@ -230,7 +238,7 @@ const handleRemove = (rapidId,status) => {
             <p style={{ fontWeight: "bold", marginRight: isPhone ? 5 : 15 }}>
               League Total: {leagueTotal}
             </p>
-            <p style={{ fontWeight: "bold", marginRight: isPhone ? 0 : 15 }}>   
+            <p style={{ fontWeight: "bold", marginRight: isPhone ? 0 : 15 }}>
               Event Total: {eventTotal}
             </p>
             <p style={{ fontWeight: "bold", marginRight: isPhone ? 0 : 15 }}>
@@ -280,19 +288,21 @@ const handleRemove = (rapidId,status) => {
                           {v.league}
                         </TableCell>
                         <TableCell align={"left"} padding="default">
-                          {v.isHomeBodyOdds == true ?
-                          (<span style={{color:"red"}}>{v.homeTeam}</span>):
-                          (<span>{v.homeTeam}</span>)
-                          }
+                          {v.isHomeBodyOdds == true ? (
+                            <span style={{ color: "red" }}>{v.homeTeam}</span>
+                          ) : (
+                            <span>{v.homeTeam}</span>
+                          )}
                         </TableCell>
                         <TableCell align={"left"} padding="default">
                           {v.bodyOdds}
-                        </TableCell>                       
+                        </TableCell>
                         <TableCell align={"left"} padding="default">
-                          {v.isHomeBodyOdds == false ?
-                          (<span style={{color:"red"}}>{v.awayTeam}</span>):
-                          (<span>{v.awayTeam}</span>)
-                          }
+                          {v.isHomeBodyOdds == false ? (
+                            <span style={{ color: "red" }}>{v.awayTeam}</span>
+                          ) : (
+                            <span>{v.awayTeam}</span>
+                          )}
                         </TableCell>
                         <TableCell align={"left"} padding="default">
                           {v.goalOdds}
@@ -302,61 +312,79 @@ const handleRemove = (rapidId,status) => {
                         </TableCell>
                         <TableCell>
                           <div className="d-flex align-items-center">
-                        {v.isActive == true ?
-                        (<button
-                          type="button"
-                          className="btn btn-secondary"
-                          style={{
-                            backgroundColor: MyColor.secondaryBackground,
-                            color: "#fff",
-                            marginRight:8,
-                            minWidth: 50,
-                            maxHeight: 40,
-                            fontSize: isPhone ? 12 : null,
-                          }}
-                           onClick={() => handleRemove(v.eventId,"All")}
-                        >
-                          All
-                        </button>
-                        ):
-                        (null)}
-                        {v.isSingle == true && v.isActive == true ?
-                        (<button
-                          type="button"
-                          className="btn btn-secondary"
-                          style={{
-                            backgroundColor: MyColor.secondaryBackground,
-                            color: "#fff",
-                            minWidth: 50,
-                            marginRight:8,
-                            maxHeight: 40,
-                            fontSize: isPhone ? 12 : null,
-                          }}
-                           onClick={() => handleRemove(v.eventId,"Single")}
-                        >
-                          Single
-                        </button>
-                        ):
-                        (null)}
-                          {v.isMix == true && v.isActive == true ?
-                        (<button
-                          type="button"
-                          className="btn btn-secondary"
-                          style={{
-                            backgroundColor: MyColor.secondaryBackground,
-                            color: "#fff",
-                            minWidth: 50,
-                            marginRight:8,
-                            maxHeight: 40,
-                            fontSize: isPhone ? 12 : null,
-                          }}
-                           onClick={() => handleRemove(v.eventId,"Mix")}
-                        >
-                          Mix
-                        </button>
-                        ):
-                        (null)}
-                        </div>
+                            {v.isActive == true ? (
+                              <button
+                                type="button"
+                                data-toggle="modal"
+                                data-target="#confirmModal"
+                                className="btn btn-secondary"
+                                style={{
+                                  backgroundColor: MyColor.secondaryBackground,
+                                  color: "#fff",
+                                  marginRight: 8,
+                                  minWidth: 50,
+                                  maxHeight: 40,
+                                  fontSize: isPhone ? 12 : null,
+                                }}
+                                onClick={() =>
+                                  setTempRemoveData({
+                                    rapidEventId: v.eventId,
+                                    type: "All",
+                                  })
+                                }
+                              >
+                                All
+                              </button>
+                            ) : null}
+                            {v.isSingle == true && v.isActive == true ? (
+                              <button
+                                type="button"
+                                data-toggle="modal"
+                                data-target="#confirmModal"
+                                className="btn btn-secondary"
+                                style={{
+                                  backgroundColor: MyColor.secondaryBackground,
+                                  color: "#fff",
+                                  minWidth: 50,
+                                  marginRight: 8,
+                                  maxHeight: 40,
+                                  fontSize: isPhone ? 12 : null,
+                                }}
+                                onClick={() =>
+                                  setTempRemoveData({
+                                    rapidEventId: v.eventId,
+                                    type: "Single",
+                                  })
+                                }
+                              >
+                                Single
+                              </button>
+                            ) : null}
+                            {v.isMix == true && v.isActive == true ? (
+                              <button
+                                type="button"
+                                data-toggle="modal"
+                                data-target="#confirmModal"
+                                className="btn btn-secondary"
+                                style={{
+                                  backgroundColor: MyColor.secondaryBackground,
+                                  color: "#fff",
+                                  minWidth: 50,
+                                  marginRight: 8,
+                                  maxHeight: 40,
+                                  fontSize: isPhone ? 12 : null,
+                                }}
+                                onClick={() =>
+                                  setTempRemoveData({
+                                    rapidEventId: v.eventId,
+                                    type: "Mix",
+                                  })
+                                }
+                              >
+                                Mix
+                              </button>
+                            ) : null}
+                          </div>
                         </TableCell>
                       </TableRow>
                     );
@@ -379,3 +407,63 @@ const handleRemove = (rapidId,status) => {
 };
 
 export default withTheme(SelectedEvents);
+
+export function ConfirmBoxModal({
+  tempRemoveData,
+  setTempRemoveData,
+  handleRemove,
+}) {
+  return (
+    <div className="row">
+      <div
+        className="modal fade"
+        id="confirmModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="confirmModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog" role="document">
+          <div className="modal-content">
+            <div className="modal-body">
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <br />
+              <span style={{color:"black",fontWeight:"bold",fontSize:"15px"}}><i class="fas fa-times-circle mr-1" style={{color:"red"}}></i>Are you sure you want to remove this event?</span> <br />
+              <span style={{color:"grey",fontSize:"12px",marginLeft:"15px"}}>
+                This change will reflect in your modal after an minute.
+              </span>
+              <div className="d-flex justify-content-end mt-1">
+                <button
+                  type="button"
+                  style={{marginRight:2}}
+                  onClick={() =>
+                    setTempRemoveData({ rapidEventId: 0, type: "" })
+                  }
+                  className="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  data-dismiss="modal"
+                  className="btn btn-danger"
+                  onClick={() => handleRemove(tempRemoveData)}
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -44,6 +44,10 @@ const EventWithVoucher = withRouter((props) => {
   const [gamId, setGamId] = useState(0);
   const [searchText, setSearchText] = useState("");
   const isPhone = useMediaPredicate("(max-width: 800px)");
+  const [tempRejectData,setTempRejectData]=useState({
+    "gamblingId":0,
+    "status":""
+  });
 
   useEffect(() => {
     props.setLoading(true);
@@ -63,15 +67,17 @@ const EventWithVoucher = withRouter((props) => {
     setGamId(gamblingWinId);
   };
 
-const onRejectHandle = (gamblingId,status) => {
+const onRejectHandle = (tempRejectData) => {
+  console.log("dfsf",tempRejectData)
   props.setLoading(true);
   let tempStatus = "";
-  if(status == 1){
+  if(tempRejectData.status == "true"){
     tempStatus = "active";
   }else{
     tempStatus = "finished";
   }
-  userController.removeVoucherNo(gamblingId,tempStatus,(data) => {
+  console.log("dfsf",tempStatus)
+  userController.removeVoucherNo(tempRejectData.gamblingId,tempStatus,(data) => {
     toast.success(data.message, {
       position: toast.POSITION.BOTTOM_RIGHT,
     });
@@ -106,6 +112,11 @@ const onRejectHandle = (gamblingId,status) => {
 
   return (
     <Paper className={classes.root}>
+       <ConfirmBoxModal
+        tempRejectData={tempRejectData}
+        setTempRejectData={setTempRejectData}
+        onRejectHandle={onRejectHandle}
+      />
       <h2>Event With Voucher</h2>
       <hr />
       <SearchBar
@@ -197,8 +208,10 @@ const onRejectHandle = (gamblingId,status) => {
 
                           <button
                             className="btn"
+                            data-toggle="modal"
+                            data-target="#confirmModal"
                             onClick={() => {
-                              onRejectHandle(v.gamblingId,v.active);
+                              setTempRejectData({gamblingId:v.gamblingId,status:v.active});
                             }}
                             style={{
                               backgroundColor: MyColor.secondaryBackground,
@@ -284,3 +297,65 @@ const columns = [
     minWidth: 20,
   },
 ];
+
+export function ConfirmBoxModal({
+  tempRejectData,
+  setTempRejectData,
+  onRejectHandle,
+}) {
+  return (
+    <div className="row">
+      <div
+        className="modal fade"
+        id="confirmModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="confirmModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog" role="document">
+          <div className="modal-content">
+            <div className="modal-body">
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <br />
+              <span style={{color:"black",fontWeight:"bold",fontSize:"15px"}}>
+                <i class="fas fa-ban mr-1" style={{color:"red"}}></i>
+                Are you sure you want to reject this event?</span> <br />
+              <span style={{color:"grey",fontSize:"12px",marginLeft:"15px"}}>
+                This change will reflect in your modal after an minute.
+              </span>
+              <div className="d-flex justify-content-end mt-1">
+                <button
+                  type="button"
+                  style={{marginRight:2}}
+                  onClick={() =>
+                    setTempRejectData({ gamblingId: 0, status: "" })
+                  }
+                  className="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  data-dismiss="modal"
+                  className="btn btn-danger"
+                  onClick={() => onRejectHandle(tempRejectData)}
+                >
+                  Reject
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

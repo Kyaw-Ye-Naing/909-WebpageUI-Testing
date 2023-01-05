@@ -441,13 +441,15 @@ const saveSelectedEventsPre = () => {
   const updateSelectedEvent = () => {
     props.setLoading(true);
     const newarr = [];
-    //console.log("original",rapidEventIdList);
+    console.log("original",rapidEventIdList);
     rapidEventIdList.map((item) => {
       newarr.push(item.rapidEventId)
     })
 
-    //console.log("new id",newarr);
+    console.log("new id",newarr);
     reportController.updateBufferEvent(newarr, (data) => {
+      console.log("new return data",data.bufferdata);
+      console.log("new return rapid",data.rapidList);
       setBufferList(data.bufferdata);
       setSearchedLeague(data.bufferdata);
       setRapidEventIdList(data.rapidList);
