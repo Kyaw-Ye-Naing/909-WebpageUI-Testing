@@ -91,6 +91,12 @@ const getGoalResult = (setGoalResultList) => {
   });
 };
 
+const getUpdateStatus = (setResponse) => {
+  getApi(`${apiList.getUpdateStatus}`,(data) => {
+    setResponse(data);
+  });
+};
+
 const searchGoalResult = (startDate, endDate, setGoalResultList) => {
   postApi(apiList.getGoalResult, { startDate, endDate }, (data) => {
     setGoalResultList(data);
@@ -161,5 +167,6 @@ export const reportController = {
   saveEventsPreupcomming,
   removeEventsFromPre,
   getPreupcommingEvent,
-  getEventOddSummary
+  getEventOddSummary,
+  getUpdateStatus
 };

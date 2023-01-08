@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import { withTheme } from '../../../common/hoc/withTheme';
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -35,12 +35,18 @@ const useStyles = makeStyles({
 export const SelectedLeague = withTheme((props) => {
   const [bufferlist, setBufferList] = useState([]);
   const classes = useStyles();
-  const [searchText,setSearchText]=useState([]);
-  const [rapidEventIdList,setRapidEventIdList]=useState([]);
+  const [searchText, setSearchText] = useState([]);
+  const [rapidEventIdList, setRapidEventIdList] = useState([]);
   const isPhone = useMediaPredicate("(max-width: 800px)");
   const [page, setPage] = useState(0);
   const [searchedLeague, setSearchedLeague] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const [isRunning, setIsRunning] = useState(false);
+  const [statusMessage, setStatusMessage] = useState(0);
+  const myInterval = useRef();
+  const toastId = React.useRef(null);
+  const customId = "custom-id-yes";
 
   const columns = [
     {
@@ -49,14 +55,14 @@ export const SelectedLeague = withTheme((props) => {
       minWidth: 50,
       maxWidth: 50,
       align: "left"
-    },    
+    },
     {
       id: "event",
       label: "Event",
       minWidth: 200,
       maxWidth: 200,
       align: "left"
-    },    
+    },
     {
       id: "lname",
       label: "League Name",
@@ -77,7 +83,7 @@ export const SelectedLeague = withTheme((props) => {
       minWidth: 90,
       maxWidth: 90,
       align: "left",
-    //  format: value => value.toLocaleString()
+      //  format: value => value.toLocaleString()
     },
     {
       id: "ghandicap",
@@ -144,19 +150,19 @@ export const SelectedLeague = withTheme((props) => {
       lname: "India",
       hname: "Janparako",
       aname: "Upamecano",
-      bodyhandicap:"0.5,1.0",
-      homeodds:"1.900",
-      awayodds:"2.000",
-      goalhandicap:"0.5,1.0",
-      overodds:"1.900",
-      underodds:"2.000",
+      bodyhandicap: "0.5,1.0",
+      homeodds: "1.900",
+      awayodds: "2.000",
+      goalhandicap: "0.5,1.0",
+      overodds: "1.900",
+      underodds: "2.000",
       body: "1+80",
       goal: "5+90",
-      overId:1,
-      underId:2,
-      homeId:1,
-      awayId:2,
-      isOpen:true
+      overId: 1,
+      underId: 2,
+      homeId: 1,
+      awayId: 2,
+      isOpen: true
     },
     {
       id: 2,
@@ -164,19 +170,19 @@ export const SelectedLeague = withTheme((props) => {
       lname: "India National League",
       hname: "Janparako",
       aname: "Upamecano",
-      bodyhandicap:"0.5,1.0",
-      homeodds:"1.900",
-      awayodds:"2.000",
-      goalhandicap:"0.5,1.0",
-      overodds:"1.900",
-      underodds:"2.000",
+      bodyhandicap: "0.5,1.0",
+      homeodds: "1.900",
+      awayodds: "2.000",
+      goalhandicap: "0.5,1.0",
+      overodds: "1.900",
+      underodds: "2.000",
       body: "1+80",
       goal: "5+90",
-      overId:1,
-      underId:2,
-      homeId:1,
-      awayId:2,
-      isOpen:true
+      overId: 1,
+      underId: 2,
+      homeId: 1,
+      awayId: 2,
+      isOpen: true
     },
     {
       id: 3,
@@ -184,19 +190,19 @@ export const SelectedLeague = withTheme((props) => {
       lname: "India",
       hname: "Janparako",
       aname: "Upamecano",
-      bodyhandicap:"0.5,1.0",
-      homeodds:"1.900",
-      awayodds:"2.000",
-      goalhandicap:"0.5,1.0",
-      overodds:"1.900",
-      underodds:"2.000",
+      bodyhandicap: "0.5,1.0",
+      homeodds: "1.900",
+      awayodds: "2.000",
+      goalhandicap: "0.5,1.0",
+      overodds: "1.900",
+      underodds: "2.000",
       body: "1+80",
       goal: "5+90",
-      overId:1,
-      underId:2,
-      homeId:1,
-      awayId:2,
-      isOpen:true
+      overId: 1,
+      underId: 2,
+      homeId: 1,
+      awayId: 2,
+      isOpen: true
     },
     {
       id: 4,
@@ -204,19 +210,19 @@ export const SelectedLeague = withTheme((props) => {
       lname: "India",
       hname: "Janparako",
       aname: "Upamecano",
-      bodyhandicap:"0.5,1.0",
-      homeodds:"1.900",
-      awayodds:"2.000",
-      goalhandicap:"0.5,1.0",
-      overodds:"1.900",
-      underodds:"2.000",
+      bodyhandicap: "0.5,1.0",
+      homeodds: "1.900",
+      awayodds: "2.000",
+      goalhandicap: "0.5,1.0",
+      overodds: "1.900",
+      underodds: "2.000",
       body: "1+80",
       goal: "5+90",
-      overId:1,
-      underId:2,
-      homeId:1,
-      awayId:2,
-      isOpen:true
+      overId: 1,
+      underId: 2,
+      homeId: 1,
+      awayId: 2,
+      isOpen: true
     },
     {
       id: 5,
@@ -224,19 +230,19 @@ export const SelectedLeague = withTheme((props) => {
       lname: "India",
       hname: "Janparako",
       aname: "Upamecano",
-      bodyhandicap:"0.5,1.0",
-      homeodds:"1.900",
-      awayodds:"2.000",
-      goalhandicap:"0.5,1.0",
-      overodds:"1.900",
-      underodds:"2.000",
+      bodyhandicap: "0.5,1.0",
+      homeodds: "1.900",
+      awayodds: "2.000",
+      goalhandicap: "0.5,1.0",
+      overodds: "1.900",
+      underodds: "2.000",
       body: "1+80",
       goal: "5+90",
-      overId:1,
-      underId:2,
-      homeId:1,
-      awayId:2,
-      isOpen:true
+      overId: 1,
+      underId: 2,
+      homeId: 1,
+      awayId: 2,
+      isOpen: true
     },
     {
       id: 6,
@@ -244,19 +250,19 @@ export const SelectedLeague = withTheme((props) => {
       lname: "India",
       hname: "Janparako",
       aname: "Upamecano",
-      bodyhandicap:"0.5,1.0",
-      homeodds:"1.900",
-      awayodds:"2.000",
-      goalhandicap:"0.5,1.0",
-      overodds:"1.900",
-      underodds:"2.000",
+      bodyhandicap: "0.5,1.0",
+      homeodds: "1.900",
+      awayodds: "2.000",
+      goalhandicap: "0.5,1.0",
+      overodds: "1.900",
+      underodds: "2.000",
       body: "1+80",
       goal: "5+90",
-      overId:2,
-      underId:1,
-      homeId:1,
-      awayId:2,
-       isOpen:true
+      overId: 2,
+      underId: 1,
+      homeId: 1,
+      awayId: 2,
+      isOpen: true
     },
     {
       id: 7,
@@ -264,19 +270,19 @@ export const SelectedLeague = withTheme((props) => {
       lname: "India",
       hname: "Janparako",
       aname: "Upamecano",
-      bodyhandicap:"0.5,1.0",
-      homeodds:"1.900",
-      awayodds:"2.000",
-      goalhandicap:"0.5,1.0",
-      overodds:"1.900",
-      underodds:"2.000",
+      bodyhandicap: "0.5,1.0",
+      homeodds: "1.900",
+      awayodds: "2.000",
+      goalhandicap: "0.5,1.0",
+      overodds: "1.900",
+      underodds: "2.000",
       body: "1+80",
       goal: "5+90",
-      overId:2,
-      underId:1,
-      homeId:1,
-      awayId:2,
-      isOpen:true
+      overId: 2,
+      underId: 1,
+      homeId: 1,
+      awayId: 2,
+      isOpen: true
     },
     {
       id: 8,
@@ -284,19 +290,19 @@ export const SelectedLeague = withTheme((props) => {
       lname: "India",
       hname: "Janparako",
       aname: "Upamecano",
-      bodyhandicap:"0.5,1.0",
-      homeodds:"1.900",
-      awayodds:"2.000",
-      goalhandicap:"0.5,1.0",
-      overodds:"1.900",
-      underodds:"2.000",
+      bodyhandicap: "0.5,1.0",
+      homeodds: "1.900",
+      awayodds: "2.000",
+      goalhandicap: "0.5,1.0",
+      overodds: "1.900",
+      underodds: "2.000",
       body: "1+80",
       goal: "5+90",
-      overId:2,
-      underId:1,
-      homeId:1,
-      awayId:2,
-      isOpen:true
+      overId: 2,
+      underId: 1,
+      homeId: 1,
+      awayId: 2,
+      isOpen: true
     },
     {
       id: 9,
@@ -304,19 +310,19 @@ export const SelectedLeague = withTheme((props) => {
       lname: "India",
       hname: "Janparako",
       aname: "Upamecano",
-      bodyhandicap:"0.5,1.0",
-      homeodds:"1.900",
-      awayodds:"2.000",
-      goalhandicap:"0.5,1.0",
-      overodds:"1.900",
-      underodds:"2.000",
+      bodyhandicap: "0.5,1.0",
+      homeodds: "1.900",
+      awayodds: "2.000",
+      goalhandicap: "0.5,1.0",
+      overodds: "1.900",
+      underodds: "2.000",
       body: "1+80",
       goal: "5+90",
-      overId:2,
-      underId:1,
-      homeId:1,
-      awayId:2,
-      isOpen:true
+      overId: 2,
+      underId: 1,
+      homeId: 1,
+      awayId: 2,
+      isOpen: true
     },
     {
       id: 10,
@@ -324,19 +330,19 @@ export const SelectedLeague = withTheme((props) => {
       lname: "India",
       hname: "Janparako",
       aname: "Upamecano",
-      bodyhandicap:"0.5,1.0",
-      homeodds:"1.900",
-      awayodds:"2.000",
-      goalhandicap:"0.5,1.0",
-      overodds:"1.900",
-      underodds:"2.000",
+      bodyhandicap: "0.5,1.0",
+      homeodds: "1.900",
+      awayodds: "2.000",
+      goalhandicap: "0.5,1.0",
+      overodds: "1.900",
+      underodds: "2.000",
       body: "1+80",
       goal: "5+90",
-      overId:2,
-      underId:1,
-      homeId:1,
-      awayId:2,
-      isOpen:true
+      overId: 2,
+      underId: 1,
+      homeId: 1,
+      awayId: 2,
+      isOpen: true
     },
     {
       id: 11,
@@ -344,19 +350,19 @@ export const SelectedLeague = withTheme((props) => {
       lname: "India",
       hname: "Janparako",
       aname: "Upamecano",
-      bodyhandicap:"0.5,1.0",
-      homeodds:"1.900",
-      awayodds:"2.000",
-      goalhandicap:"0.5,1.0",
-      overodds:"1.900",
-      underodds:"2.000",
+      bodyhandicap: "0.5,1.0",
+      homeodds: "1.900",
+      awayodds: "2.000",
+      goalhandicap: "0.5,1.0",
+      overodds: "1.900",
+      underodds: "2.000",
       body: "1+80",
       goal: "5+90",
-      overId:2,
-      underId:1,
-      homeId:1,
-      awayId:2,
-      isOpen:true
+      overId: 2,
+      underId: 1,
+      homeId: 1,
+      awayId: 2,
+      isOpen: true
     },
     {
       id: 12,
@@ -364,19 +370,19 @@ export const SelectedLeague = withTheme((props) => {
       lname: "India",
       hname: "Janparako",
       aname: "Upamecano",
-      bodyhandicap:"0.5,1.0",
-      homeodds:"1.900",
-      awayodds:"2.000",
-      goalhandicap:"0.5,1.0",
-      overodds:"1.900",
-      underodds:"2.000",
+      bodyhandicap: "0.5,1.0",
+      homeodds: "1.900",
+      awayodds: "2.000",
+      goalhandicap: "0.5,1.0",
+      overodds: "1.900",
+      underodds: "2.000",
       body: "1+80",
       goal: "5+90",
-      overId:2,
-      underId:1,
-      homeId:1,
-      awayId:2,
-      isOpen:true
+      overId: 2,
+      underId: 1,
+      homeId: 1,
+      awayId: 2,
+      isOpen: true
     }
   ];
 
@@ -384,72 +390,86 @@ export const SelectedLeague = withTheme((props) => {
     props.setLoading(true);
     searchSelectedEvent();
     //getGoalResultData();
+
+    return () => clearInterval(myInterval.current);
   }, []);
 
-const saveSelectedEventsPre = () => {
-  props.setLoading(true);
-  const newArr = bufferlist.filter(a=>a.isOpen == true);
- // console.log("post events",newArr)
-  reportController.saveEventsPreupcomming(newArr, (data) => {
-    toast.success(data.message, {
-      position: toast.POSITION.BOTTOM_RIGHT,
+  useEffect(() => {
+    if (isRunning) {
+      myInterval.current = setInterval(function () {
+        fetchUpdateStatus();
+      }, 5000);
+    } else {
+      clearInterval(myInterval.current);
+      myInterval.current = null;
+    }
+  }, [isRunning]);
+
+  const saveSelectedEventsPre = () => {
+    props.setLoading(true);
+    const newArr = bufferlist.filter(a => a.isOpen == true);
+    // console.log("post events",newArr)
+    reportController.saveEventsPreupcomming(newArr, (data) => {
+      toast.success(data.message, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      props.setLoading(false);
+      //MyActivity(activityList);
     });
-    props.setLoading(false);
-    //MyActivity(activityList);
-  });
-}
+  }
 
   const searchSelectedEvent = () => {
+    console.log("hey i am running......");
     props.setLoading(true);
     reportController.getBufferData((data) => {
       setBufferList(data.bufferdata);
       setSearchedLeague(data.bufferdata);
       setRapidEventIdList(data.rapidList);
-     // setLeagueTotal(data.leagueCount);
-    //  setEventTotal(data.eventCount);
-    //  setSingleTotal(data.singleCount);
-    //  setMixTotal(data.mixCount);
+      // setLeagueTotal(data.leagueCount);
+      //  setEventTotal(data.eventCount);
+      //  setSingleTotal(data.singleCount);
+      //  setMixTotal(data.mixCount);
       props.setLoading(false);
     });
   };
 
   const saveEventManual = (rapidId) => {
-   // console.log("ppp", rapidId);
-   // props.setLoading(true);
-    var filtered = searchedLeague.filter(function(x) { return x.rapidEventId == rapidId; });
+    // console.log("ppp", rapidId);
+    // props.setLoading(true);
+    var filtered = searchedLeague.filter(function (x) { return x.rapidEventId == rapidId; });
     var isMix = filtered[0].isMix;
     var isSingle = filtered[0].isSingle;
     //var isFivePercent = filtered[0].isFivePercentCom;
-     //console.log("ppp", filtered);
+    //console.log("ppp", filtered);
     // console.log("mix", filtered[0].isMix);
     // console.log("single", filtered[0].isSingle);
-    reportController.saveManualEvent(rapidId,isMix,isSingle, (data) => {
-     if(data.code == 1){
-      toast.success(data.message, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
-     }else{
-      toast.error(data.message, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
-     }
-      
-     props.setLoading(false);
-   });
+    reportController.saveManualEvent(rapidId, isMix, isSingle, (data) => {
+      if (data.code == 1) {
+        toast.success(data.message, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
+      } else {
+        toast.error(data.message, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
+      }
+
+      props.setLoading(false);
+    });
   }
 
   const updateSelectedEvent = () => {
     props.setLoading(true);
     const newarr = [];
-    console.log("original",rapidEventIdList);
+    //console.log("original",rapidEventIdList);
     rapidEventIdList.map((item) => {
       newarr.push(item.rapidEventId)
     })
 
-    console.log("new id",newarr);
+    console.log("new id", newarr);
     reportController.updateBufferEvent(newarr, (data) => {
-      console.log("new return data",data.bufferdata);
-      console.log("new return rapid",data.rapidList);
+      // console.log("new return data",data.bufferdata);
+      // console.log("new return rapid",data.rapidList);
       setBufferList(data.bufferdata);
       setSearchedLeague(data.bufferdata);
       setRapidEventIdList(data.rapidList);
@@ -467,16 +487,16 @@ const saveSelectedEventsPre = () => {
   };
 
   const handleSingleChecked = (id) => {
-   //const newBufferlist = [...bufferlist];
-   //console.log("Bufferlist",bufferlist);
-   //console.log("Click Id",id);
+    //const newBufferlist = [...bufferlist];
+    //console.log("Bufferlist",bufferlist);
+    //console.log("Click Id",id);
 
-   const index = bufferlist.findIndex(v=>{
-    return v.rapidEventId == id;
-   });
-   
-   bufferlist[index].isSingle=!bufferlist[index].isSingle;
-  
+    const index = bufferlist.findIndex(v => {
+      return v.rapidEventId == id;
+    });
+
+    bufferlist[index].isSingle = !bufferlist[index].isSingle;
+
     setBufferList(bufferlist);
     requestSearch(searchText);
   };
@@ -485,59 +505,88 @@ const saveSelectedEventsPre = () => {
     //const newBufferlist = [...bufferlist];
     //console.log("Bufferlist",bufferlist);
     //console.log("Click Id",id);
- 
-    const index = bufferlist.findIndex(v=>{
-     return v.rapidEventId == id;
-    });
-    
-    bufferlist[index].isFivePercentCom=!bufferlist[index].isFivePercentCom;
-   
-     setBufferList(bufferlist);
-     requestSearch(searchText);
-   };
 
-   const handleMixChecked = (id) => {
+    const index = bufferlist.findIndex(v => {
+      return v.rapidEventId == id;
+    });
+
+    bufferlist[index].isFivePercentCom = !bufferlist[index].isFivePercentCom;
+
+    setBufferList(bufferlist);
+    requestSearch(searchText);
+  };
+
+  const handleMixChecked = (id) => {
     //const newBufferlist = [...bufferlist];
     //console.log("Bufferlist",bufferlist);
     //console.log("Click Id",id);
- 
-    const index = bufferlist.findIndex(v=>{
-     return v.rapidEventId == id;
+
+    const index = bufferlist.findIndex(v => {
+      return v.rapidEventId == id;
     });
-    
-    bufferlist[index].isMix=!bufferlist[index].isMix;
-   
-     setBufferList(bufferlist);
-     requestSearch(searchText);
-   };
+
+    bufferlist[index].isMix = !bufferlist[index].isMix;
+
+    setBufferList(bufferlist);
+    requestSearch(searchText);
+  };
 
   const requestSearch = (searchedVal) => {
     setSearchText(searchedVal);
-    if(searchedVal.length != 0){
+    if (searchedVal.length != 0) {
       const filteredRows = bufferlist.filter((row) => {
         return (
           row.lname.toLowerCase().includes(searchedVal.toLowerCase()) ||
           row.hname.toLowerCase().includes(searchedVal.toLowerCase()) ||
-          row.aname.toLowerCase().includes(searchedVal.toLowerCase()) 
+          row.aname.toLowerCase().includes(searchedVal.toLowerCase())
         );
       });
       setSearchedLeague(filteredRows);
     }
-   else{
-    setSearchedLeague([...bufferlist]);
-   }
+    else {
+      setSearchedLeague([...bufferlist]);
+    }
   };
 
   const cancelSearch = () => {
-     setSearchText("");
-      requestSearch("");
+    setSearchText("");
+    requestSearch("");
   };
+ 
+
+  const test = () => {
+    setIsRunning((isRunning) => !isRunning);
+    //Time in milliseconds [1 second = 1000 milliseconds ]    
+  }
+
+  //IF you want to stop above timer
+  function resetCounter() {
+    clearInterval(myInterval.current);
+    myInterval.current = null;
+    setIsRunning(false);
+  }
+  const fetchUpdateStatus = () => {
+    console.log("fetching........")
+    reportController.getUpdateStatus((data) => {
+      setStatusMessage(data.data);
+      // toastId.current=toast.success(data.data, {
+      //   toastId: customId,
+      //   autoClose: false,
+      //   closeButton: false
+      // });
+    });
+  }
 
   return (
     <>
       <Paper className={classes.root}>
         <div className="d-flex justify-content-between align-items-center"
           style={{ marginBottom: 6, marginTop: 6 }}>
+            { 
+             isRunning == true ?(<div className="alert alert-success" role="alert">
+                Data Fetching {statusMessage} Completed
+             </div>):null
+            }
           <h4>Buffer Page Selected Events</h4>
           <SearchBar
             placeholder={"Search "}
@@ -569,12 +618,12 @@ const saveSelectedEventsPre = () => {
             </TableHead>
             <TableBody>
               {searchedLeague.length > 0 &&
-              searchedLeague
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((v,k) => {
-                  return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={k}>
-                      {/* {columns.map(column => {
+                searchedLeague
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((v, k) => {
+                    return (
+                      <TableRow hover role="checkbox" tabIndex={-1} key={k}>
+                        {/* {columns.map(column => {
                         const value = row[column.id];
                         return (
                           <TableCell key={column.id} align={column.align}>
@@ -582,88 +631,88 @@ const saveSelectedEventsPre = () => {
                           </TableCell>
                         );
                       })} */}
-                      <TableCell align={"left"} padding="default">
-                         {page > 0 ? k + 1 + rowsPerPage * page : k + 1}
-                      </TableCell>
-                      <TableCell align={"left"} padding="default">
-                        <span 
-                        style={{fontWeight:"bold",color:v.overId==v.homeId?"red":"black"}}
-                        >{v.hname}
-                        </span><br></br>
-                        <span 
-                        style={{fontWeight:"bold",color:v.overId==v.awayId?"red":"black"}}
-                        >{v.aname}
-                        </span><br></br>
-                        <span 
-                        style={{color:"#1a61b8"}}
-                        >{`${moment(v.date).format("hh:mm:ss a")}/ ${moment(
-                          v.date
-                        ).format("YYYY-MM-DD")}`}
-                        </span>
-                      </TableCell>
-                      <TableCell align={"left"} padding="default">
-                        {v.lname}
-                      </TableCell>
-                      <TableCell align={"left"} padding="default">
-                        {v.bodyhandicap}
-                      </TableCell>
-                      <TableCell align={"left"} padding="default">
-                      <span style={{fontWeight:"bold"}}>{v.homeodds}</span><br></br>
-                      <span style={{fontWeight:"bold"}}>{v.awayodds}</span>
-                      </TableCell>                     
-                      <TableCell align={"left"} padding="default">
-                      {v.goalhandicap}
-                      </TableCell>
-                      <TableCell align={"left"} padding="default">
-                      <span style={{fontWeight:"bold"}}>{v.overodds}</span><br></br>
-                      <span style={{fontWeight:"bold"}}>{v.underodds}</span>
-                      </TableCell>                    
-                      <TableCell align={"left"} padding="default">
-                      {v.body}
-                      </TableCell>
-                      <TableCell align={"left"} padding="default">
-                      {v.goal}
-                      </TableCell>
-                      <TableCell align={"left"} padding="default">
-                        <Checkbox
-                          checked={v.isSingle}
-                          className={classes.checkbox}
-                          onChange={() => handleSingleChecked(v.rapidEventId)}
-                          name="checkedAll"
-                          color="primary"
-                         // disabled={!isView}
-                        />
-                       </TableCell>                      
-                       <TableCell align={"left"} padding="default">
-                         <Checkbox
-                          checked={v.isMix}
-                          className={classes.checkbox}
-                          onChange={() => handleMixChecked(v.rapidEventId)}
-                          name="checkedAll"
-                          color="primary"
-                         // disabled={!isView}
-                        />
+                        <TableCell align={"left"} padding="default">
+                          {page > 0 ? k + 1 + rowsPerPage * page : k + 1}
                         </TableCell>
                         <TableCell align={"left"} padding="default">
-                        <button
-                          type="button"
-                          className="btn btn-secondary"
-                          style={{
-                            backgroundColor: MyColor.secondaryBackground,
-                            color: "#fff",
-                            minWidth: 50,
-                            maxHeight: 40,
-                            fontSize: isPhone ? 12 : null,
-                          }}
-                           onClick={() => saveEventManual(v.rapidEventId)}
-                        >
-                          Add
-                        </button>
-                       
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                          <span
+                            style={{ fontWeight: "bold", color: v.overId == v.homeId ? "red" : "black" }}
+                          >{v.hname}
+                          </span><br></br>
+                          <span
+                            style={{ fontWeight: "bold", color: v.overId == v.awayId ? "red" : "black" }}
+                          >{v.aname}
+                          </span><br></br>
+                          <span
+                            style={{ color: "#1a61b8" }}
+                          >{`${moment(v.date).format("hh:mm:ss a")}/ ${moment(
+                            v.date
+                          ).format("YYYY-MM-DD")}`}
+                          </span>
+                        </TableCell>
+                        <TableCell align={"left"} padding="default">
+                          {v.lname}
+                        </TableCell>
+                        <TableCell align={"left"} padding="default">
+                          {v.bodyhandicap}
+                        </TableCell>
+                        <TableCell align={"left"} padding="default">
+                          <span style={{ fontWeight: "bold" }}>{v.homeodds}</span><br></br>
+                          <span style={{ fontWeight: "bold" }}>{v.awayodds}</span>
+                        </TableCell>
+                        <TableCell align={"left"} padding="default">
+                          {v.goalhandicap}
+                        </TableCell>
+                        <TableCell align={"left"} padding="default">
+                          <span style={{ fontWeight: "bold" }}>{v.overodds}</span><br></br>
+                          <span style={{ fontWeight: "bold" }}>{v.underodds}</span>
+                        </TableCell>
+                        <TableCell align={"left"} padding="default">
+                          {v.body}
+                        </TableCell>
+                        <TableCell align={"left"} padding="default">
+                          {v.goal}
+                        </TableCell>
+                        <TableCell align={"left"} padding="default">
+                          <Checkbox
+                            checked={v.isSingle}
+                            className={classes.checkbox}
+                            onChange={() => handleSingleChecked(v.rapidEventId)}
+                            name="checkedAll"
+                            color="primary"
+                          // disabled={!isView}
+                          />
+                        </TableCell>
+                        <TableCell align={"left"} padding="default">
+                          <Checkbox
+                            checked={v.isMix}
+                            className={classes.checkbox}
+                            onChange={() => handleMixChecked(v.rapidEventId)}
+                            name="checkedAll"
+                            color="primary"
+                          // disabled={!isView}
+                          />
+                        </TableCell>
+                        <TableCell align={"left"} padding="default">
+                          <button
+                            type="button"
+                            className="btn btn-secondary"
+                            style={{
+                              backgroundColor: MyColor.secondaryBackground,
+                              color: "#fff",
+                              minWidth: 50,
+                              maxHeight: 40,
+                              fontSize: isPhone ? 12 : null,
+                            }}
+                            onClick={() => saveEventManual(v.rapidEventId)}
+                          >
+                            Add
+                          </button>
+
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
             </TableBody>
           </Table>
         </TableContainer>
@@ -690,9 +739,24 @@ const saveSelectedEventsPre = () => {
               maxHeight: 40,
               fontSize: isPhone ? 12 : null,
             }}
-             onClick={() => updateSelectedEvent()}
+            onClick={() => test()}
           >
             <i className="fa fa-sync"></i> Update
+          </button>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            style={{
+              backgroundColor: MyColor.secondaryBackground,
+              color: "#fff",
+              marginLeft: 10,
+              minWidth: 100,
+              maxHeight: 40,
+              fontSize: isPhone ? 12 : null,
+            }}
+            onClick={() => resetCounter()}
+          >
+            <i className="fa fa-sync"></i> Clear
           </button>
           <button
             type="button"

@@ -66,5 +66,6 @@ export const apiList = {
   removeVoucher:"GoalsResult/cancel-voucher",
 
   getPreupcommingEvent : "OddSummary/get-preupcomming",
-  getEventOddSummary : "OddSummary/get-event-odd-summary"
+  getEventOddSummary : "OddSummary/get-event-odd-summary",
+  getUpdateStatus : "TblLeagues/fetch-update-status",
 };
