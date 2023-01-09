@@ -468,13 +468,17 @@ export const SelectedLeague = withTheme((props) => {
 
     console.log("new id", newarr);
     reportController.updateBufferEvent(newarr, (data) => {
+      toast.success(data.message, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
       // console.log("new return data",data.bufferdata);
       // console.log("new return rapid",data.rapidList);
-      setBufferList(data.bufferdata);
-      setSearchedLeague(data.bufferdata);
-      setRapidEventIdList(data.rapidList);
+    //  setBufferList(data.bufferdata);
+     // setSearchedLeague(data.bufferdata);
+     // setRapidEventIdList(data.rapidList);
       props.setLoading(false);
     });
+    setIsRunning((isRunning) => !isRunning);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -561,6 +565,7 @@ export const SelectedLeague = withTheme((props) => {
 
   //IF you want to stop above timer
   function resetCounter() {
+    console.log("hey i am working.....")
     clearInterval(myInterval.current);
     myInterval.current = null;
     setIsRunning(false);
@@ -568,7 +573,16 @@ export const SelectedLeague = withTheme((props) => {
   const fetchUpdateStatus = () => {
     console.log("fetching........")
     reportController.getUpdateStatus((data) => {
-      setStatusMessage(data.data);
+      if(data.status == 0){
+        setStatusMessage("Api Data Fetching...");
+      }
+      else if(data.status == 1)
+      {
+        setStatusMessage(` Data Fetching ${data.message} Completed`);
+      }
+      else{
+        resetCounter();
+      }
       // toastId.current=toast.success(data.data, {
       //   toastId: customId,
       //   autoClose: false,
@@ -584,7 +598,7 @@ export const SelectedLeague = withTheme((props) => {
           style={{ marginBottom: 6, marginTop: 6 }}>
             { 
              isRunning == true ?(<div className="alert alert-success" role="alert">
-                Data Fetching {statusMessage} Completed
+               {statusMessage} 
              </div>):null
             }
           <h4>Buffer Page Selected Events</h4>
@@ -739,7 +753,7 @@ export const SelectedLeague = withTheme((props) => {
               maxHeight: 40,
               fontSize: isPhone ? 12 : null,
             }}
-            onClick={() => test()}
+            onClick={() => updateSelectedEvent()}
           >
             <i className="fa fa-sync"></i> Update
           </button>
