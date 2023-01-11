@@ -183,6 +183,7 @@ export const ManageBalance = ({ userInfo, updateAgentData }) => {
                   position: toast.POSITION.BOTTOM_RIGHT,
                 });
                 setShowLoading(false);
+                setIsLoading(false);
                 MyActivity(activityList);
                 setAmount("");
               }

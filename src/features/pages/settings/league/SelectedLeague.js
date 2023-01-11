@@ -43,10 +43,8 @@ export const SelectedLeague = withTheme((props) => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [isRunning, setIsRunning] = useState(false);
-  const [statusMessage, setStatusMessage] = useState(0);
+  const [statusMessage, setStatusMessage] = useState("Starting background task....");
   const myInterval = useRef();
-  const toastId = React.useRef(null);
-  const customId = "custom-id-yes";
 
   const columns = [
     {
@@ -466,7 +464,7 @@ export const SelectedLeague = withTheme((props) => {
       newarr.push(item.rapidEventId)
     })
 
-    console.log("new id", newarr);
+    //console.log("new id", newarr);
     reportController.updateBufferEvent(newarr, (data) => {
       toast.success(data.message, {
         position: toast.POSITION.BOTTOM_RIGHT,
@@ -557,7 +555,6 @@ export const SelectedLeague = withTheme((props) => {
     requestSearch("");
   };
  
-
   const test = () => {
     setIsRunning((isRunning) => !isRunning);
     //Time in milliseconds [1 second = 1000 milliseconds ]    
@@ -565,29 +562,25 @@ export const SelectedLeague = withTheme((props) => {
 
   //IF you want to stop above timer
   function resetCounter() {
-    console.log("hey i am working.....")
+    console.log("reset counter,hey i am working.....")
     clearInterval(myInterval.current);
     myInterval.current = null;
     setIsRunning(false);
   }
+
   const fetchUpdateStatus = () => {
-    console.log("fetching........")
+    console.log("api fetching........")
     reportController.getUpdateStatus((data) => {
-      if(data.status == 0){
+      if(data.status == "not start"){
         setStatusMessage("Api Data Fetching...");
       }
-      else if(data.status == 1)
+      else if(data.status == "running")
       {
-        setStatusMessage(` Data Fetching ${data.message} Completed`);
+        setStatusMessage(`Data Fetching ${data.message} Completed`);
       }
       else{
         resetCounter();
       }
-      // toastId.current=toast.success(data.data, {
-      //   toastId: customId,
-      //   autoClose: false,
-      //   closeButton: false
-      // });
     });
   }
 
