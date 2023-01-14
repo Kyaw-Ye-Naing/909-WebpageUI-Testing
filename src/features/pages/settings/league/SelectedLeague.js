@@ -428,6 +428,10 @@ export const SelectedLeague = withTheme((props) => {
       //  setSingleTotal(data.singleCount);
       //  setMixTotal(data.mixCount);
       props.setLoading(false);
+      if(data.processRun){
+        console.log("is running state change......");
+        setIsRunning((isRunning) => !isRunning);
+      }
     });
   };
 
@@ -571,12 +575,12 @@ export const SelectedLeague = withTheme((props) => {
   const fetchUpdateStatus = () => {
     console.log("api fetching........")
     reportController.getUpdateStatus((data) => {
-      if(data.status == "not start"){
+      if(data.status == "fetching"){
         setStatusMessage("Api Data Fetching...");
       }
       else if(data.status == "running")
       {
-        setStatusMessage(`Data Fetching ${data.message} Completed`);
+        setStatusMessage(`Data Processing ${data.message} Completed`);
       }
       else{
         resetCounter();
@@ -737,6 +741,7 @@ export const SelectedLeague = withTheme((props) => {
         >
           <button
             type="button"
+            disabled = {isRunning}
             className="btn btn-secondary"
             style={{
               backgroundColor: MyColor.secondaryBackground,
@@ -750,7 +755,7 @@ export const SelectedLeague = withTheme((props) => {
           >
             <i className="fa fa-sync"></i> Update
           </button>
-          <button
+          {/* <button
             type="button"
             className="btn btn-secondary"
             style={{
@@ -764,7 +769,7 @@ export const SelectedLeague = withTheme((props) => {
             onClick={() => resetCounter()}
           >
             <i className="fa fa-sync"></i> Clear
-          </button>
+          </button> */}
           <button
             type="button"
             className="btn btn-secondary"
