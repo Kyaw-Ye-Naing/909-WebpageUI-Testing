@@ -12,6 +12,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import { withTheme } from "../../common/hoc/withTheme";
 import { useMediaPredicate } from "react-media-hook";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,6 +42,7 @@ const MixLiveDataReport = (props) => {
   const [rowsPerPage, setRowsPerPage] = useState(5); // Add by AKPM 27-4-2021
   const classes = useStyles();
   const isPhone = useMediaPredicate("(max-width: 800px)");
+  const history = useHistory();
 
   useEffect(() => {
     getmixLiveDataReport();
@@ -68,6 +70,11 @@ const MixLiveDataReport = (props) => {
   const float = (number) => {
     return parseFloat(number).toFixed(2);
   }
+
+  const handleClickView = (eventId) => {
+   // history.push(`/event-with-voucher/${eventId}`);
+    history.push(`/mix-voucher-view/4`);
+  };
 
   return (
     <div className="container">
@@ -114,6 +121,9 @@ const MixLiveDataReport = (props) => {
                   <TableCell align="right" className={classes.tableHeader}>
                     Total Amount
                   </TableCell>
+                  {/* <TableCell align="right" className={classes.tableHeader}>
+                   Action
+                  </TableCell> */}
 
                   {/*--------*/}
                 </TableRow>
@@ -147,6 +157,19 @@ const MixLiveDataReport = (props) => {
                               float(ld.totalamount)
                             )}
                           </TableCell>
+                          {/* <TableCell align="right">
+                            <button
+                              className="btn btn-primary"
+                              onClick={() => {
+                                handleClickView();
+                              }}
+                              style={{
+                                backgroundColor: MyColor.secondaryBackground,
+                              }}
+                            >
+                              View Details
+                            </button>
+                          </TableCell> */}
                         </TableRow>
                       );
                     })}

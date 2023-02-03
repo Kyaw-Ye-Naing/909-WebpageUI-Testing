@@ -6,7 +6,7 @@ import { putApi } from "../_apiHelper/putApi";
 
 //--- get data for buffer page ----
 const getBufferData = (setBufferList) => {
-  getApi(`${apiList.getBufferData}`,(data) => {
+  getApi(`${apiList.getBufferData}`, (data) => {
     setBufferList(data);
   })
 }
@@ -19,24 +19,24 @@ const saveBufferData = (leagueList, setResponse) => {
 };
 
 //----update odds from buffer page to bet 365
-const updateBufferEvent = (rapidEventIdList,setResponse) => {
+const updateBufferEvent = (rapidEventIdList, setResponse) => {
   postApi(`${apiList.updateEvent365}`,
-  {
-    rapidEventId:rapidEventIdList
-  },
-  (data)=>{
-    setResponse(data);
-  }
+    {
+      rapidEventId: rapidEventIdList
+    },
+    (data) => {
+      setResponse(data);
+    }
   )
 }
 
 //---save manual event from buffer page to preupcomming
-const saveManualEvent = (id,isMix,isSingle,setResponse) => {
+const saveManualEvent = (id, isMix, isSingle, setResponse) => {
   postApi(`${apiList.saveEventManual}`,
     {
       rapidEventId: id,
-      isMix : isMix,
-      isSingle : isSingle
+      isMix: isMix,
+      isSingle: isSingle
     },
     (data) => {
       setResponse(data);
@@ -44,26 +44,26 @@ const saveManualEvent = (id,isMix,isSingle,setResponse) => {
 }
 
 //---save final selected events to preupcomming
-const saveEventsPreupcomming = (selectedEventData,setResponse) => {
+const saveEventsPreupcomming = (selectedEventData, setResponse) => {
   postApi(`${apiList.saveLeague}`,
-  {
-    BufferResponseLists:selectedEventData
-  },
-  (data)=>{
-    setResponse(data);
-  })
+    {
+      BufferResponseLists: selectedEventData
+    },
+    (data) => {
+      setResponse(data);
+    })
 }
 
 //---remove selected events from pre upcomming
-const removeEventsFromPre = (rapidEventId,status,setResponse) => {
+const removeEventsFromPre = (rapidEventId, status, setResponse) => {
   putApi(`${apiList.removeEventsPre}`,
-  {
-    rapidEventId : rapidEventId,
-    status : status
-  },
-  (data) => {
-    setResponse(data);
-  }
+    {
+      rapidEventId: rapidEventId,
+      status: status
+    },
+    (data) => {
+      setResponse(data);
+    }
   )
 }
 
@@ -91,8 +91,8 @@ const getGoalResult = (setGoalResultList) => {
   });
 };
 
-const getUpdateStatus = (setResponse) => {
-  getApi(`${apiList.getUpdateStatus}`,(data) => {
+const getUpdateStatus = (type,setResponse) => {
+  getApi(`${apiList.getUpdateStatus}${type}`, (data) => {
     setResponse(data);
   });
 };
@@ -137,16 +137,24 @@ const getEventWithVoucher = (id, setResponse) => {
   });
 };
 
-const getPreupcommingEvent = (selectedDate,setResponse) => {
-  postApi(`${apiList.getPreupcommingEvent}`, { selectDate: selectedDate },(data) => {
+const getPreupcommingEvent = (selectedDate, setResponse) => {
+  postApi(`${apiList.getPreupcommingEvent}`, { selectDate: selectedDate }, (data) => {
     setResponse(data);
   });
 }
 
-const getEventOddSummary = (rapidEventId,setResponse) => {
-  postApi(`${apiList.getEventOddSummary}`, { rapidEventId: rapidEventId },(data) => {
+const getEventOddSummary = (rapidEventId, setResponse) => {
+  postApi(`${apiList.getEventOddSummary}`, { rapidEventId: rapidEventId }, (data) => {
     setResponse(data);
   });
+}
+
+const getMixVoucherList = (gamblingTypeId, setResponse) => {
+  postApi(`${apiList.getEventOddSummary}`,
+    { gamblingTypeId: gamblingTypeId },
+    (data) => {
+      setResponse(data);
+    });
 }
 
 export const reportController = {
@@ -168,5 +176,6 @@ export const reportController = {
   removeEventsFromPre,
   getPreupcommingEvent,
   getEventOddSummary,
-  getUpdateStatus
+  getUpdateStatus,
+  getMixVoucherList
 };

@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     maxHeight: 500, // Change height by AKPM 27-4-2021
+    // "& .MuiTableCell-root": {
+    //   borderLeft: "1px solid rgba(224, 224, 224, 1)"
+    // }
   },
   textField: {
     marginLeft: theme.spacing(1),

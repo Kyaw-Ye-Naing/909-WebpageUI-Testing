@@ -119,7 +119,7 @@ const ShowViewDetailsNew = (props) => {
   return (
     <div>
       <div className="table table-bordered table-sm">
-        <table class="table mb-0">
+        <table className="table mb-0">
           <thead style={{ backgroundColor: MyColor.secondaryBackground }}>
             <tr>
               <th scope="col">No</th>
@@ -183,7 +183,9 @@ export const MyEventModal = (props) => {
     if (gamblingWinId != 0) {
       reportController.getCollectionEvent(gamblingWinId, (data) => {
         setEventDataDetail(data);
+
         setEventData(data.viewDetails);
+        console.log("dsata",data.viewDetails);
         setwinAmount(data.winAmount);
         setloseAmount(data.loseAmount);
         setvoucher(data.voucherNo);
@@ -199,22 +201,22 @@ export const MyEventModal = (props) => {
   return (
     <div
       id="exampleModalLong"
-      tabindex="-1"
+      tabIndex="-1"
       role="dialog"
       aria-labelledby="exampleModalLongTitle"
       aria-hidden="true"
-      class="modal fade bd-example-modal-lg"
+      className="modal fade bd-example-modal-lg"
     >
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-body">
+      <div className="modal-dialog modal-lg" role="document">
+        <div className="modal-content">
+          <div className="modal-body">
             <div
               className="row justify-content-end"
               style={{ marginRight: isPhone ? 0 : 2.5 }}
             >
               <button
                 type="button"
-                class="close"
+                className="close"
                 data-dismiss="modal"
                 aria-label="Close"
               >
@@ -265,7 +267,7 @@ export const MyEventModal = (props) => {
                     // <RoundedBox data={team} />
                    // <ShowViewDetailsNew data={team} indextt={index} /> */}
               <div className="table table-bordered table-sm">
-                <table class="table mb-0">
+                <table className="table mb-0">
                   <thead
                     style={{ backgroundColor: MyColor.secondaryBackground }}
                   >
@@ -311,7 +313,7 @@ export const MyEventModal = (props) => {
                   <tbody>
                     {eventData.length > 0 &&
                       eventData.map((data, index) => (
-                        <tr style={{ fontSize: isPhone ? 12 : null }}>
+                        <tr style={{ fontSize: isPhone ? 12 : null }} key={index}>
                           <th style={{ textAlign: "right" }} scope="row">
                             {index + 1}
                           </th>

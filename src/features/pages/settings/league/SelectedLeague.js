@@ -437,7 +437,7 @@ export const SelectedLeague = withTheme((props) => {
 
   const saveEventManual = (rapidId) => {
     // console.log("ppp", rapidId);
-    // props.setLoading(true);
+    props.setLoading(true);
     var filtered = searchedLeague.filter(function (x) { return x.rapidEventId == rapidId; });
     var isMix = filtered[0].isMix;
     var isSingle = filtered[0].isSingle;
@@ -558,11 +558,6 @@ export const SelectedLeague = withTheme((props) => {
     setSearchText("");
     requestSearch("");
   };
- 
-  const test = () => {
-    setIsRunning((isRunning) => !isRunning);
-    //Time in milliseconds [1 second = 1000 milliseconds ]    
-  }
 
   //IF you want to stop above timer
   function resetCounter() {
@@ -574,7 +569,7 @@ export const SelectedLeague = withTheme((props) => {
 
   const fetchUpdateStatus = () => {
     console.log("api fetching........")
-    reportController.getUpdateStatus((data) => {
+    reportController.getUpdateStatus("buffer",(data) => {
       if(data.status == "fetching"){
         setStatusMessage("Api Data Fetching...");
       }

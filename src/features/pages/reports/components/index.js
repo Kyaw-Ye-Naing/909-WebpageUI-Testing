@@ -7,3 +7,4 @@ export * from "./expandedRow";
 export * from "./expandGamblingRow";
 export * from "./EventWithVoucher";
 export * from "./OddSummaryModel";
+export * from "./MixVoucherView";

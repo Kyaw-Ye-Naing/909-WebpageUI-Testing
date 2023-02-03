@@ -30,6 +30,7 @@ import Loading from "./features/common/components/Loading";
 import { withTheme } from "./features/common/hoc/withTheme";
 import AppContext from "./context/AppContext";
 import EventWithVoucher from "./features/pages/reports/components/EventWithVoucher";
+import MixVoucherView from "./features/pages/reports/components/MixVoucherView";
 import {SelectedLeague} from "./features/pages/settings/league/SelectedLeague";
 
 const App = (props) => {
@@ -96,7 +97,8 @@ const App = (props) => {
               path={"/event-with-voucher/:rapidEventId"}
               component={EventWithVoucher}
             />
-            {/* <Route path={"/selectedLeague"} component={SelectedLeague} /> */}
+            <Route path={"/mix-voucher-view/:gamblingTypeId"} 
+            component={MixVoucherView} />
             <Redirect to="/" />
           </Switch>
 

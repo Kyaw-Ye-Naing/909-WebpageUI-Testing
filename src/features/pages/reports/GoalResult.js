@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState,useRef } from "react";
 import { withTheme } from "../../common/hoc/withTheme";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -44,12 +44,15 @@ const GoalResult = (props) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const history = useHistory();
+  const [isRunning, setIsRunning] = useState(false);
+  const [statusMessage, setStatusMessage] = useState("Starting background task....");
+  const myInterval = useRef();
 
   const searchGoalResultData = () => {
     props.setLoading(true);
     setGoalResultData([]);
     reportController.searchGoalResult(startDate, endDate, (data) => {
-      const list = data.map((v) => v.team).flat();
+      const list = data._data.map((v) => v.team).flat();
       const temp = list.sort(function (a, b) {
         return new Date(a.event) - new Date(b.event);
       });
@@ -74,6 +77,10 @@ const GoalResult = (props) => {
       setGoalResultData(valueList);
       setSearchedLeague(valueList);
       props.setLoading(false);
+      if(data.processRun){
+        console.log("is running state change......");
+        setIsRunning((isRunning) => !isRunning);
+      }
     });
   };
 
@@ -81,7 +88,20 @@ const GoalResult = (props) => {
     props.setLoading(true);
     searchGoalResultData();
     //getGoalResultData();
+
+    return () => clearInterval(myInterval.current);
   }, []);
+
+  useEffect(() => {
+    if (isRunning) {
+      myInterval.current = setInterval(function () {
+        fetchUpdateStatus();
+      }, 5000);
+    } else {
+      clearInterval(myInterval.current);
+      myInterval.current = null;
+    }
+  }, [isRunning]);
 
   const requestSearch = (searchedVal) => {
     setSearchText(searchedVal);
@@ -156,9 +176,10 @@ const GoalResult = (props) => {
         });
         MyActivity(activityList);
         setOpen(false);
-        window.location.reload();
+        //window.location.reload();
       });
     }
+    setIsRunning((isRunning) => !isRunning);
   };
 
   const onChangeText = (value, name) => {
@@ -197,9 +218,39 @@ const GoalResult = (props) => {
     history.push(`/event-with-voucher/${eventId}`);
   };
 
+  //IF you want to stop above timer
+  function resetCounter() {
+    console.log("reset counter,hey i am working.....")
+    clearInterval(myInterval.current);
+    myInterval.current = null;
+    setIsRunning(false);
+  }
+
+  const fetchUpdateStatus = () => {
+    console.log("api fetching........")
+    reportController.getUpdateStatus("result",(data) => {
+      if(data.status == "fetching"){
+        setStatusMessage("Data saving and background processing .....");
+      }
+      // else if(data.status == "running")
+      // {
+      //   setStatusMessage(`Data Processing ${data.message} Completed`);
+      // }
+      else{
+        resetCounter();
+        window.location.reload();
+      }
+    });
+  }
+
   return (
     <div>
       {isPhone ? <h3>Goal Result</h3> : <h1>Goal Result</h1>}
+      { 
+        isRunning == true ?(<div className="alert alert-success" role="alert">
+         {statusMessage} 
+       </div>):null
+      }
       <Paper className={classes.root}>
         <div className="d-flex p-2 align-items-end">
           <TextField

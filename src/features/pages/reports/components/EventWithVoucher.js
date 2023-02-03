@@ -71,12 +71,12 @@ const onRejectHandle = (tempRejectData) => {
   console.log("dfsf",tempRejectData)
   props.setLoading(true);
   let tempStatus = "";
-  if(tempRejectData.status == "true"){
+  if(tempRejectData.status == true){
     tempStatus = "active";
   }else{
     tempStatus = "finished";
   }
-  console.log("dfsf",tempStatus)
+  //console.log("dfsf",tempStatus)
   userController.removeVoucherNo(tempRejectData.gamblingId,tempStatus,(data) => {
     toast.success(data.message, {
       position: toast.POSITION.BOTTOM_RIGHT,
@@ -308,7 +308,7 @@ export function ConfirmBoxModal({
       <div
         className="modal fade"
         id="confirmModal"
-        tabindex="-1"
+        tabIndex="-1"
         role="dialog"
         aria-labelledby="confirmModalLabel"
         aria-hidden="true"
@@ -326,7 +326,7 @@ export function ConfirmBoxModal({
               </button>
               <br />
               <span style={{color:"black",fontWeight:"bold",fontSize:"15px"}}>
-                <i class="fas fa-ban mr-1" style={{color:"red"}}></i>
+                <i className="fas fa-ban mr-1" style={{color:"red"}}></i>
                 Are you sure you want to reject this event?</span> <br />
               <span style={{color:"grey",fontSize:"12px",marginLeft:"15px"}}>
                 This change will reflect in your modal after an minute.
