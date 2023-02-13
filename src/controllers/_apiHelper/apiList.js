@@ -52,6 +52,9 @@ export const apiList = {
   displayRegulation: "Regulation",
   liveData: "LiveData",
   mixLiveData: "LiveData/mix", //add kyn 27-4-2021--
+  singleVoucherLists: "LiveData/single-body-voucher",
+  mixVoucherLists:"LiveData/mix-voucher-details",
+  voucherDetailsView:"LiveData/voucher-view-details",
 
   betAmountLimitForAdmin: "UserBalance/minmax/", //need gamblingTypeId route param//body json {MinBetAmount:0,MaxBetAmount:0}
   getCollectionData: "ByCollection/GetCollectionReport",

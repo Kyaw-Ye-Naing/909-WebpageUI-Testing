@@ -154,8 +154,15 @@ const SideBar = (props) => {
               ) : null}
               {userInfo && userInfo.roleId == 1 ? (
                 <Item
-                  text="Live Data Report"
+                  text="Body Live Data Report"
                   route="reports/live-data-report"
+                  loc={loc}
+                />
+              ) : null}
+                {userInfo && userInfo.roleId == 1 ? (
+                <Item
+                  text="Goal Live Data Report"
+                  route="reports/over-under-report"
                   loc={loc}
                 />
               ) : null}

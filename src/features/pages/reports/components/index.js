@@ -8,3 +8,5 @@ export * from "./expandGamblingRow";
 export * from "./EventWithVoucher";
 export * from "./OddSummaryModel";
 export * from "./MixVoucherView";
+export * from "./BodyVoucherView";
+export * from "./VoucherViewModal";

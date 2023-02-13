@@ -8,6 +8,7 @@ import GoalResult from "./GoalResult";
 import BetAmountTotal from "./BetAmountTotal";
 import LiveDataReport from "./LiveDataReport";
 import MixLiveDataReport from "./MixLiveDataReport";
+import GoalLiveDataReport from "./GoalLiveDataReport";
 import { ExpandedCollections } from "./ExpandedCollections";
 import {
   CollectionsAdmin,
@@ -55,7 +56,9 @@ class Report extends React.Component {
         ? 13
         :this.props.location.pathname.includes("odd-summary")
         ? 14
-        : 15;
+        :this.props.location.pathname.includes("over-under-report")
+        ? 15
+        : 16;
 
     return (
       <div className="w-100">
@@ -87,7 +90,10 @@ class Report extends React.Component {
           <SelectedEvents />
         ) : loc == 14 ? (
           <OddSummary/>
-        ):(
+        ): loc == 15 ? (
+          <GoalLiveDataReport/>
+        ):
+        (
           <CollectionsUser />
         )}
       </div>

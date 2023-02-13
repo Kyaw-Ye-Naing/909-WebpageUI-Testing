@@ -15,7 +15,7 @@ import { useMediaPredicate } from "react-media-hook";
 import { reportController } from "../../../../controllers/reportController";
 import MyColor from "../../../../config/color";
 import SearchBar from "material-ui-search-bar";
-import { MyEventModal } from "../../../common/components/MyEventModal";
+import VoucherViewModal from "./VoucherViewModal";
 import React, { useEffect, useState } from 'react'
 import { useParams, withRouter } from "react-router-dom";
 import { withTheme } from "../../../common/hoc/withTheme";
@@ -155,7 +155,7 @@ const MixVoucherView = withRouter((props) => {
   });
 
   const classes = useStyles();
-  const { gamblingTypeId } = useParams();
+  const { mixtype } = useParams();
 
   const [rowPerPage, setRowPerPage] = useState(5);
   const [page, setPage] = useState(0);
@@ -167,25 +167,25 @@ const MixVoucherView = withRouter((props) => {
   const isPhone = useMediaPredicate("(max-width: 800px)");
 
   useEffect(() => {
-   // props.setLoading(true);
-    //getMixVoucher();
+   props.setLoading(true);
+    getMixVoucher();
   }, []);
 
   const getMixVoucher = () => {
-    // reportController.getMixVoucherList(gamblingTypeId, (data) => {
-    // setMixVoucherList(data.voucherData);
-    // setSearchVoucher(data.voucherData);
-    // setIsExist(data.isExist);
-    // });
-    //props.setLoading(false);
+    reportController.getMixVoucherList(mixtype, (data) => {
+    setMixVoucherList(data.voucherData);
+    setSearchVoucher(data.voucherData);
+    });
+    props.setLoading(false);
   };
 
   const requestSearch = (value) => {
     setSearchText(value);
     const voucherFilter = searchVoucher.filter((v) => {
       return (
-        v.voucherName.toLowerCase().includes(value.toLowerCase()) ||
-        v.userName.toLowerCase().includes(value.toLowerCase())
+        v.postingNo.toLowerCase().includes(value.toLowerCase()) ||
+        v.userName.toLowerCase().includes(value.toLowerCase()) ||
+        v.isSame.toLowerCase().includes(value.toLowerCase())
       );
     });
     setMixVoucherList(voucherFilter);
@@ -200,8 +200,9 @@ const MixVoucherView = withRouter((props) => {
     setPage(newPage);
   };
 
-  const onClickDetail = (gamblingWinId) => {
-    setGamId(gamblingWinId);
+  const onClickDetail = (gamblingId) => {
+    //console.log("gamblingId from parent",gamblingId)
+    setGamId(gamblingId);
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -211,7 +212,7 @@ const MixVoucherView = withRouter((props) => {
 
   return (
     <Paper className={classes.root}>
-      <h2>({gamblingTypeId}) Mix Voucher List</h2>
+      <h2>({mixtype}) Mix Voucher List</h2>
       <hr />
       <SearchBar
         placeholder={"Search"}
@@ -222,7 +223,7 @@ const MixVoucherView = withRouter((props) => {
       />
       {isExist == true ? (
         <div>
-          <MyEventModal gamblingWinId={gamId} setLoading={props.setLoading} />
+          <VoucherViewModal gamblingId={gamId} setLoading={props.setLoading}/>
           <TableContainer className={classes.container}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
@@ -252,23 +253,23 @@ const MixVoucherView = withRouter((props) => {
                           {page > 0 ? k + 1 + rowPerPage * page : k + 1}
                         </TableCell>
                         <TableCell align="left">
-                          {v.voucherName} <br />{" "}
+                          {v.postingNo} <br />{" "}
                           <small>
-                            {v.bettedDate}
+                            {v.bettedTime}
                           </small>
                         </TableCell>
                         <TableCell align="left">{v.userId}</TableCell>
                         <TableCell align="left">{v.userName}</TableCell>
                         <TableCell align="left">{v.amount}</TableCell>
-                        <TableCell>{v.gamblingTypeId}</TableCell>
+                        <TableCell><span className="badge badge-danger">{v.isSame}</span></TableCell>
                         <TableCell>
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              onClickDetail(129191);
+                              onClickDetail(v.gamblingId);
                             }}
                             data-toggle="modal"
-                            data-target="#exampleModalLong"
+                            data-target="#voucherviewmodal"
                             style={{
                               backgroundColor: MyColor.secondaryBackground,
                             }}

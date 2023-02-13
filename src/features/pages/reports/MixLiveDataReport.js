@@ -71,9 +71,9 @@ const MixLiveDataReport = (props) => {
     return parseFloat(number).toFixed(2);
   }
 
-  const handleClickView = (eventId) => {
+  const handleClickView = (mixtype) => {
    // history.push(`/event-with-voucher/${eventId}`);
-    history.push(`/mix-voucher-view/4`);
+    history.push(`/mix-voucher-view/${mixtype}`);
   };
 
   return (
@@ -121,10 +121,9 @@ const MixLiveDataReport = (props) => {
                   <TableCell align="right" className={classes.tableHeader}>
                     Total Amount
                   </TableCell>
-                  {/* <TableCell align="right" className={classes.tableHeader}>
+                  <TableCell align="right" className={classes.tableHeader}>
                    Action
-                  </TableCell> */}
-
+                  </TableCell>
                   {/*--------*/}
                 </TableRow>
               </TableHead>
@@ -157,11 +156,11 @@ const MixLiveDataReport = (props) => {
                               float(ld.totalamount)
                             )}
                           </TableCell>
-                          {/* <TableCell align="right">
+                          <TableCell align="right">
                             <button
                               className="btn btn-primary"
                               onClick={() => {
-                                handleClickView();
+                                handleClickView(ld.mixtype);
                               }}
                               style={{
                                 backgroundColor: MyColor.secondaryBackground,
@@ -169,7 +168,7 @@ const MixLiveDataReport = (props) => {
                             >
                               View Details
                             </button>
-                          </TableCell> */}
+                          </TableCell>
                         </TableRow>
                       );
                     })}

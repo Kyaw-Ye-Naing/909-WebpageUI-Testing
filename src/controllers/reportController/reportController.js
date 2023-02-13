@@ -149,12 +149,30 @@ const getEventOddSummary = (rapidEventId, setResponse) => {
   });
 }
 
-const getMixVoucherList = (gamblingTypeId, setResponse) => {
-  postApi(`${apiList.getEventOddSummary}`,
-    { gamblingTypeId: gamblingTypeId },
+const getMixVoucherList = (teamCount, setResponse) => {
+  getApi(`${apiList.mixVoucherLists}/${parseInt(teamCount)}`,
     (data) => {
       setResponse(data);
     });
+}
+
+const getSingleVoucherList = (rapidEventId,isbody,setResponse) => {
+  postApi(`${apiList.singleVoucherLists}`,
+    { 
+      rapidEventId: parseInt(rapidEventId) ,
+      isBody : isbody
+    },
+    (data) => {
+      setResponse(data);
+    });
+}
+
+const getVoucherViewDetails = (gamblingId,setResponse) => {
+  getApi(`${apiList.voucherDetailsView}/${parseInt(gamblingId)}`,
+  (data) => {
+    setResponse(data);
+  }
+  )
 }
 
 export const reportController = {
@@ -177,5 +195,7 @@ export const reportController = {
   getPreupcommingEvent,
   getEventOddSummary,
   getUpdateStatus,
-  getMixVoucherList
+  getMixVoucherList,
+  getSingleVoucherList,
+  getVoucherViewDetails
 };

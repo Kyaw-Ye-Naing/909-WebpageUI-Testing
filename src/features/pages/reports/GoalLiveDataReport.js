@@ -13,8 +13,8 @@ import MyColor from "../../../config/color";
 import { Fragment } from "react";
 import { withTheme } from "../../common/hoc/withTheme";
 import { Today } from "@material-ui/icons";
-import { useMediaPredicate } from "react-media-hook";
 import { useHistory } from "react-router-dom";
+import { useMediaPredicate } from "react-media-hook";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LiveDataReport = (props) => {
+const GoalLiveDataReport = (props) => {
   const defaultDate = moment(new Date()).format("YYYY-MM-DD");
   const [choseDate, setChoseDate] = useState(defaultDate);
   const [liveData, setLiveData] = useState([]);
@@ -65,19 +65,16 @@ const LiveDataReport = (props) => {
   const getLiveDataReport = () => {
     props.setLoading(true);
     reportController.getLiveDataReport(choseDate, (data) => {
-      // setLiveData(data.length > 0 ? data : []);
-      // setOriginalData(data.length > 0 ? data : []);
       setLiveData(data.message == 1 ? data.livedata : []);
       setOriginalData(data.message == 1 ? data.livedata : []);
       props.setLoading(false);
     });
   };
 
-const handleClickView = (rapidEventId) => {
-  //console.log('rapid',rapidEventId);
-  history.push(`/body-voucher-view/${rapidEventId}/body`);
-};
-  
+  const handleClickView = (rapidEventId) => {
+    history.push(`/body-voucher-view/${rapidEventId}/goal`);
+  };
+
   const setDifferentChange = (text, value) => {
     if (text == "body") {
       setBodyDiff(value);
@@ -87,32 +84,11 @@ const handleClickView = (rapidEventId) => {
   };
 
   const searchDifferentAmt = () => {
-    // const filteredRows = liveData.filter((row) => {
-    //     console.log(row.eventsLists)
-    //     var temp=row.eventsLists.filter((v)=>{
-    //       v.bodyAmount<=bodydiff
-    //     })
-    //     // row.homeTeam.toLowerCase().includes(searchedVal.toLowerCase()) ||
-    //     // row.awayTeam.toLowerCase().includes(searchedVal.toLowerCase()) ||
-    //     // row.leagueName.toLowerCase().includes(searchedVal.toLowerCase())
-    //   return temp;
-    // });
-
-    var tempLive = [];
-    // liveData.map((m, k) => {
-    //   var leagueObj = {};
-    //   leagueObj["leagueName"] = m.leagueName;
-    //   var temp = m.eventsLists.filter(
-    //     (v) => v.bodyAmount >= bodydiff && v.goalAmount >= goaldiff
-    //   );
-    //   leagueObj["eventsLists"] = temp;
-    //   if (temp.length > 0) {
-    //     tempLive.push(leagueObj);
-    //   }
-    // });
-
-    var temp = liveData.filter((v) => v.bodyAmount >= bodydiff);
-
+   
+      var temp = liveData.filter(
+        (v) => v.goalAmount >= goaldiff
+      );
+     
     setLiveData(temp);
   };
 
@@ -130,14 +106,14 @@ const handleClickView = (rapidEventId) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
+  
   const float = (number) => {
     return parseFloat(number).toFixed(2);
-  };
+  }
 
   return (
     <div className="container">
-      {isPhone ? <h3>body Live Data Report</h3> : <h1>Body Live Data Report</h1>}
+      {isPhone ? (<h3>Goal Live Data Report</h3>) : (<h1>Goal Live Data Report</h1>)}
       <Paper className={classes.root}>
         <div className="d-flex p-2 align-items-end">
           <TextField
@@ -167,31 +143,26 @@ const handleClickView = (rapidEventId) => {
             </button>
           </div>
         </div>
-        <div
-          className="d-flex p-2"
-          style={{ flexDirection: isPhone ? "column" : "row" }}
-        >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-            }}
-          >
-            <div className="p-2">
-              <TextField
-                id="bodyfiff"
-                label=" Body Different :"
-                type="text"
-                placeholder="0"
-                value={bodydiff == 0 ? null : bodydiff}
-                onChange={(v) => setDifferentChange("body", v.target.value)}
-                className={isPhone ? classes.textField1 : classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </div>
-            {/* <div className="p-2">
+        <div className="d-flex p-2" style={{flexDirection: isPhone ? "column" : "row"}}>
+          <div style={{
+            display:'flex',
+            flexDirection: 'row'
+          }}>
+          {/* <div className="p-2">
+            <TextField
+              id="bodyfiff"
+              label=" Body Different :"
+              type="text"
+              placeholder="0"
+              value={bodydiff == 0 ? null : bodydiff}
+              onChange={(v) => setDifferentChange("body", v.target.value)}
+              className={isPhone ? classes.textField1 : classes.textField}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </div> */}
+          <div className="p-2">
             <TextField
               id="goaldiff"
               label=" Goal Different :"
@@ -204,44 +175,42 @@ const handleClickView = (rapidEventId) => {
                 shrink: true,
               }}
             />
-          </div> */}
           </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-            }}
-          >
-            <div className="p-2">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                style={{
-                  backgroundColor: MyColor.secondaryBackground,
-                  color: "#fff",
-                  minWidth: 100,
-                  maxHeight: 40,
-                }}
-                onClick={searchDifferentAmt}
-              >
-                <i className="fas fa-search px-2"></i>Search
-              </button>
-            </div>
-            <div className="p-2">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                style={{
-                  backgroundColor: MyColor.secondaryBackground,
-                  color: "#fff",
-                  minWidth: 60,
-                  maxHeight: 40,
-                }}
-                onClick={showAllData}
-              >
-                <i className="fas fa-search px-2"></i>All
-              </button>
-            </div>
+          </div>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'row'
+          }}>
+          <div className="p-2">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              style={{
+                backgroundColor: MyColor.secondaryBackground,
+                color: "#fff",
+                minWidth: 100,
+                maxHeight: 40,
+              }}
+              onClick={searchDifferentAmt}
+            >
+              <i className="fas fa-search px-2"></i>Search
+            </button>
+          </div>
+          <div className="p-2">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              style={{
+                backgroundColor: MyColor.secondaryBackground,
+                color: "#fff",
+                minWidth: 60,
+                maxHeight: 40,
+              }}
+              onClick={showAllData}
+            >
+              <i className="fas fa-search px-2"></i>All
+            </button>
+          </div>
           </div>
         </div>
         {
@@ -251,7 +220,7 @@ const handleClickView = (rapidEventId) => {
                 <TableRow>
                   <TableCell align="right" className={classes.tableHeader}>
                     No
-                  </TableCell>
+                 </TableCell>
                   <TableCell align="right" className={classes.tableHeader}>
                     League Name
                   </TableCell>
@@ -259,16 +228,16 @@ const handleClickView = (rapidEventId) => {
                     Home Team
                   </TableCell>
                   <TableCell align="right" className={classes.tableHeader}>
-                    Home Bet Amount
-                  </TableCell>
-                  <TableCell align="right" className={classes.tableHeader}>
                     Away Team
                   </TableCell>
                   <TableCell align="right" className={classes.tableHeader}>
-                    Away Bet Amount
+                    Goal Over
                   </TableCell>
                   <TableCell align="right" className={classes.tableHeader}>
-                    Body Different
+                    Goal Under
+                  </TableCell>
+                  <TableCell align="right" className={classes.tableHeader}>
+                    Goal Different
                   </TableCell>
                   <TableCell align="right" className={classes.tableHeader}>
                     Action
@@ -280,59 +249,54 @@ const handleClickView = (rapidEventId) => {
               <TableBody>
                 {liveData.length > 0 &&
                   liveData
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) 
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) // // Add by AKPM 27-4-2021
                     .map((ed, ldId) => {
-                      return (
+                      return (                     
                         <TableRow key={ldId}>
-                          <TableCell align="right">{ldId + 1}</TableCell>
-                          <TableCell align="right">{ed.leagueName}</TableCell>
-                          {ed.homeAmount > ed.awayAmount ? (
-                            <TableCell
-                              align="right"
-                              style={{
-                                fontWeight: "bolder",
-                                color: "red",
-                              }}
-                            >
-                              {ed.homeTeam.toLocaleString("en-US")}
-                            </TableCell>
-                          ) : (
-                            <TableCell align="right">
-                              {ed.homeTeam.toLocaleString("en-US")}
-                            </TableCell>
-                          )}
-                          <TableCell align="right">
-                            {float(ed.homeAmount)}
-                          </TableCell>
-
-                          {ed.awayAmount > ed.homeAmount ? (
-                            <TableCell
-                              align="right"
-                              style={{
-                                fontWeight: "bolder",
-                                color: "red",
-                              }}
-                            >
-                              {ed.awayTeam.toLocaleString("en-US")}
-                            </TableCell>
-                          ) : (
-                            <TableCell align="right">
-                              {ed.awayTeam.toLocaleString("en-US")}
-                            </TableCell>
-                          )}
-                          <TableCell align="right">
-                            {float(ed.awayAmount)}
-                          </TableCell>
-                          <TableCell
-                            align="right"
-                            style={{
-                              color: "orange",
-                              fontWeight: "bolder",
-                            }}
-                          >
-                            {float(ed.bodyAmount).toLocaleString("en-US")}
-                          </TableCell>
-                          <TableCell>
+                              <TableCell align="right">{ldId + 1}</TableCell>
+                              <TableCell align="right">{ed.leagueName}</TableCell>
+                              <TableCell align="right">{ed.homeTeam}</TableCell>
+                              <TableCell align="right">{ed.awayTeam}</TableCell>                                                              
+                                  {ed.over > ed.under ? (
+                                    <TableCell
+                                    align="right"
+                                      style={{
+                                        fontWeight: "bolder",
+                                        color: "red",
+                                      }}
+                                    >
+                                      {float(ed.over).toLocaleString("en-US")}
+                                    </TableCell>
+                                  ) : (
+                                    <TableCell align="right">
+                                      {float(ed.over).toLocaleString("en-US")}
+                                    </TableCell>
+                                  )}
+                                  {ed.under > ed.over ? (
+                                    <TableCell
+                                      align="right"
+                                      style={{
+                                        fontWeight: "bolder",
+                                        color: "red",
+                                      }}
+                                    >
+                                      {float(ed.under).toLocaleString("en-US")}
+                                    </TableCell>
+                                  ) : (
+                                    <TableCell align="right">
+                                      {float(ed.under).toLocaleString("en-US")}
+                                    </TableCell>
+                                  )}
+                                  <TableCell
+                                    align="right"
+                                    style={{
+                                      color: "orange",
+                                      fontWeight: "bolder",
+                                    }}
+                                  >
+                                    {float(ed.goalAmount).toLocaleString("en-US")}
+                                  </TableCell>
+                                  <TableCell>
                             <button
                               className="btn btn-primary"
                               onClick={() => {
@@ -344,10 +308,11 @@ const handleClickView = (rapidEventId) => {
                             >
                               View 
                             </button>
-                          </TableCell>                      
-                        </TableRow>
-                      );
-                    })}
+                          </TableCell>                             
+                                </TableRow>
+                              
+                            );
+                          })}                                  
               </TableBody>
             </Table>
           </TableContainer>
@@ -366,4 +331,4 @@ const handleClickView = (rapidEventId) => {
   );
 };
 
-export default withTheme(LiveDataReport);
+export default withTheme(GoalLiveDataReport);
