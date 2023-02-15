@@ -64,7 +64,7 @@ const LiveDataReport = (props) => {
 
   const getLiveDataReport = () => {
     props.setLoading(true);
-    reportController.getLiveDataReport(choseDate, (data) => {
+    reportController.getLiveDataReport(choseDate, true,(data) => {
       // setLiveData(data.length > 0 ? data : []);
       // setOriginalData(data.length > 0 ? data : []);
       setLiveData(data.message == 1 ? data.livedata : []);

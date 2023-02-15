@@ -67,8 +67,8 @@ const removeEventsFromPre = (rapidEventId, status, setResponse) => {
   )
 }
 
-const getLiveDataReport = (date, setResponse) => {
-  postApi(`${apiList.liveData}`, { searchDate: date }, (data) => {
+const getLiveDataReport = (date,isbody, setResponse) => {
+  postApi(`${apiList.liveData}`, { searchDate: date, isBody:isbody }, (data) => {
     setResponse(data);
   });
 };

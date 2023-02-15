@@ -157,7 +157,7 @@ import {
     },
   ]
   
-  const BodyVoucherView = withRouter((props) => {
+  const BodyVoucherView = (props) => {
     const useStyles = makeStyles({
       root: {
         width: "100%",
@@ -182,16 +182,16 @@ import {
     const isPhone = useMediaPredicate("(max-width: 800px)");
   
     useEffect(() => {
-       props.setLoading(true);
        getMixVoucher();
     }, []);
   
     const getMixVoucher = () => {
+      props.setLoading(true);
       reportController.getSingleVoucherList(rapidEventId,type == "body" ? true : false, (data) => {
       setMixVoucherList(data.voucher);
       setSearchVoucher(data.voucher);
-      });
       props.setLoading(false);
+      });
     };
   
     const requestSearch = (value) => {
@@ -277,6 +277,9 @@ import {
                           <TableCell align="left">
                             <span style={{color:v.color}}>{v.bettedTeam}</span>
                             </TableCell>
+                            <TableCell align="left">
+                            <span>{v.odds}</span>
+                            </TableCell>
                           {/* <TableCell>
                             <button
                               className="btn btn-primary"
@@ -314,7 +317,7 @@ import {
         )}
       </Paper>
     )
-  });
+  };
   
   export default withTheme(BodyVoucherView);
   
@@ -354,6 +357,12 @@ import {
       label: "Bet Team",
       align: "left",
       minWidth: 50,
+    },
+    {
+      id:"odd",
+      label:"Odds",
+      align:"left",
+      minWidth:50,
     },
     // {
     //   id: "action",

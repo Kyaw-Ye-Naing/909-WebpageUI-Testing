@@ -64,7 +64,7 @@ const GoalLiveDataReport = (props) => {
 
   const getLiveDataReport = () => {
     props.setLoading(true);
-    reportController.getLiveDataReport(choseDate, (data) => {
+    reportController.getLiveDataReport(choseDate,false,(data) => {
       setLiveData(data.message == 1 ? data.livedata : []);
       setOriginalData(data.message == 1 ? data.livedata : []);
       props.setLoading(false);
@@ -247,7 +247,7 @@ const GoalLiveDataReport = (props) => {
               </TableHead>
 
               <TableBody>
-                {liveData.length > 0 &&
+                {liveData && liveData.length > 0 &&
                   liveData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) // // Add by AKPM 27-4-2021
                     .map((ed, ldId) => {

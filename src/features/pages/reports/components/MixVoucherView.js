@@ -167,16 +167,16 @@ const MixVoucherView = withRouter((props) => {
   const isPhone = useMediaPredicate("(max-width: 800px)");
 
   useEffect(() => {
-   props.setLoading(true);
     getMixVoucher();
   }, []);
 
   const getMixVoucher = () => {
+    props.setLoading(true);
     reportController.getMixVoucherList(mixtype, (data) => {
     setMixVoucherList(data.voucherData);
     setSearchVoucher(data.voucherData);
-    });
     props.setLoading(false);
+    });
   };
 
   const requestSearch = (value) => {
