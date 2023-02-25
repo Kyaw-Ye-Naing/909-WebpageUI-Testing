@@ -60,7 +60,7 @@ export const ManageBalance = ({ userInfo, updateAgentData }) => {
 
   const OnClickBalance = () => {
     setIsLoading(true);
-    console.log("dfdfdf",isLoading);
+    //console.log("dfdfdf",isLoading);
     let amountList = {
       userId: userInfo.Id,
       amount: amount,

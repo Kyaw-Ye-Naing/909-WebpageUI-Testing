@@ -8,9 +8,10 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  Badge,
+  Checkbox,
 } from "@material-ui/core";
 import { toast } from "react-toastify";
+import {FormGroup,FormControlLabel} from "@material-ui/core";
 import { useMediaPredicate } from "react-media-hook";
 import { reportController } from "../../../../controllers/reportController";
 import MyColor from "../../../../config/color";
@@ -19,6 +20,7 @@ import VoucherViewModal from "./VoucherViewModal";
 import React, { useEffect, useState } from 'react'
 import { useParams, withRouter } from "react-router-dom";
 import { withTheme } from "../../../common/hoc/withTheme";
+import { Button } from "../../agent/Create";
 const data = [
   {
     "voucherName": "GB09384834834838438",
@@ -155,16 +157,17 @@ const MixVoucherView = withRouter((props) => {
   });
 
   const classes = useStyles();
-  const { mixtype } = useParams();
+  const { selectedDate,mixtype } = useParams();
 
   const [rowPerPage, setRowPerPage] = useState(5);
   const [page, setPage] = useState(0);
   const [gamId, setGamId] = useState(0);
   const [isExist, setIsExist] = useState(true);
   const [searchText, setSearchText] = useState("");
-  const [mixVoucherList, setMixVoucherList] = useState(data);
-  const [searchVoucher, setSearchVoucher] = useState(data);
+  const [mixVoucherList, setMixVoucherList] = useState([]);
+  const [searchVoucher, setSearchVoucher] = useState([]);
   const isPhone = useMediaPredicate("(max-width: 800px)");
+  const [checked, setChecked] = useState(false);
 
   useEffect(() => {
     getMixVoucher();
@@ -172,7 +175,7 @@ const MixVoucherView = withRouter((props) => {
 
   const getMixVoucher = () => {
     props.setLoading(true);
-    reportController.getMixVoucherList(mixtype, (data) => {
+    reportController.getMixVoucherList(mixtype,selectedDate,(data) => {
     setMixVoucherList(data.voucherData);
     setSearchVoucher(data.voucherData);
     props.setLoading(false);
@@ -184,8 +187,8 @@ const MixVoucherView = withRouter((props) => {
     const voucherFilter = searchVoucher.filter((v) => {
       return (
         v.postingNo.toLowerCase().includes(value.toLowerCase()) ||
-        v.userName.toLowerCase().includes(value.toLowerCase()) ||
-        v.isSame.toLowerCase().includes(value.toLowerCase())
+        v.userName.toLowerCase().includes(value.toLowerCase())  ||
+        v.groupName.toLowerCase().includes(value.toLowerCase())
       );
     });
     setMixVoucherList(voucherFilter);
@@ -210,10 +213,26 @@ const MixVoucherView = withRouter((props) => {
     setPage(0);
   };
 
+
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+    //console.log("check",checked)
+    if(checked == false){
+      const sameMixgroupArr = mixVoucherList.filter(v => v.groupName != "-");
+      const orderbyResult = sameMixgroupArr.sort((a, b) => b.groupName - a.groupName);
+      setMixVoucherList([...orderbyResult])
+    }
+    else{
+      setMixVoucherList([...searchVoucher])
+    }
+  };
+      
+
   return (
     <Paper className={classes.root}>
       <h2>({mixtype}) Mix Voucher List</h2>
       <hr />
+      <div style={{display:"flex",gap:"15px",alignItems:"center"}}>
       <SearchBar
         placeholder={"Search"}
         value={searchText}
@@ -221,6 +240,20 @@ const MixVoucherView = withRouter((props) => {
         onChange={(searchVal) => requestSearch(searchVal)}
         onCancelSearch={() => cancelSearch()}
       />
+       <FormGroup row>
+       <FormControlLabel
+        control={
+          <Checkbox
+            checked={checked}
+            onChange={handleChange}
+            name="checkedB"
+            color="primary"
+          />
+        }
+        label="Same Vouchers"
+      />
+       </FormGroup>
+      </div>
       {isExist == true ? (
         <div>
           <VoucherViewModal gamblingId={gamId} setLoading={props.setLoading}/>
@@ -261,7 +294,11 @@ const MixVoucherView = withRouter((props) => {
                         <TableCell align="left">{v.userId}</TableCell>
                         <TableCell align="left">{v.userName}</TableCell>
                         <TableCell align="left">{v.amount}</TableCell>
-                        <TableCell><span className="badge badge-danger">{v.isSame}</span></TableCell>
+                        <TableCell>
+                          <span style={{backgroundColor:v.colorName,color:"#fff",borderRadius : 6,padding:5,fontSize:"12px"}}>
+                          {v.groupName}
+                          </span>
+                        </TableCell>
                         <TableCell>
                           <button
                             className="btn btn-primary"
@@ -285,7 +322,7 @@ const MixVoucherView = withRouter((props) => {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25, 50, 100]}
             component="div"
-            count={searchVoucher.length}
+            count={mixVoucherList.length}
             rowsPerPage={rowPerPage}
             page={page}
             onChangePage={handleChangePage}

@@ -98,7 +98,7 @@ const App = (props) => {
               path={"/event-with-voucher/:rapidEventId"}
               component={EventWithVoucher}
             />
-            <Route path={"/mix-voucher-view/:mixtype"} 
+            <Route path={"/mix-voucher-view/:selectedDate/:mixtype"} 
             component={MixVoucherView} />
              <Route path={"/body-voucher-view/:rapidEventId/:type"} 
             component={BodyVoucherView} />

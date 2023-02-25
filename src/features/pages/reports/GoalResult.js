@@ -78,7 +78,7 @@ const GoalResult = (props) => {
       setSearchedLeague(valueList);
       props.setLoading(false);
       if(data.processRun){
-        console.log("is running state change......");
+        //console.log("is running state change......");
         setIsRunning((isRunning) => !isRunning);
       }
     });
@@ -227,7 +227,7 @@ const GoalResult = (props) => {
   }
 
   const fetchUpdateStatus = () => {
-    console.log("api fetching........")
+    //console.log("api fetching........")
     reportController.getUpdateStatus("result",(data) => {
       if(data.status == "fetching"){
         setStatusMessage("Data saving and background processing .....");

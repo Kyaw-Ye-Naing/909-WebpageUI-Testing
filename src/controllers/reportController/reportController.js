@@ -149,12 +149,12 @@ const getEventOddSummary = (rapidEventId, setResponse) => {
   });
 }
 
-const getMixVoucherList = (teamCount, setResponse) => {
-  getApi(`${apiList.mixVoucherLists}/${parseInt(teamCount)}`,
+const getMixVoucherList = (teamCount,date, setResponse) => {
+  getApi(`${apiList.mixVoucherLists}/${parseInt(teamCount)}/${date}`,
     (data) => {
       setResponse(data);
     });
-}
+};
 
 const getSingleVoucherList = (rapidEventId,isbody,setResponse) => {
   postApi(`${apiList.singleVoucherLists}`,
@@ -165,7 +165,7 @@ const getSingleVoucherList = (rapidEventId,isbody,setResponse) => {
     (data) => {
       setResponse(data);
     });
-}
+};
 
 const getVoucherViewDetails = (gamblingId,setResponse) => {
   getApi(`${apiList.voucherDetailsView}/${parseInt(gamblingId)}`,
@@ -173,7 +173,7 @@ const getVoucherViewDetails = (gamblingId,setResponse) => {
     setResponse(data);
   }
   )
-}
+};
 
 export const reportController = {
   getLiveDataReport,

@@ -417,7 +417,7 @@ export const SelectedLeague = withTheme((props) => {
   }
 
   const searchSelectedEvent = () => {
-    console.log("hey i am running......");
+    //console.log("hey i am running......");
     props.setLoading(true);
     reportController.getBufferData((data) => {
       setBufferList(data.bufferdata);
@@ -429,7 +429,7 @@ export const SelectedLeague = withTheme((props) => {
       //  setMixTotal(data.mixCount);
       props.setLoading(false);
       if(data.processRun){
-        console.log("is running state change......");
+        //console.log("is running state change......");
         setIsRunning((isRunning) => !isRunning);
       }
     });
@@ -561,14 +561,14 @@ export const SelectedLeague = withTheme((props) => {
 
   //IF you want to stop above timer
   function resetCounter() {
-    console.log("reset counter,hey i am working.....")
+    //console.log("reset counter,hey i am working.....")
     clearInterval(myInterval.current);
     myInterval.current = null;
     setIsRunning(false);
   }
 
   const fetchUpdateStatus = () => {
-    console.log("api fetching........")
+    //console.log("api fetching........")
     reportController.getUpdateStatus("buffer",(data) => {
       if(data.status == "fetching"){
         setStatusMessage("Api Data Fetching...");
@@ -750,21 +750,6 @@ export const SelectedLeague = withTheme((props) => {
           >
             <i className="fa fa-sync"></i> Update
           </button>
-          {/* <button
-            type="button"
-            className="btn btn-secondary"
-            style={{
-              backgroundColor: MyColor.secondaryBackground,
-              color: "#fff",
-              marginLeft: 10,
-              minWidth: 100,
-              maxHeight: 40,
-              fontSize: isPhone ? 12 : null,
-            }}
-            onClick={() => resetCounter()}
-          >
-            <i className="fa fa-sync"></i> Clear
-          </button> */}
           <button
             type="button"
             className="btn btn-secondary"
