@@ -21,6 +21,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams, withRouter } from "react-router-dom";
 import { withTheme } from "../../../common/hoc/withTheme";
 import { Button } from "../../agent/Create";
+import { event } from "jquery";
 const data = [
   {
     "voucherName": "GB09384834834838438",
@@ -168,6 +169,7 @@ const MixVoucherView = withRouter((props) => {
   const [searchVoucher, setSearchVoucher] = useState([]);
   const isPhone = useMediaPredicate("(max-width: 800px)");
   const [checked, setChecked] = useState(false);
+  const [totalAmt,setTotalAmt] = useState(0);
 
   useEffect(() => {
     getMixVoucher();
@@ -178,6 +180,10 @@ const MixVoucherView = withRouter((props) => {
     reportController.getMixVoucherList(mixtype,selectedDate,(data) => {
     setMixVoucherList(data.voucherData);
     setSearchVoucher(data.voucherData);
+    let allTotal = data.voucherData.reduce(function (acc, obj) {
+      return acc + obj.amount; 
+    }, 0);
+    setTotalAmt(allTotal);
     props.setLoading(false);
     });
   };
@@ -191,6 +197,12 @@ const MixVoucherView = withRouter((props) => {
         v.groupName.toLowerCase().includes(value.toLowerCase())
       );
     });
+
+    let allTotal = voucherFilter.reduce(function (acc, obj) {
+      return acc + obj.amount; 
+    }, 0);
+
+    setTotalAmt(allTotal);
     setMixVoucherList(voucherFilter);
   };
 
@@ -219,10 +231,32 @@ const MixVoucherView = withRouter((props) => {
     //console.log("check",checked)
     if(checked == false){
       const sameMixgroupArr = mixVoucherList.filter(v => v.groupName != "-");
-      const orderbyResult = sameMixgroupArr.sort((a, b) => b.groupName - a.groupName);
+      const orderbyResult = sameMixgroupArr.sort((a, b) => {
+        const nameA = a.groupName.toUpperCase(); 
+        const nameB = b.groupName.toUpperCase(); 
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+      
+        // names must be equal
+        return 0;
+      });
+      let allTotal = orderbyResult.reduce(function (acc, obj) {
+        return acc + obj.amount; 
+      }, 0);
+  
+      setTotalAmt(allTotal);
       setMixVoucherList([...orderbyResult])
     }
     else{
+      let allTotal = searchVoucher.reduce(function (acc, obj) {
+        return acc + obj.amount; 
+      }, 0);
+  
+      setTotalAmt(allTotal);
       setMixVoucherList([...searchVoucher])
     }
   };
@@ -253,6 +287,7 @@ const MixVoucherView = withRouter((props) => {
         label="Same Vouchers"
       />
        </FormGroup>
+        <span style={{fontSize:"1.5rem",fontWeight:600,marginBottom:'12px'}}>Total Amount : {totalAmt} Ks</span>
       </div>
       {isExist == true ? (
         <div>
