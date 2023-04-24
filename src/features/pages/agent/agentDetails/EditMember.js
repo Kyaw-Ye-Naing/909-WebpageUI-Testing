@@ -692,6 +692,7 @@ export function SingleBetCommissionComponent({
   );
 }
 export default withTheme(EditMember);
+
 export function UserInfoComponent({
   loginUserInfo,
   newuser,
@@ -917,7 +918,6 @@ export function UserIdTextBox(props) {
           }}
           value={value == 0 ? null : value}
           onChange={(e) => onChange(e.target.value)}
-          autoCorrect="off"
           autoCorrect="off"
           step="0.01"
         />

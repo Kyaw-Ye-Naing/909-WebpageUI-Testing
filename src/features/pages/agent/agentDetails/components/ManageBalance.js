@@ -68,9 +68,11 @@ export const ManageBalance = ({ userInfo, updateAgentData }) => {
     let strList = JSON.stringify(amountList);
 
     if (amount === "") {
+      setIsLoading(false);
       toast.warning("Please Fill Amount!", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
+      
     } else {
       if (credit) {
         if (contextData.userId !== 1) {
@@ -116,6 +118,7 @@ export const ManageBalance = ({ userInfo, updateAgentData }) => {
         };
         if (value === "add") {
           if (contextData.userId !== 1) {
+            setIsLoading(false);
             if (parseFloat(amount) > contextData.balance) {
               toast.error("Balance is not enough!", {
                 position: toast.POSITION.BOTTOM_RIGHT,
@@ -160,9 +163,11 @@ export const ManageBalance = ({ userInfo, updateAgentData }) => {
           }
         } else {
           if (parseFloat(amount) > userInfo.balance) {
+            setIsLoading(false);
             toast.error("Balance cannot be removed!", {
               position: toast.POSITION.BOTTOM_RIGHT,
             });
+            setIsLoading(false);
           } else {
             let activityList = {
               newData: strList,
