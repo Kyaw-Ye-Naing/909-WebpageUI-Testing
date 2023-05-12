@@ -14,9 +14,16 @@ export const loginController = (
       if (data.token) {
         localStorage.setItem("aaaLoginData", JSON.stringify(data));
         localStorage.setItem("password", password);
+        localStorage.setItem("isShare",data.share);
         setuserData(JSON.stringify(data.userDetails));
         setMessage("Login Success");
-        props.history.push("/dashboard");
+        if(data.share){
+          props.history.push("/subdashboard");
+        }
+        else{
+          props.history.push("/dashboard");
+        }
+        
       } else {
         setMessage(data.message);
       }

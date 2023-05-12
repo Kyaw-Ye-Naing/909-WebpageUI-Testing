@@ -71,4 +71,8 @@ export const apiList = {
   getPreupcommingEvent : "OddSummary/get-preupcomming",
   getEventOddSummary : "OddSummary/get-event-odd-summary",
   getUpdateStatus : "TblLeagues/fetch-update-status",
+
+  getSubUserInfo : "TblUsers/GetSubUserInfo",
+  addSubUserInfo : "TblUsers/SaveSubUserInfo",
+  editSubUserInfo : "TblUsers/EditSubUserInfo"
 };

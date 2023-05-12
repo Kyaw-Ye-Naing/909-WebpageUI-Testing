@@ -15,6 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import Login from "./features/pages/login";
 import Dashboard from "./features/pages/dashboard";
+import SubDashboard from "./features/pages/dashboard/SubDashboard";
 import Navbar from "./features/common/components/Navbar";
 import MyColor from "./config/color";
 import SideBar from "./features/common/components/sideBar";
@@ -22,6 +23,7 @@ import Agent from "./features/pages/agent";
 import AgentList from "./features/pages/List";
 import Report from "./features/pages/reports";
 import Account from "./features/pages/account";
+import SubAccount from "./features/pages/SubAccount";
 import { Transactions } from "./features/pages/dashboard/Transactions";
 import { AgentDetails } from "./features/pages/agent/agentDetails/AgentDetails";
 import { Setting } from "./features/pages/settings/Settings";
@@ -85,10 +87,12 @@ const App = (props) => {
         >
           <Switch>
             <Route path="/dashboard" component={Dashboard} />
+            <Route path="/subdashboard" component={SubDashboard} />
             <Route exact path={"/"} component={Login} />
             <Route path={"/agent/create"} component={Agent} />
             {/* <Route path={"/agent/create"} component={AgentCreate} /> */}
             <Route path={"/agent/list"} component={AgentList} />
+            <Route path={"/agent/sub"} component={SubAccount} />
             <Route path={"/reports"} component={Report} />
             <Route path={"/account"} component={Account} />
             <Route path={"/transactions"} component={Transactions} />

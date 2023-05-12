@@ -127,6 +127,7 @@ const Dashboard = (props) => {
   };
 
   const searchDataForTransaction = () => {
+    console.log("hey  i am working from table")
     props.setLoading(true);
     userData &&
       userController.getTransactionsForDashboard(
@@ -157,6 +158,7 @@ const Dashboard = (props) => {
   };
 
   const getUserCount = () => {
+    console.log("hey  i am working from count")
     userController.getUserCount((data) => {
       setUserCount(data.userCount);
       setSeniorMasterCount(data.seniorCount);

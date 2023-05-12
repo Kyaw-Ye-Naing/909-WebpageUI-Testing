@@ -362,6 +362,42 @@ const removeVoucherNo = (gamblingId,status,setResponse) => {
   });
 }
 
+const getSubUser = (userId,setResponse) => {
+  getApi(`${apiList.getSubUserInfo}/${userId}`,
+  (data) => {
+      setResponse(data);
+  });
+}
+
+const SaveSubUser = (dataList,userId,setResponse) => {
+  postApi(`${apiList.addSubUserInfo}`,{
+    userId : userId,
+    username : dataList.username,
+    name : dataList.name,
+    mobile : dataList.mobile,
+    password : dataList.password
+  },
+  (data) => {
+      setResponse(data);
+  });
+}
+
+const UpdateSubUser = (dataList,setResponse) => {
+  console.log("dataList>>>",dataList)
+  putApi(`${apiList.editSubUserInfo}`,{
+    userId : dataList.userId,
+    username : dataList.username,
+    name : dataList.name,
+    mobile : dataList.mobile,
+    password : dataList.password,
+    id : dataList.id,
+    lock : dataList.lock
+  },
+  (data) => {
+      setResponse(data);
+  });
+}
+
 export const userController = {
   getAllUser,
   getUserInfoAndCommission,
@@ -402,5 +438,8 @@ export const userController = {
   updateRegulationText,
   getGroupGambling,
   getUserCount,
-  removeVoucherNo
+  removeVoucherNo,
+  getSubUser,
+  SaveSubUser,
+  UpdateSubUser
 };

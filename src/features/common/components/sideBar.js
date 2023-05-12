@@ -22,6 +22,8 @@ const SideBar = (props) => {
 
   let location = useLocation();
   let loc = location.pathname;
+  let isShare = localStorage.getItem("isShare");
+
   return (
     <div
       className="sidenav text-center pt-2"
@@ -60,7 +62,7 @@ const SideBar = (props) => {
 
       <div className="pb-2">
         <Link
-          to="/dashboard"
+          to={isShare == "true" ? "/subdashboard" : "dashboard"}
           className=""
           style={{
             textDecoration: "none",
@@ -87,24 +89,33 @@ const SideBar = (props) => {
           </div>
         </Link>
         <div>
-          <SideBarItem
-            ItemName={userInfo && userInfo.subRole}
-            icon={"fas fa-user-cog px-2"}
-            loc={loc}
-            route="agent"
-            showIcon={
-              showAgentDetails
-                ? `fas fa-angle-up px-2`
-                : `fas fa-angle-down px-2`
-            }
-            onClick={() => setShowAgentDetails(!showAgentDetails)}
-          />
-          {showAgentDetails && (
-            <Fragment>
-              <Item text="Create" route="agent/create" loc={loc} />
-              <Item text="List" route="agent/list" loc={loc} />
-            </Fragment>
-          )}
+          {isShare == "true" ?
+           null
+            : 
+             <>
+            <SideBarItem
+              ItemName={userInfo && userInfo.subRole}
+              icon={"fas fa-user-cog px-2"}
+              loc={loc}
+              route="agent"
+              showIcon={
+                showAgentDetails
+                  ? `fas fa-angle-up px-2`
+                  : `fas fa-angle-down px-2`
+              }
+              onClick={() => setShowAgentDetails(!showAgentDetails)}
+            />
+            {showAgentDetails && (
+              <Fragment>
+                <Item text="Create" route="agent/create" loc={loc} />
+                <Item text="List" route="agent/list" loc={loc} />
+                {userInfo && userInfo.roleId == 2 ?
+                  <Item text="Sub Masters" route="agent/sub" loc={loc} /> : null
+                }
+              </Fragment>
+            )}
+          </>
+          }
         </div>
         <div>
           <SideBarItem
@@ -133,11 +144,13 @@ const SideBar = (props) => {
                 />
               ) : null}
               {/* {userInfo&&userInfo.roleId == 1 ? */}
+             { isShare == "true" ? null :
               <Item
                 text="Member Outstanding"
                 route="reports/gambling-report"
                 loc={loc}
               />
+             }
               {userInfo && userInfo.roleId == 1 ? (
                 <Item
                   text="Selected Events"
@@ -159,7 +172,7 @@ const SideBar = (props) => {
                   loc={loc}
                 />
               ) : null}
-                {userInfo && userInfo.roleId == 1 ? (
+              {userInfo && userInfo.roleId == 1 ? (
                 <Item
                   text="Goal Live Data Report"
                   route="reports/over-under-report"
