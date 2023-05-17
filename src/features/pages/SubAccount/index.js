@@ -19,6 +19,7 @@ import AppContext from '../../../context/AppContext';
 import MyColor from "../../../config/color";
 import SearchBar from "material-ui-search-bar";
 import { userController } from '../../../controllers/userController';
+import { error } from 'jquery';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -45,12 +46,18 @@ const SubAccount = (props) => {
     const [searchText, setSearchText] = useState("");
     const { userData } = useContext(AppContext);
     const userInfo = JSON.parse(userData);
+    const [userList,setUserList] = useState([]);
     const [searchUserList, setSearchUserList] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const classes = useStyles();
+    const [userError, setUserError] = useState(false);
+    const [nameError, setNameError] = useState(false);
+    const [mobileError, setMobileError] = useState(false);
+    const [passError, setPassError] = useState(false);
     const [type, setType] = useState("");
     const [account, setAccount] = useState([]);
+    const [showModal, setshowModal] = useState(false);
 
     useEffect(() => {
         getUserInfo();
@@ -61,41 +68,57 @@ const SubAccount = (props) => {
         userInfo &&
             userController.getSubUser(userInfo && userInfo.userId, (data) => {
                 setSearchUserList(data.userdata);
+                setUserList(data.userdata);
                 props.setLoading(false);
             });
     }
 
     const handleOnClick = (account, type) => {
         console.log("final data >>>>>", account, type);
-        props.setLoading(true);
-        if (type == "Create") {
-            userController.SaveSubUser(account, userInfo && userInfo.userId, (data) => {
-                //setSearchUserList(data.userdata);
-                if (data.status == 1) {
-                    toast.success(data.message, {
-                        position: toast.POSITION.BOTTOM_RIGHT,
-                    });
-                }
-                if (data.status == 0) {
-                    toast.error(data.message, {
-                        position: toast.POSITION.BOTTOM_RIGHT,
-                    });
-                }
-                getUserInfo();
-                props.setLoading(false);
-                //props.setLoading(false);
-            });
+        // props.setLoading(true);
+        if (account.username == "") {
+            console.log("i am in")
+            setUserError(true);
         }
-        if (type == "Edit" || type == "password") {
-            userController.UpdateSubUser(account, (data) => {
-                if (data.status == 1) {
-                    toast.success(data.message, {
-                        position: toast.POSITION.BOTTOM_RIGHT,
-                    });
-                }
-                getUserInfo();
-                props.setLoading(false);
-            });
+        else if (account.name == '') {
+            setNameError(true);
+        }
+        else if (account.mobile == '') {
+            setMobileError(true);
+        }
+        else if (account.password == '') {
+            setPassError(true);
+        }
+        else {
+            if (type == "Create") {
+                userController.SaveSubUser(account, userInfo && userInfo.userId, (data) => {
+                    //setSearchUserList(data.userdata);
+                    if (data.status == 1) {
+                        toast.success(data.message, {
+                            position: toast.POSITION.BOTTOM_RIGHT,
+                        });
+                    }
+                    if (data.status == 0) {
+                        toast.error(data.message, {
+                            position: toast.POSITION.BOTTOM_RIGHT,
+                        });
+                    }
+                    getUserInfo();
+                    props.setLoading(false);
+                    //props.setLoading(false);
+                });
+            }
+            if (type == "Edit" || type == "password") {
+                userController.UpdateSubUser(account, (data) => {
+                    if (data.status == 1) {
+                        toast.success(data.message, {
+                            position: toast.POSITION.BOTTOM_RIGHT,
+                        });
+                    }
+                    getUserInfo();
+                    props.setLoading(false);
+                });
+            }
         }
     }
 
@@ -110,7 +133,7 @@ const SubAccount = (props) => {
 
     const cancelSearch = () => {
         setSearchText("");
-        //requestSearch("");
+        requestSearch("");
     };
 
     const handleEditChange = (userInfodata, type) => {
@@ -169,6 +192,18 @@ const SubAccount = (props) => {
         setAccount(obj);
     }
 
+    const requestSearch = (searchedVal) => {
+        console.log("request text",searchedVal)
+        setSearchText(searchedVal);
+        const filteredRows = userList.filter((row) => {
+          return (
+            row.username.toLowerCase().includes(searchedVal.toLowerCase())
+          );
+        });
+        console.log("request value",filteredRows)
+        setSearchUserList(filteredRows);
+      };
+    
     return (
         <>
             <AccountModal
@@ -176,6 +211,14 @@ const SubAccount = (props) => {
                 setAccount={setAccount}
                 handleOnClick={handleOnClick}
                 type={type}
+                userError={userError}
+                setUserError={setUserError}
+                setNameError={setNameError}
+                setMobileError={setMobileError}
+                setPassError={setPassError}
+                nameError={nameError}
+                mobileError={mobileError}
+                passError={passError}
                 handleOnClose={handleOnClose}
                 username={userInfo && userInfo.username}
             />
@@ -186,14 +229,14 @@ const SubAccount = (props) => {
                         <SearchBar
                             placeholder={"Search "}
                             value={searchText}
-                            //onChange={(searchVal) => requestSearch(searchVal)}
+                            onChange={(searchVal) => requestSearch(searchVal)}
                             onCancelSearch={() => cancelSearch()}
                         />
                         <button
                             className="btn btn-primary"
                             data-toggle="modal"
                             data-target="#accountModal"
-                            onClick={() => setType("Create")}
+                            onClick={() => handleEditChange(null, "Create")}
                         >
                             Create &nbsp;
                             <i className="fas fa-plus"></i>
@@ -204,10 +247,10 @@ const SubAccount = (props) => {
                             <TableHead>
                                 <TableRow>
                                     <TableCell className={classes.tableHeader}>No</TableCell>
-                                    <TableCell className={classes.tableHeader}>User Name</TableCell>
                                     <TableCell className={classes.tableHeader}>
                                         User Id
                                     </TableCell>
+                                    <TableCell className={classes.tableHeader}>User Name</TableCell>                                 
                                     <TableCell className={classes.tableHeader}>
                                         Mobile
                                     </TableCell>
@@ -225,7 +268,7 @@ const SubAccount = (props) => {
                                         .map((row, index) => {
                                             return (
                                                 <TableRow key={index}>
-                                                    <TableCell>{row.id}</TableCell>
+                                                    <TableCell>{index + 1}</TableCell>
                                                     <TableCell>{row.username}</TableCell>
                                                     <TableCell>{row.name}</TableCell>
                                                     <TableCell>{row.mobile}</TableCell>
@@ -264,7 +307,7 @@ const SubAccount = (props) => {
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 20, 50, 100]}
                         component="div"
-                        count={data.length}
+                        count={searchUserList.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onChangePage={handleChangePage}
@@ -302,11 +345,31 @@ const data = [
     }
 ]
 
-export function AccountModal({ account, handleOnClick, type, handleOnClose, setAccount, username }) {
+export function AccountModal({
+    account,
+    handleOnClick,
+    type,
+    handleOnClose,
+    setAccount,
+    username,
+    userError,
+    nameError,
+    mobileError,
+    passError,
+    setUserError,
+    setNameError,
+    setMobileError,
+    setPassError
+}) {
     const classes = useStyles();
 
     const handleOnChange = (data, type) => {
-        const newObj = { ...account }
+        if (type == "username") setUserError(false);
+        if (type == "name") setNameError(false);
+        if (type == "mobile") setMobileError(false);
+        if (type == "password") setPassError(false);
+
+        let newObj = { ...account };
         newObj[type] = data;
         setAccount(newObj);
     }
@@ -329,12 +392,14 @@ export function AccountModal({ account, handleOnClick, type, handleOnClose, setA
                                         <TextField
                                             label="User Id"
                                             className={classes.textField}
-                                            value = {account.username}
+                                            value={account.username}
                                             id="filled-start-adornment"
+                                            error={userError}
+                                            helperText={userError ? "Please input user id !" : null}
                                             onChange={(e) => handleOnChange(e.target.value, "username")}
                                             fullWidth
                                             InputProps={{
-                                                startAdornment: <InputAdornment position="start"><span style={{color:"black"}}>{username}</span></InputAdornment>,
+                                                startAdornment: <InputAdornment position="start"><span style={{ color: "black" }}>{username}</span></InputAdornment>,
                                             }}
                                             variant="outlined"
                                         />
@@ -352,6 +417,8 @@ export function AccountModal({ account, handleOnClick, type, handleOnClose, setA
                                             fullWidth
                                             className={classes.textField}
                                             value={account.name}
+                                            error={nameError}
+                                            helperText={nameError ? "Please input username !" : null}
                                             onChange={(e) => handleOnChange(e.target.value, "name")}
                                             id="outlined-basic"
                                             label="User Name"
@@ -361,8 +428,10 @@ export function AccountModal({ account, handleOnClick, type, handleOnClose, setA
                                             fullWidth
                                             className={classes.textField}
                                             value={account.mobile}
+                                            error={mobileError}
+                                            helperText={mobileError ? "Please input mobile !" : null}
                                             onChange={(e) => handleOnChange(e.target.value, "mobile")}
-                                            id="outlined-basic"
+                                            id="outlined-basic1"
                                             label="Mobile"
                                             variant="outlined"
                                         />
@@ -375,8 +444,10 @@ export function AccountModal({ account, handleOnClick, type, handleOnClose, setA
                                         fullWidth
                                         className={classes.textField}
                                         value={account.password}
+                                        error={passError}
+                                        helperText={passError ? "Please input password !" : null}
                                         onChange={(e) => handleOnChange(e.target.value, "password")}
-                                        id="outlined-basic"
+                                        id="outlined-basic2"
                                         label="Password"
                                         variant="outlined"
                                     />
@@ -385,8 +456,23 @@ export function AccountModal({ account, handleOnClick, type, handleOnClose, setA
                         </div>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" onClick={() => handleOnClose()} data-dismiss="modal">Close <i className="fas fa-times"></i></button>
-                        <button type="button" className="btn btn-primary" onClick={() => handleOnClick(account, type)} data-dismiss="modal">Save <i className="fas fa-save"></i></button>
+                        <button
+                            type="button"
+                            className="btn btn-secondary"
+                            onClick={() => handleOnClose()}
+                            data-dismiss="modal"
+                        >
+                            Close&nbsp;
+                            <i className="fas fa-times"></i>
+                        </button>
+                        <button
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={() => handleOnClick(account, type)}
+                        >
+                            Save&nbsp;
+                            <i className="fas fa-save"></i>
+                        </button>
                     </div>
                 </div>
             </div>
