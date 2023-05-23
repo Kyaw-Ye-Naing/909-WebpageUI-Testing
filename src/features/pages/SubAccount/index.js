@@ -19,7 +19,7 @@ import AppContext from '../../../context/AppContext';
 import MyColor from "../../../config/color";
 import SearchBar from "material-ui-search-bar";
 import { userController } from '../../../controllers/userController';
-import { error } from 'jquery';
+import Modal from '@material-ui/core/Modal';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -41,12 +41,11 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-
 const SubAccount = (props) => {
     const [searchText, setSearchText] = useState("");
     const { userData } = useContext(AppContext);
     const userInfo = JSON.parse(userData);
-    const [userList,setUserList] = useState([]);
+    const [userList, setUserList] = useState([]);
     const [searchUserList, setSearchUserList] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -57,7 +56,7 @@ const SubAccount = (props) => {
     const [passError, setPassError] = useState(false);
     const [type, setType] = useState("");
     const [account, setAccount] = useState([]);
-    const [showModal, setshowModal] = useState(false);
+    const [open, setOpen] = React.useState(false);
 
     useEffect(() => {
         getUserInfo();
@@ -77,7 +76,6 @@ const SubAccount = (props) => {
         console.log("final data >>>>>", account, type);
         // props.setLoading(true);
         if (account.username == "") {
-            console.log("i am in")
             setUserError(true);
         }
         else if (account.name == '') {
@@ -90,6 +88,7 @@ const SubAccount = (props) => {
             setPassError(true);
         }
         else {
+            setOpen(false)
             if (type == "Create") {
                 userController.SaveSubUser(account, userInfo && userInfo.userId, (data) => {
                     //setSearchUserList(data.userdata);
@@ -138,7 +137,7 @@ const SubAccount = (props) => {
 
     const handleEditChange = (userInfodata, type) => {
         setType(type)
-
+        setOpen(true);
         if (type == "Create") {
             const obj = {
                 "id": 0,
@@ -180,6 +179,7 @@ const SubAccount = (props) => {
     }
 
     const handleOnClose = () => {
+        setOpen(false);
         const obj = {
             "id": 0,
             "userId": 0,
@@ -193,35 +193,43 @@ const SubAccount = (props) => {
     }
 
     const requestSearch = (searchedVal) => {
-        console.log("request text",searchedVal)
+        console.log("request text", searchedVal)
         setSearchText(searchedVal);
         const filteredRows = userList.filter((row) => {
-          return (
-            row.username.toLowerCase().includes(searchedVal.toLowerCase())
-          );
+            return (
+                row.username.toLowerCase().includes(searchedVal.toLowerCase())
+            );
         });
-        console.log("request value",filteredRows)
+        console.log("request value", filteredRows)
         setSearchUserList(filteredRows);
-      };
-    
+    };
+
     return (
         <>
-            <AccountModal
-                account={account}
-                setAccount={setAccount}
-                handleOnClick={handleOnClick}
-                type={type}
-                userError={userError}
-                setUserError={setUserError}
-                setNameError={setNameError}
-                setMobileError={setMobileError}
-                setPassError={setPassError}
-                nameError={nameError}
-                mobileError={mobileError}
-                passError={passError}
-                handleOnClose={handleOnClose}
-                username={userInfo && userInfo.username}
-            />
+
+            <Modal
+                open={open}
+                //onClose={handleClose}
+                aria-labelledby="simple-modal-title"
+                aria-describedby="simple-modal-description"
+            >
+                <AccountModalPanel
+                    account={account}
+                    setAccount={setAccount}
+                    handleOnClick={handleOnClick}
+                    type={type}
+                    userError={userError}
+                    setUserError={setUserError}
+                    setNameError={setNameError}
+                    setMobileError={setMobileError}
+                    setPassError={setPassError}
+                    nameError={nameError}
+                    mobileError={mobileError}
+                    passError={passError}
+                    handleOnClose={handleOnClose}
+                    username={userInfo && userInfo.username}
+                />
+            </Modal>
             <div className="container" style={{ marginTop: 10 }}>
                 <h1>Sub Masters</h1>
                 <Paper>
@@ -246,16 +254,16 @@ const SubAccount = (props) => {
                         <Table stickyHeader aria-label="sticky table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell className={classes.tableHeader}>No</TableCell>
-                                    <TableCell className={classes.tableHeader}>
+                                    <TableCell className={classes.tableHeader} style={{minWidth:50}}>No</TableCell>
+                                    <TableCell className={classes.tableHeader} style={{minWidth:150}}>
                                         User Id
                                     </TableCell>
-                                    <TableCell className={classes.tableHeader}>User Name</TableCell>                                 
-                                    <TableCell className={classes.tableHeader}>
+                                    <TableCell className={classes.tableHeader} style={{minWidth:150}}>User Name</TableCell>
+                                    <TableCell className={classes.tableHeader} style={{minWidth:100}}>
                                         Mobile
                                     </TableCell>
-                                    <TableCell className={classes.tableHeader}>Password</TableCell>
-                                    <TableCell className={classes.tableHeader}>Action</TableCell>
+                                    <TableCell className={classes.tableHeader} style={{minWidth:50}}>Password</TableCell>
+                                    <TableCell className={classes.tableHeader} style={{minWidth:200}}>Action</TableCell>
 
                                     {/*--------*/}
                                 </TableRow>
@@ -345,7 +353,7 @@ const data = [
     }
 ]
 
-export function AccountModal({
+export function AccountModalPanel({
     account,
     handleOnClick,
     type,
@@ -359,10 +367,8 @@ export function AccountModal({
     setUserError,
     setNameError,
     setMobileError,
-    setPassError
+    setPassError,
 }) {
-    const classes = useStyles();
-
     const handleOnChange = (data, type) => {
         if (type == "username") setUserError(false);
         if (type == "name") setNameError(false);
@@ -373,14 +379,20 @@ export function AccountModal({
         newObj[type] = data;
         setAccount(newObj);
     }
+    const classes = useStyles();
 
     return (
-        <div className="modal fade" id="accountModal" data-backdrop="static" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div className="modal-dialog modal-dialog-centered">
+       
+            <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title" id="exampleModalLabel">{type == "password" ? "Password Change" : `${type} Sub Master`}</h5>
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                        <button 
+                        type="button" 
+                        className="close" 
+                        aria-label="Close"
+                        onClick={() => handleOnClose()}
+                        >
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -429,6 +441,8 @@ export function AccountModal({
                                             className={classes.textField}
                                             value={account.mobile}
                                             error={mobileError}
+                                            type='number'
+                                            // autoComplete = "new-password"
                                             helperText={mobileError ? "Please input mobile !" : null}
                                             onChange={(e) => handleOnChange(e.target.value, "mobile")}
                                             id="outlined-basic1"
@@ -442,12 +456,14 @@ export function AccountModal({
                                 type == "password" || type == "Create" ?
                                     <TextField
                                         fullWidth
+                                        type="password"
+                                        autoComplete = "new-password"
                                         className={classes.textField}
                                         value={account.password}
                                         error={passError}
                                         helperText={passError ? "Please input password !" : null}
                                         onChange={(e) => handleOnChange(e.target.value, "password")}
-                                        id="outlined-basic2"
+                                        id="newpassword"
                                         label="Password"
                                         variant="outlined"
                                     />
@@ -476,6 +492,5 @@ export function AccountModal({
                     </div>
                 </div>
             </div>
-        </div>
     );
 }

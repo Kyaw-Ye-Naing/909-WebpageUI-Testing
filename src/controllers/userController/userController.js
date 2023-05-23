@@ -80,6 +80,22 @@ const changePassword = (userId, oldPassword, password, setResponse) => {
   );
 };
 
+const changePasswordSub = (username, oldPassword, password, setResponse) => {
+  console.log("hey yo",username,oldPassword,password)
+  postApi(
+    `${apiList.changePasswordSub}`,
+    {
+      userName: username,
+      CurrentPassword: oldPassword,
+      NewPassword: password,
+      ConfirmPassword: password,
+    },
+    (data) => {
+      setResponse(data);
+    }
+  );
+};
+
 const resetPassword = (userId, password, setResponse) => {
   postApi(
     `${apiList.resetPassword}`,
@@ -441,5 +457,6 @@ export const userController = {
   removeVoucherNo,
   getSubUser,
   SaveSubUser,
-  UpdateSubUser
+  UpdateSubUser,
+  changePasswordSub
 };

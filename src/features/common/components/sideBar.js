@@ -254,7 +254,7 @@ const SideBar = (props) => {
           {showAccountDetails && (
             <Item
               text="Change Password"
-              route="account/change-password"
+              route={isShare == "true" ? "sub-password" : "account/change-password"}
               loc={loc}
             />
           )}

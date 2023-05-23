@@ -35,6 +35,7 @@ import EventWithVoucher from "./features/pages/reports/components/EventWithVouch
 import MixVoucherView from "./features/pages/reports/components/MixVoucherView";
 import BodyVoucherView from "./features/pages/reports/components/BodyVoucherView";
 import {SelectedLeague} from "./features/pages/settings/league/SelectedLeague";
+import subPassword from "./features/pages/SubAccount/SubPassword";
 
 const App = (props) => {
   const { userData, setuserData } = useContext(AppContext);
@@ -95,6 +96,7 @@ const App = (props) => {
             <Route path={"/agent/sub"} component={SubAccount} />
             <Route path={"/reports"} component={Report} />
             <Route path={"/account"} component={Account} />
+            <Route path={"/sub-password"} component={subPassword} />
             <Route path={"/transactions"} component={Transactions} />
             <Route path={"/agentDetails"} component={AgentDetails} />
             <Route path={"/settings"} component={Setting} />

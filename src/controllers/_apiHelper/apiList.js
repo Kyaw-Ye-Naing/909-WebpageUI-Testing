@@ -47,6 +47,7 @@ export const apiList = {
   userLock: "UserSetting/lock", //body json {userId:0,isLock:true}
   resetPassword: "UserSetting/reset", //body json {userId:0,OldPassword:0,NewPassword:0}
   changePassword: "UserSetting/change", //body json {userId:0,CurrentPassword:0,NewPassword:0,ConfirmPassword:0}
+  changePasswordSub: "UserSetting/sub-change",
 
   ruleAndRegulation: "Rule",
   displayRegulation: "Regulation",
