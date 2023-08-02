@@ -58,7 +58,7 @@ const SubPassword = (props) => {
           toast.success(data.message, {
             position: toast.POSITION.BOTTOM_RIGHT,
           });
-         // logout();
+          logout();
           props.setLoading(false);
         }
       );

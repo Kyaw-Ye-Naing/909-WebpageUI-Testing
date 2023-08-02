@@ -49,18 +49,20 @@ const EventWithVoucher = withRouter((props) => {
     "status":""
   });
 
+  const [newLoading, setnewLoading] = useState(false);
+
   useEffect(() => {
-    props.setLoading(true);
     getEventWithVoucher();
   }, []);
 
   const getEventWithVoucher = () => {
+    setnewLoading(true);
     reportController.getEventWithVoucher(rapidEventId, (data) => {
       setEventWithVoucher(data.voucherData);
       setSearchVoucher(data.voucherData);
       setIsExist(data.isExist);
+      setnewLoading(false);
     });
-    props.setLoading(false);
   };
 
   const onClickDetail = (gamblingWinId) => {
@@ -126,7 +128,14 @@ const onRejectHandle = (tempRejectData) => {
         onChange={(searchVal) => requestSearch(searchVal)}
         onCancelSearch={() => cancelSearch()}
       />
-      {isExist == true ? (
+      { newLoading ? 
+        <div className="d-flex justify-content-center">
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+            <img src={'/dist/loading.gif'} />
+            <span style={{ marginTop: "-50px", fontSize: "1rem", fontWeight: "bold" }}>Loading ... </span>
+          </div>
+        </div> :
+      ( isExist ? (
         <div>
           <MyEventModal gamblingWinId={gamId} setLoading={props.setLoading} />
           <TableContainer className={classes.container}>
@@ -240,7 +249,8 @@ const onRejectHandle = (tempRejectData) => {
         <div className="d-flex justify-content-center align-items-center">
           <h2>No Data Found!</h2>
         </div>
-      )}
+      ))
+}
     </Paper>
   );
 });

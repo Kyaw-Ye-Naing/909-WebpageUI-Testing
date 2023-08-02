@@ -81,7 +81,7 @@ const changePassword = (userId, oldPassword, password, setResponse) => {
 };
 
 const changePasswordSub = (username, oldPassword, password, setResponse) => {
-  console.log("hey yo",username,oldPassword,password)
+ // console.log("hey yo",username,oldPassword,password)
   postApi(
     `${apiList.changePasswordSub}`,
     {

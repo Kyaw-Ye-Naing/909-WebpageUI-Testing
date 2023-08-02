@@ -317,22 +317,22 @@ export const MyEventModal = (props) => {
                           <th style={{ textAlign: "right" }} scope="row">
                             {index + 1}
                           </th>
-                          <td style={{ textAlign: "right" }} scope="row">
-                            <p style={{ color: "#4169e1" }}>
+                          <td style={{ textAlign: "right",display :"flex",flexDirection : "column" }} scope="row">
+                            <span style={{ color: "#4169e1" }}>
                               {data.leagueName}
-                            </p>
-                            <p>
+                            </span>
+                            <span>
                               {data.home || data.isHome
                                 ? data.bettedTeam
                                 : data.oppositeTeamName}{" "}
-                              VS{" "}
+                              VS {" "}
                               {data.away
                                 ? data.bettedTeam
                                 : data.oppositeTeamName}
-                            </p>
-                            <p>
+                            </span>
+                            <span style={{color : "#007bff"}}>
                               Result ({data.homeResult}-{data.awayResult})
-                            </p>
+                            </span>
                           </td>
                           {data.home == false && data.away == false ? (
                             <td style={{ textAlign: "right" }}>
