@@ -264,7 +264,7 @@ const MixVoucherView = withRouter((props) => {
 
   return (
     <Paper className={classes.root}>
-      <h2>({mixtype}) Mix Voucher List</h2>
+      <h2>Mix Voucher List ({mixtype} teams)</h2>
       <hr />
       <div style={{display:"flex",gap:"15px",alignItems:"center"}}>
       <SearchBar

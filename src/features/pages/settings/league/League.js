@@ -98,6 +98,7 @@ export const League = withTheme((props) => {
   const [searchText, setSearchText] = useState("");
   const [searchedLeague, setSearchedLeague] = useState([]);
   const [buttonClick, setButtonClick] = useState(0);
+
   const history = useHistory();
 
   useEffect(() => {
@@ -300,8 +301,8 @@ export const League = withTheme((props) => {
   //   setuserData(JSON.stringify(userInformation));
   // };
 
-  const saveLeaguesData = (e) => {
-    e.preventDefault();
+  const saveLeaguesData = () => {
+   // e.preventDefault();
     props.setLoading(true);
     if (singleCount > 0 || mixCount > 0) {
       // setShowLoading(true);
@@ -435,7 +436,8 @@ export const League = withTheme((props) => {
 
   return (
     <div className="main justify-content-center w-100 p-1">
-      <form onSubmit={(e) => saveLeaguesData(e)}>
+      <ConfirmBoxModal saveLeaguesData={saveLeaguesData} />
+      <form>
         <div className="d-flex justify-content-end">
           <label className="text-secondary px-1 ml-5">
             {`${mixCount} ${mixCount > 1 ? "mix teams" : "mix team"} selected `}
@@ -518,7 +520,11 @@ export const League = withTheme((props) => {
           </div>
         </div>
         <div>
-          <button className="btn btn-primary mt-1 p-2 w-100" type="submit">
+          <button className="btn btn-primary mt-1 p-2 w-100" 
+          type="button"
+          data-toggle="modal" 
+          data-target="#confirmModal"
+          >
             SAVE
           </button>
         </div>
@@ -526,3 +532,62 @@ export const League = withTheme((props) => {
     </div>
   );
 });
+
+export function ConfirmBoxModal({
+  saveLeaguesData
+}) {
+
+  return (
+    <div className="row">
+      <div
+        className="modal fade"
+        id="confirmModal"
+        tabIndex="-1"
+        role="dialog"
+        aria-labelledby="confirmModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog" role="document">
+          <div className="modal-content">
+            <div className="modal-body">
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <br />
+              <span style={{color:"black",fontWeight:"bold",fontSize:"15px"}}><i className="fas fa-times-circle mr-1" style={{color:"red"}}></i>Are you sure you want to save this events?</span> <br />
+              <span style={{color:"grey",fontSize:"12px",marginLeft:"15px"}}>
+                This change will reflect in your modal after an minute.
+              </span>
+              <div className="d-flex justify-content-end mt-1">
+                <button
+                  type="button"
+                  data-dismiss="modal"
+                  className="btn btn-danger"
+                  //onClick={() => saveLeaguesData("cancelS")}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  style={{marginRight:2}}
+                  onClick={() =>
+                    saveLeaguesData()
+                  }
+                  className="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

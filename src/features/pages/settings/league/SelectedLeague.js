@@ -586,6 +586,7 @@ export const SelectedLeague = withTheme((props) => {
   return (
     <>
       <Paper className={classes.root}>
+      <ConfirmBoxModal saveSelectedEventsPre={saveSelectedEventsPre}/>
         <div className="d-flex justify-content-between align-items-center"
           style={{ marginBottom: 6, marginTop: 6 }}>
             { 
@@ -753,6 +754,8 @@ export const SelectedLeague = withTheme((props) => {
           <button
             type="button"
             className="btn btn-secondary"
+            data-toggle="modal" 
+            data-target="#confirmModal"
             style={{
               backgroundColor: MyColor.secondaryBackground,
               color: "#fff",
@@ -761,7 +764,7 @@ export const SelectedLeague = withTheme((props) => {
               maxHeight: 40,
               fontSize: isPhone ? 12 : null,
             }}
-            onClick={() => saveSelectedEventsPre()}
+           // onClick={() => saveSelectedEventsPre()}
           >
             <i className="fas fa-save"></i> Save
           </button>
@@ -770,6 +773,66 @@ export const SelectedLeague = withTheme((props) => {
     </>
   );
 });
+
+export function ConfirmBoxModal({
+  saveSelectedEventsPre
+}) {
+
+  return (
+    <div className="row">
+      <div
+        className="modal fade"
+        id="confirmModal"
+        tabIndex="-1"
+        role="dialog"
+        aria-labelledby="confirmModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog" role="document">
+          <div className="modal-content">
+            <div className="modal-body">
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <br />
+              <span style={{color:"black",fontWeight:"bold",fontSize:"15px"}}><i className="fas fa-times-circle mr-1" style={{color:"red"}}></i>Are you sure you want to save this events?</span> <br />
+              <span style={{color:"grey",fontSize:"12px",marginLeft:"15px"}}>
+                This change will reflect in your modal after an minute.
+              </span>
+              <div className="d-flex justify-content-end mt-1">
+                <button
+                  type="button"
+                  data-dismiss="modal"
+                  className="btn btn-danger"
+                  //onClick={() => saveLeaguesData("cancelS")}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  style={{marginRight:2}}
+                  onClick={() =>
+                    saveSelectedEventsPre()
+                  }
+                  className="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 
 
 

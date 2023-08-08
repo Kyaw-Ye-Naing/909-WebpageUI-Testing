@@ -225,7 +225,7 @@ import {
   
     return (
       <Paper className={classes.root}>
-        <h2>Body Live Voucher List{type}</h2>
+        <h2 style={{marginLeft : '5px'}}> {type == 'body' ? 'Body' : 'Goal'} Live Voucher Details</h2>
         <hr />
         <SearchBar
           placeholder={"Search"}

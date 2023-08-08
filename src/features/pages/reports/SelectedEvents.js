@@ -18,6 +18,10 @@ import { MyActivity } from "../../common/components/MyActivity";
 import AppContext from "../../../context/AppContext";
 import SearchBar from "material-ui-search-bar";
 import { useMediaPredicate } from "react-media-hook";
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: 200,
+    width: 150,
     padding: 2,
   },
   tableHeader: {
@@ -43,6 +47,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 100,
   },
 }));
 
@@ -64,42 +72,42 @@ const columns = [
   },
   {
     id: "homeTeam",
-    label: "Home Team",
+    label: "Home",
     minWidth: 50,
     maxWidth: 50,
     align: "left",
   },
   {
     id: "body",
-    label: "Body Odds",
+    label: "Body",
     minWidth: 50,
     maxWidth: 50,
     align: "left",
   },
   {
     id: "awayTeam",
-    label: "Away Team",
+    label: "Away",
     minWidth: 50,
     maxWidth: 50,
     align: "left",
   },
   {
     id: "goal",
-    label: "Goal Odds",
+    label: "Goal",
     minWidth: 50,
     maxWidth: 50,
     align: "left",
   },
   {
     id: "bettype",
-    label: "Bet Type",
+    label: "Type",
     minWidth: 50,
     maxWidth: 50,
     align: "left",
   },
   {
     id: "action",
-    label: "Remove Action",
+    label: "Action",
     minWidth: 50,
     maxWidth: 50,
     align: "left",
@@ -120,6 +128,7 @@ const SelectedEvents = (props) => {
   const [eventTotal, setEventTotal] = useState(null);
   const [singleTotal, setSingleTotal] = useState(0);
   const [mixTotal, setMixTotal] = useState(0);
+  const [age, setAge] = React.useState(0);
   const [tempRemoveData, setTempRemoveData] = useState({
     rapidEventId: 0,
     type: "",
@@ -139,6 +148,33 @@ const SelectedEvents = (props) => {
     });
   };
 
+  const handleChange = (event) => {
+    console.log("value",event.target.value)
+    setAge(event.target.value);
+    if(event.target.value == 1){
+    searchedLeague.sort((a, b) => {
+      let fa = a.league.toLowerCase(),
+          fb = b.league.toLowerCase();
+  
+      if (fa < fb) {
+          return -1;
+      }
+      if (fa > fb) {
+          return 1;
+      }
+      return 0;
+  });
+    }
+    if(event.target.value == 0){
+      searchedLeague.sort((a, b) => {
+        let da = new Date(a.event),
+            db = new Date(b.event);
+        return da - db;
+    });
+     // setSearchedLeague(...selectedEventData);
+    }
+  };
+
   useEffect(() => {
     props.setLoading(true);
     searchSelectedEvent();
@@ -147,13 +183,13 @@ const SelectedEvents = (props) => {
 
   const handleRemove = (tempRemoveData) => {
     props.setLoading(true);
-    reportController.removeEventsFromPre(tempRemoveData.rapidEventId,tempRemoveData.type,(data) => {
-     toast.success(data.message, {
-       position: toast.POSITION.BOTTOM_RIGHT,
-     });
+    reportController.removeEventsFromPre(tempRemoveData.rapidEventId, tempRemoveData.type, (data) => {
+      toast.success(data.message, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
 
-    searchSelectedEvent();
-    props.setLoading(false);
+      searchSelectedEvent();
+      props.setLoading(false);
     })
   };
 
@@ -192,12 +228,12 @@ const SelectedEvents = (props) => {
         handleRemove={handleRemove}
       />
       {isPhone ? (
-        <h3>Selected Event Report</h3>
+        <h4 style={{marginLeft : 5}}>Selected Event Report</h4>
       ) : (
         <h1>Selected Event Report</h1>
       )}
       <Paper className={classes.root}>
-        <div className="d-flex p-2 align-items-end">
+        <div className="d-flex p-2 align-items-center">
           <TextField
             id="date"
             label="Date :"
@@ -226,27 +262,39 @@ const SelectedEvents = (props) => {
             </button>
           </div>
         </div>
-        <div className="d-flex justify-content-between align-items-center">
-          <SearchBar
-            placeholder={"Search "}
-            style={{ marginLeft: 15, width: isPhone ? 200 : null }}
-            value={searchText}
-            onChange={(searchVal) => requestSearch(searchVal)}
-            onCancelSearch={() => cancelSearch()}
-          />
-          <div className="d-flex">
-            <p style={{ fontWeight: "bold", marginRight: isPhone ? 5 : 15 }}>
-              League Total: {leagueTotal}
-            </p>
-            <p style={{ fontWeight: "bold", marginRight: isPhone ? 0 : 15 }}>
-              Event Total: {eventTotal}
-            </p>
-            <p style={{ fontWeight: "bold", marginRight: isPhone ? 0 : 15 }}>
-              Single Total: {singleTotal}
-            </p>
-            <p style={{ fontWeight: "bold", marginRight: isPhone ? 0 : 15 }}>
-              Mix Total: {mixTotal}
-            </p>
+
+        <div className="d-flex align-items-center justify-content-between flex-wrap">
+          <div className="d-flex align-items-center">
+            <SearchBar
+              placeholder={"Search "}
+              style={{ marginLeft: 15, width: isPhone ? 150 : null }}
+              value={searchText}
+              onChange={(searchVal) => requestSearch(searchVal)}
+              onCancelSearch={() => cancelSearch()}
+            />
+            <FormControl className={classes.formControl}>
+              <InputLabel id="demo-simple-select-label">Sort By</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={age}
+                onChange={handleChange}
+              >
+                <MenuItem value={0}>Time</MenuItem>
+                <MenuItem value={1}>League</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+          <div className="d-flex" style={{gap : '10px' , paddingLeft : '15px' , paddingTop :'10px' , paddingBottom : '5px' , paddingRight : '5px'}}>
+          
+             <span style={{backgroundColor :MyColor.secondaryBackground,color :'#fff',padding :'5px',fontSize: '15px',fontWeight :'lighter',borderRadius : '3px',minWidth : '0'}}>League : {leagueTotal}</span>
+         
+             <span style={{backgroundColor :'#267696',color :'#fff',padding :'5px',fontSize: '15px',fontWeight :'lighter',borderRadius : '3px',minWidth : '0'}}>Event : {eventTotal}</span>
+        
+              <span style={{backgroundColor :'#00B8C2',color :'#fff',padding :'5px',fontSize: '15px',fontWeight :'lighter',borderRadius : '3px',minWidth : '0'}}>Single : {singleTotal}</span>
+          
+              <span style={{backgroundColor :'#51ba95',color :'#fff',padding :'5px',fontSize: '15px',fontWeight :'lighter',borderRadius : '3px',minWidth : '0'}}>Mix : {mixTotal}</span>
+
           </div>
         </div>
         <TableContainer className={classes.container}>
@@ -418,7 +466,7 @@ export function ConfirmBoxModal({
       <div
         className="modal fade"
         id="confirmModal"
-        tabindex="-1"
+        tabIndex="-1"
         role="dialog"
         aria-labelledby="confirmModalLabel"
         aria-hidden="true"
@@ -435,14 +483,14 @@ export function ConfirmBoxModal({
                 <span aria-hidden="true">&times;</span>
               </button>
               <br />
-              <span style={{color:"black",fontWeight:"bold",fontSize:"15px"}}><i class="fas fa-times-circle mr-1" style={{color:"red"}}></i>Are you sure you want to remove this event?</span> <br />
-              <span style={{color:"grey",fontSize:"12px",marginLeft:"15px"}}>
+              <span style={{ color: "black", fontWeight: "bold", fontSize: "15px" }}><i className="fas fa-times-circle mr-1" style={{ color: "red" }}></i>Are you sure you want to remove this event?</span> <br />
+              <span style={{ color: "grey", fontSize: "12px", marginLeft: "15px" }}>
                 This change will reflect in your modal after an minute.
               </span>
               <div className="d-flex justify-content-end mt-1">
                 <button
                   type="button"
-                  style={{marginRight:2}}
+                  style={{ marginRight: 2 }}
                   onClick={() =>
                     setTempRemoveData({ rapidEventId: 0, type: "" })
                   }

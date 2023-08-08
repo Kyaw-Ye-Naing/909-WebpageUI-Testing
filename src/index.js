@@ -12,11 +12,11 @@ import  {AppProvider} from './context/AppContext';
 ReactDOM.render(
   <BrowserRouter>
     <ThemeProvider>
-      <React.StrictMode>
+      {/* <React.StrictMode> */}
         <AppProvider>
           <App />
         </AppProvider>
-      </React.StrictMode>
+      {/* </React.StrictMode> */}
     </ThemeProvider>
   </BrowserRouter>,
 
