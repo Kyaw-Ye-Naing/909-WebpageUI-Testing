@@ -323,12 +323,10 @@ export const MyEventModal = (props) => {
                             </span>
                             <span>
                               {data.home || data.isHome
-                                ? data.bettedTeam
-                                : data.oppositeTeamName}{" "}
-                              VS {" "}
-                              {data.away
-                                ? data.bettedTeam
-                                : data.oppositeTeamName}
+                                ? `${data.bettedTeam} VS ${data.oppositeTeamName}`
+                                :  data.away || !data.isHome 
+                                ?  `${data.oppositeTeamName} VS ${data.bettedTeam}`
+                                :  `${data.bettedTeam} VS ${data.oppositeTeamName}`}
                             </span>
                             <span style={{color : "#007bff"}}>
                               Result ({data.homeResult}-{data.awayResult})

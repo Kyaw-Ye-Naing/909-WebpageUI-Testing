@@ -808,6 +808,7 @@ export function ConfirmBoxModal({
                 <button
                   type="button"
                   data-dismiss="modal"
+                  style={{marginRight:2}}
                   className="btn btn-danger"
                   //onClick={() => saveLeaguesData("cancelS")}
                 >
@@ -815,7 +816,6 @@ export function ConfirmBoxModal({
                 </button>
                 <button
                   type="button"
-                  style={{marginRight:2}}
                   onClick={() =>
                     saveSelectedEventsPre()
                   }
