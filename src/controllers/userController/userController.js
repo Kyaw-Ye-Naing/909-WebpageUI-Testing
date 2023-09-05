@@ -414,6 +414,14 @@ const UpdateSubUser = (dataList,setResponse) => {
   });
 }
 
+const fetchOddsManual = (rapidEventId,setResponse) => {
+  console.log("rapidEventId controller >>>>> ", rapidEventId);
+getApi(`${apiList.fetchOddsManual}/${parseInt(rapidEventId)}`,
+(data) => {
+  setResponse(data);
+});
+}
+
 export const userController = {
   getAllUser,
   getUserInfoAndCommission,
@@ -458,5 +466,6 @@ export const userController = {
   getSubUser,
   SaveSubUser,
   UpdateSubUser,
-  changePasswordSub
+  changePasswordSub,
+  fetchOddsManual
 };

@@ -18,6 +18,7 @@ import {
   Checkbox,
 } from "@material-ui/core";
 import { reportController } from '../../../../controllers/reportController';
+import { userController } from '../../../../controllers/userController';
 
 const useStyles = makeStyles({
   root: {
@@ -134,8 +135,8 @@ export const SelectedLeague = withTheme((props) => {
     {
       id: "action",
       label: "Action",
-      minWidth: 50,
-      maxWidth: 50,
+      minWidth: 80,
+      maxWidth: 80,
       align: "left",
       //format: value => value.toFixed(2)
     }
@@ -435,6 +436,34 @@ export const SelectedLeague = withTheme((props) => {
     });
   };
 
+  const handleFetchManual = (rapidEventId) => {
+    props.setLoading(true);
+    //console.log("rapidEventId >>>>> ", rapidEventId);
+    userController.fetchOddsManual(rapidEventId, (data) => {
+
+      // --- find index
+      if (data.isExist && data.oddsChange) {
+        const indexToUpdate = bufferlist.findIndex(p => p.rapidEventId === rapidEventId);
+
+        if (indexToUpdate !== -1) {
+          const updated = [...bufferlist]; // Clone the array
+          updated[indexToUpdate]["bodyhandicap"] = data.handicapInfo.bodyhandicap;
+          updated[indexToUpdate]['goalhandicap'] = data.handicapInfo.goalhandicap;
+          updated[indexToUpdate]['homeodds'] = data.handicapInfo.homeodds;
+          updated[indexToUpdate]['awayodds'] = data.handicapInfo.awayodds;
+          updated[indexToUpdate]['overodds'] = data.handicapInfo.overodds;
+          updated[indexToUpdate]['underodds'] = data.handicapInfo.underodds;
+          updated[indexToUpdate]['goal'] = data.handicapInfo.goal;
+          updated[indexToUpdate]['body'] = data.handicapInfo.body;
+
+          console.log("final data 333 >>>>", updated);
+          setBufferList(updated);
+        }
+      }
+      props.setLoading(false);
+  });
+  }
+
   const saveEventManual = (rapidId) => {
     // console.log("ppp", rapidId);
     props.setLoading(true);
@@ -579,6 +608,7 @@ export const SelectedLeague = withTheme((props) => {
       }
       else{
         resetCounter();
+        window.location.reload();
       }
     });
   }
@@ -661,7 +691,7 @@ export const SelectedLeague = withTheme((props) => {
                           {v.lname}
                         </TableCell>
                         <TableCell align={"left"} padding="default">
-                          {v.bodyhandicap}
+                         {v.bodyhandicap}
                         </TableCell>
                         <TableCell align={"left"} padding="default">
                           <span style={{ fontWeight: "bold" }}>{v.homeodds}</span><br></br>
@@ -701,6 +731,23 @@ export const SelectedLeague = withTheme((props) => {
                           />
                         </TableCell>
                         <TableCell align={"left"} padding="default">
+                       <div className='d-flex align-items-center'>
+                        <button
+                            type="button"
+                            className=""
+                            style={{
+                              backgroundColor: MyColor.secondaryBackground,
+                              color: "#fff",
+                              width: 30,
+                              height: 30,
+                              borderRadius : 5,
+                              marginRight : 5,
+                              fontSize: isPhone ? 12 : null,
+                            }}
+                            onClick={() => handleFetchManual(v.rapidEventId)}
+                          >
+                            <i className='fa fa-sync' style={{color : 'white'}}></i>
+                          </button>
                           <button
                             type="button"
                             className="btn btn-secondary"
@@ -715,7 +762,7 @@ export const SelectedLeague = withTheme((props) => {
                           >
                             Add
                           </button>
-
+                          </div>
                         </TableCell>
                       </TableRow>
                     );

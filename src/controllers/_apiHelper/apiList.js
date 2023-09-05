@@ -75,5 +75,7 @@ export const apiList = {
 
   getSubUserInfo : "TblUsers/GetSubUserInfo",
   addSubUserInfo : "TblUsers/SaveSubUserInfo",
-  editSubUserInfo : "TblUsers/EditSubUserInfo"
+  editSubUserInfo : "TblUsers/EditSubUserInfo",
+
+  fetchOddsManual : "TblLeagues/fetch-odds-manual"
 };

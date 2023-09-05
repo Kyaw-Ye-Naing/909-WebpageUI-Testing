@@ -68,3 +68,23 @@
 .MuiDivider-root {
   background: #c4f4fc !important;
 }
+
+.blink {
+  background-color: yellow;
+  /* animation: blink-animation 1s steps(5, start) infinite;
+  -webkit-animation: blink-animation 1s steps(5, start) infinite; */
+  animation: blink-animation 1s steps(5, start) infinite;
+  -webkit-animation: blink-animation 1s steps(5, start) infinite;
+  animation-iteration-count: 3;
+  -webkit-animation-iteration-count: 3;
+}
+@keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}
+@-webkit-keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}

@@ -82,7 +82,7 @@ const SideBar = (props) => {
               fontWeight: loc.includes("dashboard") ? 600 : 400,
             }}
           >
-            <div className="d-flex">
+            <div className="d-flex align-items-center">
               <i className="fas fa-home px-2 "></i>
               <div className="">Dashboard</div>
             </div>
@@ -283,7 +283,7 @@ export const SideBarItem = (props) => {
         fontWeight: loc.includes(route) ? 600 : 400,
       }}
     >
-      <div className="d-flex">
+      <div className="d-flex align-items-center">
         <i className={icon}></i>
         <div className="">{ItemName}</div>
       </div>

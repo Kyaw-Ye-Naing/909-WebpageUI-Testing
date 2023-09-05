@@ -345,6 +345,7 @@ export const League = withTheme((props) => {
       //   props.setLoading(false);
       //   MyActivity(activityList);
       // });
+      
       reportController.saveBufferData(selectedLeagueDataList, (data) => {
         toast.success(data.messsage, {
           position: toast.POSITION.BOTTOM_RIGHT,

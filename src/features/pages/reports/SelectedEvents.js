@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 3,
   },
   container: {
-    maxHeight: 350,
+    maxHeight: 450,
   },
   textField: {
     marginLeft: theme.spacing(1),
