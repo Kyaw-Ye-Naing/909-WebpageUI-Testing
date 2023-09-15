@@ -128,7 +128,7 @@ const SelectedEvents = (props) => {
   const [eventTotal, setEventTotal] = useState(null);
   const [singleTotal, setSingleTotal] = useState(0);
   const [mixTotal, setMixTotal] = useState(0);
-  const [age, setAge] = React.useState(0);
+  const [sorting, setSorting] = React.useState(0);
   const [tempRemoveData, setTempRemoveData] = useState({
     rapidEventId: 0,
     type: "",
@@ -149,8 +149,8 @@ const SelectedEvents = (props) => {
   };
 
   const handleChange = (event) => {
-    console.log("value",event.target.value)
-    setAge(event.target.value);
+    //console.log("value",event.target.value)
+    setSorting(event.target.value);
     if(event.target.value == 1){
     searchedLeague.sort((a, b) => {
       let fa = a.league.toLowerCase(),
@@ -277,7 +277,7 @@ const SelectedEvents = (props) => {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={age}
+                value={sorting}
                 onChange={handleChange}
               >
                 <MenuItem value={0}>Time</MenuItem>

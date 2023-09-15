@@ -19,6 +19,10 @@ import {
 } from "@material-ui/core";
 import { reportController } from '../../../../controllers/reportController';
 import { userController } from '../../../../controllers/userController';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
 
 const useStyles = makeStyles({
   root: {
@@ -46,6 +50,7 @@ export const SelectedLeague = withTheme((props) => {
   const [isRunning, setIsRunning] = useState(false);
   const [statusMessage, setStatusMessage] = useState("Starting background task....");
   const myInterval = useRef();
+  const [sorting, setSorting] = React.useState(0);
 
   const columns = [
     {
@@ -417,6 +422,32 @@ export const SelectedLeague = withTheme((props) => {
     });
   }
 
+  const handleChange = (event) => {
+    setSorting(event.target.value);
+    if (event.target.value == 1) {
+      searchedLeague.sort((a, b) => {
+        let fa = a.lname.toLowerCase(),
+          fb = b.lname.toLowerCase();
+
+        if (fa < fb) {
+          return -1;
+        }
+        if (fa > fb) {
+          return 1;
+        }
+        return 0;
+      });
+    }
+    if (event.target.value == 0) {
+      searchedLeague.sort((a, b) => {
+        let da = new Date(a.date),
+          db = new Date(b.date);
+        return da - db;
+      });
+      // setSearchedLeague(...selectedEventData);
+    }
+  };
+
   const searchSelectedEvent = () => {
     //console.log("hey i am running......");
     props.setLoading(true);
@@ -624,14 +655,28 @@ export const SelectedLeague = withTheme((props) => {
                {statusMessage} 
              </div>):null
             }
-          <h4>Buffer Page Selected Events</h4>
-          <SearchBar
+          <h4 style={{marginLeft : 10}}>Buffer Page Selected Events</h4>
+        </div>
+        <div className="d-flex align-items-center" style={{gap : '20px',marginBottom : '10px'}}>
+        <SearchBar
             placeholder={"Search "}
             style={{ marginLeft: 15, width: isPhone ? 200 : null }}
             value={searchText}
             onChange={(searchVal) => requestSearch(searchVal)}
             onCancelSearch={() => cancelSearch()}
           />
+          <FormControl className={classes.formControl}>
+              <InputLabel id="demo-simple-select-label">Sort By</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={sorting}
+                onChange={handleChange}
+              >
+                <MenuItem value={0}>Time</MenuItem>
+                <MenuItem value={1}>League</MenuItem>
+              </Select>
+            </FormControl>
         </div>
         <TableContainer className={classes.container}>
           <Table stickyHeader aria-label="sticky table">
