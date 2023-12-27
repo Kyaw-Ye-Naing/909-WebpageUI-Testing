@@ -32,7 +32,7 @@ export const apiList = {
   getGoalResult: "GoalsResult/SearchGoalsResult",
   searchSelectedEvent: "GoalsResult/SelectedEventReport",
   removeEventsPre:"GoalsResult",
-  updateGoalResult: "GoalsResultEdit",
+  updateGoalResult: "GoalsResultEdit/updateResult",
   betAmountTotal: "Betting/getTotal/",
 
   getActivityLog: "ActivityLog/searchlog",
@@ -72,6 +72,7 @@ export const apiList = {
   getPreupcommingEvent : "OddSummary/get-preupcomming",
   getEventOddSummary : "OddSummary/get-event-odd-summary",
   getUpdateStatus : "TblLeagues/fetch-update-status",
+  getUpdateStatusResult : "GoalsResultEdit/fetch-update-status-result",
 
   getSubUserInfo : "TblUsers/GetSubUserInfo",
   addSubUserInfo : "TblUsers/SaveSubUserInfo",

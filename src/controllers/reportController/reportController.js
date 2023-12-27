@@ -97,6 +97,12 @@ const getUpdateStatus = (type,setResponse) => {
   });
 };
 
+const getUpdateStatusResult = (type,setResponse) => {
+  getApi(`${apiList.getUpdateStatusResult}/${type}`, (data) => {
+    setResponse(data);
+  });
+};
+
 const searchGoalResult = (startDate, endDate, setGoalResultList) => {
   postApi(apiList.getGoalResult, { startDate, endDate }, (data) => {
     setGoalResultList(data);
@@ -197,5 +203,6 @@ export const reportController = {
   getUpdateStatus,
   getMixVoucherList,
   getSingleVoucherList,
-  getVoucherViewDetails
+  getVoucherViewDetails,
+  getUpdateStatusResult
 };

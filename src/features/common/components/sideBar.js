@@ -62,7 +62,7 @@ const SideBar = (props) => {
 
       <div className="pb-2">
         <Link
-          to={isShare == "true" ? "/subdashboard" : "dashboard"}
+          to={isShare == "true" ? "/subdashboard" : "/dashboard"}
           className=""
           style={{
             textDecoration: "none",

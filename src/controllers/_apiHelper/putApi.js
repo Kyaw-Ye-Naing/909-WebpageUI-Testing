@@ -2,9 +2,9 @@ import { authHeader, baseUrl, handleResponse } from "../_constants";
 export const putApi = async (url, obj, setData) => {
   const requestOptions = {
     method: "PUT",
-    async: true,
-    crossDomain: true,
-    processData: false,
+    //async: true,
+    //crossDomain: true,
+    //processData: false,
     headers: authHeader(),
     body: JSON.stringify(obj),
   };

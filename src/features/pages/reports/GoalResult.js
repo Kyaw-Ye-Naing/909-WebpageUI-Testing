@@ -263,18 +263,21 @@ const GoalResult = (props) => {
 
   const fetchUpdateStatus = () => {
     //console.log("api fetching........")
-    reportController.getUpdateStatus("result", (data) => {
+    reportController.getUpdateStatusResult("result", (data) => {
+      //console.log("api fetching........",data.status)
       if (data.status == "fetching") {
         setStatusMessage("Data saving and background processing .....");
       }
-      // else if(data.status == "running")
-      // {
-      //   setStatusMessage(`Data Processing ${data.message} Completed`);
-      // }
-      else {
+      if(data.status == "finished")
+      {
+        setStatusMessage(`Data Processing Completed`);
         resetCounter();
         window.location.reload();
       }
+      // else {
+      //   resetCounter();
+      //   window.location.reload();
+      // }
     });
   }
 
