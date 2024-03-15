@@ -20,6 +20,7 @@ import {
 } from "./components";
 import SelectedEvents from "./SelectedEvents";
 import OddSummary from "./OddSummary";
+import MixWinHistory from "./MixWinHistory";
 
 class Report extends React.Component {
   constructor(props) {
@@ -58,7 +59,9 @@ class Report extends React.Component {
         ? 14
         :this.props.location.pathname.includes("over-under-report")
         ? 15
-        : 16;
+        :this.props.location.pathname.includes("mix-history")
+        ? 16
+        : 17;
 
     return (
       <div className="w-100">
@@ -92,6 +95,8 @@ class Report extends React.Component {
           <OddSummary/>
         ): loc == 15 ? (
           <GoalLiveDataReport/>
+        ): loc == 16 ? (
+          <MixWinHistory/>
         ):
         (
           <CollectionsUser />

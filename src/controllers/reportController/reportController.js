@@ -92,7 +92,7 @@ const getGoalResult = (setGoalResultList) => {
 };
 
 const getUpdateStatus = (type,setResponse) => {
-  getApi(`${apiList.getUpdateStatus}${type}`, (data) => {
+  getApi(`${apiList.getUpdateStatus}/${type}`, (data) => {
     setResponse(data);
   });
 };
@@ -181,6 +181,27 @@ const getVoucherViewDetails = (gamblingId,setResponse) => {
   )
 };
 
+const getMixWinVoucherInfo = (selectedDate,mixType,setResponse) => {
+  postApi(`${apiList.getMixWinVoucherInfo}`,
+    { 
+      selectedDate: selectedDate,
+      mixType : parseInt(mixType)
+    },
+    (data) => {
+      setResponse(data);
+    });
+};
+
+const getMixWinVoucherList = (selectedDate,setResponse) => {
+  postApi(`${apiList.getMixWinVoucherList}`,
+    { 
+      selectedDate: selectedDate
+    },
+    (data) => {
+      setResponse(data);
+    });
+};
+
 export const reportController = {
   getLiveDataReport,
   getBetAmountTotal,
@@ -204,5 +225,7 @@ export const reportController = {
   getMixVoucherList,
   getSingleVoucherList,
   getVoucherViewDetails,
-  getUpdateStatusResult
+  getUpdateStatusResult,
+  getMixWinVoucherInfo,
+  getMixWinVoucherList
 };

@@ -112,7 +112,7 @@ const GoalResult = (props) => {
   }, [isRunning]);
 
   const handleChange = (event) => {
-    console.log("searchedLeague", searchedLeague)
+    //console.log("searchedLeague", searchedLeague)
     setAge(event.target.value);
     if (event.target.value == 1) {
       searchedLeague.sort((a, b) => {

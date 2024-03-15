@@ -70,7 +70,6 @@ const EventWithVoucher = withRouter((props) => {
   };
 
 const onRejectHandle = (tempRejectData) => {
-  console.log("dfsf",tempRejectData)
   props.setLoading(true);
   let tempStatus = "";
   if(tempRejectData.status == true){

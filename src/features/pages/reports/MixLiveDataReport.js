@@ -72,7 +72,6 @@ const MixLiveDataReport = (props) => {
   }
 
   const handleClickView = (mixtype) => {
-   // history.push(`/event-with-voucher/${eventId}`);
     history.push(`/mix-voucher-view/${choseDate}/${mixtype}`);
   };
 

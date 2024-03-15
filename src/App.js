@@ -34,8 +34,8 @@ import AppContext from "./context/AppContext";
 import EventWithVoucher from "./features/pages/reports/components/EventWithVoucher";
 import MixVoucherView from "./features/pages/reports/components/MixVoucherView";
 import BodyVoucherView from "./features/pages/reports/components/BodyVoucherView";
-import {SelectedLeague} from "./features/pages/settings/league/SelectedLeague";
 import subPassword from "./features/pages/SubAccount/SubPassword";
+import MixWinHistoryInfo from "./features/pages/reports/components/MixWinHistoryInfo";
 
 const App = (props) => {
   const { userData, setuserData } = useContext(AppContext);
@@ -108,6 +108,8 @@ const App = (props) => {
             component={MixVoucherView} />
              <Route path={"/body-voucher-view/:rapidEventId/:type"} 
             component={BodyVoucherView} />
+             <Route path={"/mix-win-voucher-view/:selectedDate/:mixtype"} 
+            component={MixWinHistoryInfo} />
             <Redirect to="/" />
           </Switch>
 
