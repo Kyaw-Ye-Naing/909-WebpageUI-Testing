@@ -180,14 +180,14 @@ const onRejectHandle = (tempRejectData) => {
                         <TableCell>
                           {v.active == 1 ? (
                             <span
-                              class="badge badge-warning"
+                              className="badge badge-warning"
                               style={{ padding: 8, fontWeight: "bolder" }}
                             >
                               Pending
                             </span>
                           ) : (
                             <span
-                              class="badge badge-success"
+                              className="badge badge-success"
                               style={{ padding: 8, fontWeight: "bolder" }}
                             >
                               Finished

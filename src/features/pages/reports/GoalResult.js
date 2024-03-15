@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState, useRef } from "react";
 import { withTheme } from "../../common/hoc/withTheme";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
-import { MyTable } from "../../common/components/MyTable";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -12,8 +11,7 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import MyButton from "../../common/components/MyButton";
 import MyColor from "../../../config/color";
-import { TextField, Modal, Typography } from "@material-ui/core";
-import { ExpandedRow } from "./components";
+import { TextField, Modal } from "@material-ui/core";
 import { reportController } from "../../../controllers/reportController";
 import moment from "moment";
 import { toast } from "react-toastify";
@@ -34,14 +32,15 @@ import IconButton from '@material-ui/core/IconButton';
 const GoalResult = (props) => {
   const defaultDate = moment(new Date()).format("YYYY-MM-DD");
   const classes = useStyles();
+  const temp_date = sessionStorage.getItem('goal_result');
   const [modalStyle] = useState(getModalStyle);
   const [open, setOpen] = useState(false);
-  const [startDate, setStartDate] = useState(defaultDate);
+  const [startDate, setStartDate] = useState(temp_date === null ? defaultDate : JSON.parse(temp_date).startDate);
+  const [endDate, setEndDate] = useState(temp_date === null ? defaultDate : JSON.parse(temp_date).endDate);
   const [homeGoal, setHomeGoal] = useState(null);
   const [awayGoal, setAwayGoal] = useState(null);
   const [modalData, setModalData] = useState(null);
   const [postPoned, setPostPoned] = useState(false);
-  const [endDate, setEndDate] = useState(defaultDate);
   const [goalResultData, setGoalResultData] = useState([]);
   const { userData } = useContext(AppContext);
   const userInfo = JSON.parse(userData);
@@ -95,7 +94,6 @@ const GoalResult = (props) => {
   useEffect(() => {
     props.setLoading(true);
     searchGoalResultData();
-    //getGoalResultData();
 
     return () => clearInterval(myInterval.current);
   }, []);
@@ -250,6 +248,8 @@ const GoalResult = (props) => {
   };
 
   const handleClickView = (eventId) => {
+    const obj = {startDate,endDate};
+    sessionStorage.setItem("goal_result",JSON.stringify(obj));
     history.push(`/event-with-voucher/${eventId}`);
   };
 

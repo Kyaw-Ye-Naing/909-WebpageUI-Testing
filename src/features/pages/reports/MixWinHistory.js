@@ -36,7 +36,8 @@ const useStyles = makeStyles((theme) => ({
 
 const MixWinHistory = (props) => {
 const defaultDate = moment(new Date()).format("YYYY-MM-DD");
-const [choseDate, setChoseDate] = useState(defaultDate);
+const temp_date = sessionStorage.getItem('mix_win_history');
+const [choseDate, setChoseDate] = useState(temp_date === null ? defaultDate : temp_date);
 const [mixWinData, setMixWinData] = useState([]);
 const [page, setPage] = useState(0);
 const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -72,6 +73,7 @@ const handleChangeRowsPerPage = (event) => {
   }
 
   const handleClickView = (mixtype) => {
+    sessionStorage.setItem("mix_win_history",choseDate.toString());
     history.push(`/mix-win-voucher-view/${choseDate}/${mixtype}`);
   }
 

@@ -36,7 +36,8 @@ const useStyles = makeStyles((theme) => ({
 
 const MixLiveDataReport = (props) => {
   const defaultDate = moment(new Date()).format("YYYY-MM-DD");
-  const [choseDate, setChoseDate] = useState(defaultDate);
+  const temp_date = sessionStorage.getItem('mix_live');
+  const [choseDate, setChoseDate] = useState(temp_date === null ? defaultDate : temp_date);
   const [mixliveData, setMixLiveData] = useState([]);
   const [page, setPage] = useState(0); // Add by AKPM 27-4-2021
   const [rowsPerPage, setRowsPerPage] = useState(5); // Add by AKPM 27-4-2021
@@ -72,6 +73,7 @@ const MixLiveDataReport = (props) => {
   }
 
   const handleClickView = (mixtype) => {
+    sessionStorage.setItem("mix_live",choseDate.toString());
     history.push(`/mix-voucher-view/${choseDate}/${mixtype}`);
   };
 

@@ -47,7 +47,8 @@ const useStyles = makeStyles((theme) => ({
 
 const LiveDataReport = (props) => {
   const defaultDate = moment(new Date()).format("YYYY-MM-DD");
-  const [choseDate, setChoseDate] = useState(defaultDate);
+  const temp_date = sessionStorage.getItem('body_live');
+  const [choseDate, setChoseDate] = useState(temp_date === null ? defaultDate : temp_date);
   const [liveData, setLiveData] = useState([]);
   const [bodydiff, setBodyDiff] = useState(0);
   const [goaldiff, setGoalDiff] = useState(0);
@@ -74,7 +75,7 @@ const LiveDataReport = (props) => {
   };
 
 const handleClickView = (rapidEventId) => {
-  //console.log('rapid',rapidEventId);
+  sessionStorage.setItem("body_live",choseDate.toString());
   history.push(`/body-voucher-view/${rapidEventId}/body`);
 };
   
