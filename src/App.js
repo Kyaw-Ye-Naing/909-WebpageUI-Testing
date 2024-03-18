@@ -108,7 +108,7 @@ const App = (props) => {
             component={MixVoucherView} />
              <Route path={"/body-voucher-view/:rapidEventId/:type"} 
             component={BodyVoucherView} />
-             <Route path={"/mix-win-voucher-view/:selectedDate/:mixtype"} 
+             <Route path={"/mix-win-voucher-view/:startDate/:endDate/:type/:mixtype"} 
             component={MixWinHistoryInfo} />
             <Redirect to="/" />
           </Switch>

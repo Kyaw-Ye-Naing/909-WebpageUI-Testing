@@ -181,10 +181,12 @@ const getVoucherViewDetails = (gamblingId,setResponse) => {
   )
 };
 
-const getMixWinVoucherInfo = (selectedDate,mixType,setResponse) => {
+const getMixWinVoucherInfo = (startDate,endDate,type,mixType,setResponse) => {
   postApi(`${apiList.getMixWinVoucherInfo}`,
     { 
-      selectedDate: selectedDate,
+      startDate: startDate,
+      endDate: endDate,
+      filterType : type,
       mixType : parseInt(mixType)
     },
     (data) => {
@@ -192,10 +194,12 @@ const getMixWinVoucherInfo = (selectedDate,mixType,setResponse) => {
     });
 };
 
-const getMixWinVoucherList = (selectedDate,setResponse) => {
+const getMixWinVoucherList = (startDate,endDate,filterType,setResponse) => {
   postApi(`${apiList.getMixWinVoucherList}`,
     { 
-      selectedDate: selectedDate
+      startDate: startDate,
+      endDate: endDate,
+      filterType : filterType
     },
     (data) => {
       setResponse(data);

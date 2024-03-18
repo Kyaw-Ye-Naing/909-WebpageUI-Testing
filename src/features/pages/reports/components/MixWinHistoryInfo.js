@@ -31,7 +31,7 @@ const useStyles = makeStyles({
 
 const MixWinHistoryInfo = (props) => {
       const classes = useStyles();
-      const { selectedDate,mixtype } = useParams();
+      const { startDate,endDate,type,mixtype } = useParams();
       const [rowPerPage, setRowPerPage] = useState(5);
       const [page, setPage] = useState(0);
       const [gamId, setGamId] = useState(0);
@@ -39,8 +39,8 @@ const MixWinHistoryInfo = (props) => {
       const [mixVoucherList, setMixVoucherList] = useState([]);
       const [searchVoucher, setSearchVoucher] = useState([]);
       const isPhone = useMediaPredicate("(max-width: 800px)");
-      const [totalBetAmt,setTotalBetAmt] = useState();
-      const [totalWinAmt,setTotalWinAmt] = useState();
+      const [totalBetAmt,setTotalBetAmt] = useState(0);
+      const [totalWinAmt,setTotalWinAmt] = useState(0);
 
       useEffect(() => {
         getMixVoucher();
@@ -48,7 +48,9 @@ const MixWinHistoryInfo = (props) => {
 
       const getMixVoucher = () => {
         props.setLoading(true);
-        reportController.getMixWinVoucherInfo(selectedDate,mixtype,(data) => {
+        const start_date = type === 'custom' ? startDate : startDate ;
+        const end_date = type === 'custom' ? endDate : startDate ;
+        reportController.getMixWinVoucherInfo(start_date,end_date,type,mixtype,(data) => {
         setMixVoucherList(data.payload);
         setSearchVoucher(data.payload);
         let allTotal = data.payload.reduce(function (acc, obj) {
@@ -108,8 +110,8 @@ const MixWinHistoryInfo = (props) => {
                   onCancelSearch={() => cancelSearch()}
               />
               <div className='d-flex flex-column '>
-                  <span style={{ fontSize: "1rem", fontWeight: 600, marginBottom: '12px' }}>Total Bet Amount : {totalBetAmt} Ks</span>
-                  <span style={{ fontSize: "1rem", fontWeight: 600, marginBottom: '12px' }}>Total Win Amount : {totalWinAmt} Ks</span>
+                  <span style={{ fontSize: "1rem", fontWeight: 600, marginBottom: '12px' }}>Total Bet Amount : {totalBetAmt.toLocaleString("en-US")} Ks</span>
+                  <span style={{ fontSize: "1rem", fontWeight: 600, marginBottom: '12px' }}>Total Win Amount : {totalWinAmt.toLocaleString("en-US")} Ks</span>
               </div>
           </div>
     
